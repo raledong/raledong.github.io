@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="English, Chinese">
+<html class="theme-next gemini use-motion" lang="English, Chinese">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,7 +72,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     version: '6.7.0',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -96,17 +96,17 @@
 
 
 
-  <meta name="description" content="Rale Dong的技术博客">
+  <meta name="description" content="总是打盹，时而清醒">
 <meta name="keywords" content="cs, blog, java, software, app">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Rale Dong的技术博客">
+<meta property="og:title" content="眯眯眼猫头鹰的小树杈">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Rale Dong的技术博客">
-<meta property="og:description" content="Rale Dong的技术博客">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="总是打盹，时而清醒">
 <meta property="og:locale" content="English, Chinese">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rale Dong的技术博客">
-<meta name="twitter:description" content="Rale Dong的技术博客">
+<meta name="twitter:title" content="眯眯眼猫头鹰的小树杈">
+<meta name="twitter:description" content="总是打盹，时而清醒">
 
 
 
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>Rale Dong的技术博客</title>
+  <title>眯眯眼猫头鹰的小树杈</title>
   
 
 
@@ -183,13 +183,13 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Rale Dong的技术博客</span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
     
       
-        <p class="site-subtitle">Owned By D&O</p>
+        <p class="site-subtitle">Owned By Deer&Owl</p>
       
     
     
@@ -251,9 +251,6 @@
   
 
   
-    
-
-  
 
   
 </nav>
@@ -274,9 +271,167 @@
       <div class="main-inner">
         <div class="content-wrap">
           
+            
+
+          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/02/跨域问题的一次深入研究/" class="post-title-link" itemprop="url">跨域问题的一次深入研究</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-02 18:34:50 / Modified: 22:18:03" itemprop="dateCreated datePublished" datetime="2019-02-02T18:34:50+08:00">2019-02-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在业务代码中深受跨域问题困扰，因此特别写一篇博客来记录一下自己对跨域的理解以及使用到的参考资料。本文的项目背景基于vue+vuex+axios+springboot。涉及以下内容：</p>
+<ul>
+<li>何为跨域</li>
+<li>HTTP跨域的请求究竟长啥样，里面的参数分别代表什么意思</li>
+<li>SpringBoot配置跨域请求</li>
+</ul>
+<p>如果对跨域有所了解的盆友可以直接跳到SpringBoot配置部分查看具体配置，或者是参考文章末尾Spring官网对CORS配置的博客链接。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/02/跨域问题的一次深入研究/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -297,12 +452,12 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="Rale Dong的技术博客">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rale Dong的技术博客">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
     </span>
 
     
@@ -457,8 +612,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
               <p class="site-author-name" itemprop="name">Rale Dong</p>
-              <p class="site-description motion-element" itemprop="description">Rale Dong的技术博客</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
           </div>
 
           
@@ -468,7 +625,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -477,11 +634,41 @@
               
 
               
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
             </nav>
           
 
           
 
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
           
 
           
@@ -531,7 +718,7 @@
 
 
 
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v6.7.0</div>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
 
 
 
@@ -619,7 +806,10 @@
   
 
 
-  <script src="/js/src/schemes/muse.js?v=6.7.0"></script>
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
 
 
 

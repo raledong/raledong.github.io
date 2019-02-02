@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="English, Chinese">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近在业务代码中深受跨域问题困扰，因此特别写一篇博客来记录一下自己对跨域的理解以及使用到的参考资料。本文的项目背景基于vue+vuex+axios+springboot。涉及以下内容：  何为跨域 HTTP跨域的请求究竟长啥样，里面的参数分别代表什么意思 SpringBoot配置跨域请求  如果对跨域有所了解的盆友可以直接跳到SpringBoot配置部分查看具体配置，或者是参考文章末尾Spri">
+<meta name="keywords" content="CORS,springboot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨域问题的一次深入研究">
+<meta property="og:url" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言最近在业务代码中深受跨域问题困扰，因此特别写一篇博客来记录一下自己对跨域的理解以及使用到的参考资料。本文的项目背景基于vue+vuex+axios+springboot。涉及以下内容：  何为跨域 HTTP跨域的请求究竟长啥样，里面的参数分别代表什么意思 SpringBoot配置跨域请求  如果对跨域有所了解的盆友可以直接跳到SpringBoot配置部分查看具体配置，或者是参考文章末尾Spri">
+<meta property="og:locale" content="English, Chinese">
+<meta property="og:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/1745576397-5b0665e77f3a2_articlex.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/1843570511-5b066b804bca1_articlex.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/CRSF.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/跨域异常.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/简单请求.png">
+<meta property="og:image" content="http://yoursite.com/images/扫码_搜索联合传播样式-微信标准绿版.png">
+<meta property="og:updated_time" content="2019-02-02T14:18:03.173Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跨域问题的一次深入研究">
+<meta name="twitter:description" content="前言最近在业务代码中深受跨域问题困扰，因此特别写一篇博客来记录一下自己对跨域的理解以及使用到的参考资料。本文的项目背景基于vue+vuex+axios+springboot。涉及以下内容：  何为跨域 HTTP跨域的请求究竟长啥样，里面的参数分别代表什么意思 SpringBoot配置跨域请求  如果对跨域有所了解的盆友可以直接跳到SpringBoot配置部分查看具体配置，或者是参考文章末尾Spri">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/1745576397-5b0665e77f3a2_articlex.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>跨域问题的一次深入研究 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="English, Chinese">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">跨域问题的一次深入研究
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-02 18:34:50 / Modified: 22:18:03" itemprop="dateCreated datePublished" datetime="2019-02-02T18:34:50+08:00">2019-02-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在业务代码中深受跨域问题困扰，因此特别写一篇博客来记录一下自己对跨域的理解以及使用到的参考资料。本文的项目背景基于vue+vuex+axios+springboot。涉及以下内容：</p>
+<ul>
+<li>何为跨域</li>
+<li>HTTP跨域的请求究竟长啥样，里面的参数分别代表什么意思</li>
+<li>SpringBoot配置跨域请求</li>
+</ul>
+<p>如果对跨域有所了解的盆友可以直接跳到SpringBoot配置部分查看具体配置，或者是参考文章末尾Spring官网对CORS配置的博客链接。<br><a id="more"></a></p>
+<h2 id="什么是跨域"><a href="#什么是跨域" class="headerlink" title="什么是跨域"></a>什么是跨域</h2><p>跨域是指当一个资源从与该资源本身所在的服务器不同的域或端口请求一个资源时，资源会发起一个跨域 HTTP 请求。这里盗用MDN上的一张图：<br><img src="/2019/02/02/跨域问题的一次深入研究/1745576397-5b0665e77f3a2_articlex.png" title="跨域图片"><br>当一个域名向另一个不同的域名发起请求时，这时就产生了跨域问题。<br>那么为什么会出现跨域这样的概念呢？这就要提到之前规定的<code>same origin policy</code>。以下是引自<a href="https://www.w3.org/Security/wiki/Same_Origin_Policy" target="_blank" rel="noopener">维基百科</a>的对于同源政策的描述：</p>
+<blockquote>
+<p>An origin is defined by the scheme, host, and port of a URL. Generally speaking, documents retrieved from distinct origins are isolated from each other. For example, if a document retrieved from <a href="http://example.com/doc.html" target="_blank" rel="noopener">http://example.com/doc.html</a> tries to access the DOM of a document retrieved from <a href="https://example.com/target.html" target="_blank" rel="noopener">https://example.com/target.html</a>, the user agent will disallow access because the origin of the first document, (http, example.com, 80), does not match the origin of the second document (https, example.com, 443).</p>
+</blockquote>
+<p>总而言之，同源就是指拥有同样的schema，主机和端口号的URL，不满足以上三点的任何一点都代表着这两个URL非同源，它们之间的相互访问就会产生跨域问题。</p>
+<!-- more -->
+<p>这里再借用MDN上的URL是否同源的例子：</p>
+<img src="/2019/02/02/跨域问题的一次深入研究/1843570511-5b066b804bca1_articlex.png" title="跨域图片">
+<p>而在HTTP访问中，又有了些许的变化。比如我们通常会从CDN上获取CSS，JS等静态资源，而这些静态资源的域名和当前的域并不同源，但是HTTP允许这样的跨域访问。因此，我们可以将HTTP上的跨域分为三类：</p>
+<ul>
+<li>通常允许跨源写入。比如链接，重定向和表单提交。某些特殊的HTTP请求可能需要预检（preflight），后面将会详细介绍这个词。</li>
+<li>内嵌式跨域通常也是允许的。比如<code>&lt;link rel=&quot;stylesheet&quot; href=&quot;...&quot;&gt;</code>获得CSS文件，<code>&lt;img&gt;</code>标签引入另一个源的图片</li>
+<li>通常不允许跨源读取，但读访问通常通过嵌入泄露。例如，您可以读取嵌入式图像的宽度和高度，以及嵌入式脚本的操作。前端可以通过嵌入式跨域变相实现跨域读取。前端跨域的方法非常多，不过不是本文的重点，所以不详细描述。</li>
+</ul>
+<h2 id="为什么会出现同源政策"><a href="#为什么会出现同源政策" class="headerlink" title="为什么会出现同源政策"></a>为什么会出现同源政策</h2><p>这里简单介绍一下有名的CSFR攻击来说明同源政策的目的。<br>这里引用维基百科对跨站请求攻击的解释：</p>
+<blockquote>
+<p>跨站请求攻击，简单地说，是攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己曾经认证过的网站并执行一些操作（如发邮件，发消息，甚至财产操作如转账和购买商品）。由于浏览器曾经认证过，所以被访问的网站会认为是真正的用户操作而去执行。这利用了web中用户身份验证的一个漏洞：简单的身份验证只能保证请求发自某个用户的浏览器，却不能保证请求本身是用户自愿发出的。</p>
+</blockquote>
+<p>引用网上的一张图片：<br><img src="/2019/02/02/跨域问题的一次深入研究/CRSF.png" title="跨域图片"></p>
+<p>简单的解释一下跨站请求的实现，<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29" target="_blank" rel="noopener">维基百科</a>上也有非常详细的例子。<br>假设现在用户在网页上进行转账，只有通过身份验证的用户才可以进行该操作。假设服务器是通过这样的一个URL<code>http://bank.example/withdraw?account=a&amp;amount=1000000&amp;for=b</code>实现a向b转账100000块的业务。因为该请求会携带用户的身份认证信息，因此它能够通过服务器的认证并实现操作。但是这时恶意用户c希望用这样一个形式的URL<code>http://bank.example/withdraw?account=a&amp;amount=1000000&amp;for=c</code><br>因为c自己并不具有a的session，因此他会通过别的方式诱惑a用户执行这个操作。比如它会通过发送恶意邮件的方式骗a点击上面的超链接。a如果此时并没有退出<code>bank.example</code>的登录即其session信息未被清空，那么a将成功通过服务器的认证进行转账，实现了c的“心愿”。其它的还有诸如在用户进入恶意网站后利用js脚本自动提交表单向<code>bank.example</code>发出带有a的session的post请求等等。</p>
+<p>同源政策将会确保网站a拒绝来自网站b的请求。</p>
+<h2 id="那为什么又需要跨域"><a href="#那为什么又需要跨域" class="headerlink" title="那为什么又需要跨域"></a>那为什么又需要跨域</h2><p>当前端框架兴起之后，前后端彻底分离的开发方式渐渐流行。前端和后端往往部署在不同的域名之上。前端通过访问后端的API获取数据，渲染前端界面，甚至进行路由跳转。这通常意味着前后端会出现不同源的问题。因为即使部署在同一台主机上，二者也属于不同的端口。那么我们就需要某种策略使得跨域请求能够通过。支持跨域的方式有很多，下文主要介绍后端Spring Boot配置支持跨域访问。</p>
+<h2 id="跨域访问的HTTP报文"><a href="#跨域访问的HTTP报文" class="headerlink" title="跨域访问的HTTP报文"></a>跨域访问的HTTP报文</h2><p>之前配置Spring Boot跨域的时候，我都是直接从网上抄一段这样的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class WebConfig extends WebMvcConfigurationSupport &#123;</span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">    public void addCorsMappings(CorsRegistry registry) &#123;</span><br><span class="line">        registry.addMapping(&quot;/api/***&quot;)</span><br><span class="line">                .allowedHeaders(&quot;**&quot;)</span><br><span class="line">                .allowedMethods(&quot;GET&quot;, &quot;POST&quot;)</span><br><span class="line">                .allowedOrigins(&quot;*&quot;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一开始在开发过程中，这段代码并没有问题。但是在试图接入登录业务之后出现了问题。因为采用Dubbo进行微服务开始，我们决定将登录作为一个单独的业务独立部署在另一个容器中。登录业务的基本流程是访问登录容器，登录成功后返回一个token存储在服务器的localStorage中。之后每次访问别的服务时都会在header中携带这个token，服务利用拦截器对token进行解析，判断其是否合法以及是否生效，如果合法则将解析结果放入request中传递给后面的Controller。</p>
+<p>在上面这个配置的基础上出现了几个问题：</p>
+<ol>
+<li>在发送请求前，会发送preflight的OPTION请求来判断服务器是否支持该域的跨域请求以及支持的跨域方法，但是该配置并不支持跨域的OPTION请求，从而导致OPTION方法无法通过，进而无法发送真正的GET或是POST请求</li>
+<li>针对1中的问题开放OPTION请求之后，如果不进行认证就去访问需要认证的业务，虽然获得了401的状态码，但是会出现跨域请求失败的问题。如果你去查看该请求的响应头，会发现响应header中确实没有<code>access-control-allow-origin</code>字段！也就是说响应被拦截器拦截，甚至没有进入跨域访问的响应逻辑。而我使用axios时因为这个响应报文最后被认为是跨域问题，无法从error中获得401的状态码。<img src="/2019/02/02/跨域问题的一次深入研究/跨域异常.png" title="跨域图片">
+</li>
+</ol>
+<p>总之，因为不知道一个真正的跨域请求的报文应该是什么样子的，所以盲目的折腾了半天，甚至没能将问题定位到后端的跨域配置。所以，现在来看一下真正的跨域请求报文究竟是什么样子的，来了解一下跨域的原理。</p>
+<h2 id="跨域报文"><a href="#跨域报文" class="headerlink" title="跨域报文"></a>跨域报文</h2><h3 id="preflight"><a href="#preflight" class="headerlink" title="preflight"></a>preflight</h3><p>在次之前，先了解一下preflight。<br>我们去查看浏览器发出的跨域请求时，经常会看到一个OPTION报文，它的url和真正的GET或是POST请求的URL相同。这个OPTION请求就是传说中的preflight请求。preflight请求是为了询问服务器该跨域请求是否可以被识别或是被允许。</p>
+<p>preflight报文通常长成这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">OPTIONS /resource/foo </span><br><span class="line">Access-Control-Request-Method: DELETE </span><br><span class="line">Access-Control-Request-Headers: origin, x-requested-with</span><br><span class="line">Origin: https://foo.bar.org</span><br></pre></td></tr></table></figure></p>
+<p>如果允许来自该IP的跨域访问，服务器会用<code>Access-Control-Allow-Origin</code>头字段说明允，并在<code>Access-Control-Allow-Methods</code>指明允许的方法。preflight响应报文通常长成这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Length: 0</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Access-Control-Allow-Origin: https://foo.bar.org</span><br><span class="line">Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE</span><br><span class="line">Access-Control-Max-Age: 86400</span><br></pre></td></tr></table></figure></p>
+<p>这里<code>Access-Control—Max-Age</code>指定了在86400s内无需为该URL发送preflight请求。<br>至于为何需要preflight请参考reference中的文章。</p>
+<h3 id="CORS报文"><a href="#CORS报文" class="headerlink" title="CORS报文"></a>CORS报文</h3><p>并不是所有的请求都需要发送preflight请求，服务器面对<strong>简单请求</strong>会直接返回<code>Access-Control-Allow-Origin</code>响应头来说明它的跨域访问是否通过，如果通过，则会在响应体中直接携带数据。请求和响应报文如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">GET /resources/public-data/ HTTP/1.1</span><br><span class="line">Host: bar.other</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3pre) Gecko/20081130 Minefield/3.1b3pre</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: en-us,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip,deflate</span><br><span class="line">Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Referer: http://foo.example/examples/access-control/simpleXSInvocation.html</span><br><span class="line">Origin: http://foo.example</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Mon, 01 Dec 2008 00:23:53 GMT</span><br><span class="line">Server: Apache/2.0.61 </span><br><span class="line">Access-Control-Allow-Origin: *</span><br><span class="line">Keep-Alive: timeout=2, max=100</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Content-Type: application/xml</span><br><span class="line"></span><br><span class="line">[xml]</span><br></pre></td></tr></table></figure></p>
+<p>服务器会检查origin字段的URL是否允许跨域请求。可以看到该服务器允许来自一切IP的跨域访问，因为它返回的响应头为<code>Access-Control-Allow-Origin: *</code>。<br>你会发现，这里的请求和一般的HTTP请求并没有太大的差别。</p>
+<p>那么，什么是简单请求呢？</p>
+<img src="/2019/02/02/跨域问题的一次深入研究/简单请求.png" title="跨域图片">
+<p>满足以上要求的则为简单请求。而通常前后端分离的服务之间会通过json形式的数据进行沟通，即content-type为application/json。而这种形式不符合简单请求的定义，因此需要使用option请求进行预检。</p>
+<p>复杂请求的预检请求报文如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">OPTIONS /resources/post-here/ HTTP/1.1</span><br><span class="line">Host: bar.other</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3pre) Gecko/20081130 Minefield/3.1b3pre</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: en-us,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip,deflate</span><br><span class="line">Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Origin: http://foo.example</span><br><span class="line">Access-Control-Request-Method: POST</span><br><span class="line">Access-Control-Request-Headers: X-PINGOTHER, Content-Type</span><br></pre></td></tr></table></figure></p>
+<p>请求头中有两个字段比较特殊。<code>Access-Control-Request-Method</code>说明真正的跨域请求的方法，这里是POST方法，而<code>Access-Control-Request-Headers</code>则说明请求头中包含哪些非简单字段。服务器端会根据自身的配置查看是否支持包含这些非简单字段的请求，如果不包含，则该跨域请求会被拒绝。</p>
+<p>预检响应报文如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Mon, 01 Dec 2008 01:15:39 GMT</span><br><span class="line">Server: Apache/2.0.61 (Unix)</span><br><span class="line">Access-Control-Allow-Origin: http://foo.example</span><br><span class="line">Access-Control-Allow-Methods: POST, GET, OPTIONS</span><br><span class="line">Access-Control-Allow-Headers: X-PINGOTHER, Content-Type</span><br><span class="line">Access-Control-Max-Age: 86400</span><br><span class="line">Vary: Accept-Encoding, Origin</span><br><span class="line">Content-Encoding: gzip</span><br><span class="line">Content-Length: 0</span><br><span class="line">Keep-Alive: timeout=2, max=100</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Type: text/plain</span><br></pre></td></tr></table></figure></p>
+<p>这里<code>Access-Control-Allow-Headers</code>说明了服务器支持的跨域请求的这些字段。</p>
+<p>之后服务器会发送真实的请求，服务器会对之响应，其响应头中会包含<code>Access-Control-Allow-Origin</code>字段。</p>
+<h3 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h3><h2 id="Spring-Boot-配置"><a href="#Spring-Boot-配置" class="headerlink" title="Spring-Boot 配置"></a>Spring-Boot 配置</h2><p>现在我们再来看一下之前的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class WebConfig extends WebMvcConfigurationSupport &#123;</span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">    public void addCorsMappings(CorsRegistry registry) &#123;</span><br><span class="line">        registry.addMapping(&quot;/api/***&quot;)//对/api/**进行跨域配置</span><br><span class="line">                .allowedHeaders(&quot;**&quot;)//允许所有的非简单请求头</span><br><span class="line">                .allowedMethods(&quot;GET&quot;, &quot;OPTIONS&quot;, &quot;POST&quot;) //允许三种方法</span><br><span class="line">                .allowedOrigins(&quot;*&quot;);//允许来自所有域的请求</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当然这种全部符合的通配符并不是一个很好的选择，我们应当限制跨域请求的形式，从而拒绝不符合要求的请求。</p>
+<p>第二种配置是采用Filter的形式进行配置。位于最前面的Filter会在请求进入任何其它位置之前对其进行处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class MyConfiguration &#123;</span><br><span class="line"></span><br><span class="line">	@Bean</span><br><span class="line">	public FilterRegistrationBean corsFilter() &#123;</span><br><span class="line">		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span><br><span class="line">		CorsConfiguration config = new CorsConfiguration();</span><br><span class="line">		config.setAllowCredentials(true);</span><br><span class="line">		config.addAllowedOrigin(&quot;http://domain1.com&quot;);</span><br><span class="line">		config.addAllowedHeader(&quot;*&quot;);</span><br><span class="line">		config.addAllowedMethod(&quot;*&quot;);</span><br><span class="line">		source.registerCorsConfiguration(&quot;/**&quot;, config);</span><br><span class="line">		FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));</span><br><span class="line">		bean.setOrder(0);</span><br><span class="line">		return bean;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里跟上面的配置意思基本相同，区别在于这里引入了setAllowCredential配置。它代表服务器支持跨域时携带认证信息。<strong>需要注意的是</strong>，如果开启这个配置，则allowedOrigins不可以为*。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://segmentfault.com/a/1190000012364985" target="_blank" rel="noopener">springboot设置cors跨域请求的两种方式</a><br><a href="https://spring.io/blog/2015/06/08/cors-support-in-spring-framework" target="_blank" rel="noopener">spring官网-设置允许跨域请求</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">MDN Http 控制访问</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy" target="_blank" rel="noopener">MDN Same Origin Policy</a><br><a href="https://stackoverflow.com/questions/15381105/cors-what-is-the-motivation-behind-introducing-preflight-requests" target="_blank" rel="noopener">What’s the motivation of preflight</a></p>
+<p><img src="/images/扫码_搜索联合传播样式-微信标准绿版.png" alt="微信关注扫码"><br>想要获取更多技术知识，面试教程，互联网公司内推等，欢迎关注我的微信公众号！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CORS/" rel="tag"># CORS</a>
+          
+            <a href="/tags/springboot/" rel="tag"># springboot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/26/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是跨域"><span class="nav-number">2.</span> <span class="nav-text">什么是跨域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么会出现同源政策"><span class="nav-number">3.</span> <span class="nav-text">为什么会出现同源政策</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#那为什么又需要跨域"><span class="nav-number">4.</span> <span class="nav-text">那为什么又需要跨域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跨域访问的HTTP报文"><span class="nav-number">5.</span> <span class="nav-text">跨域访问的HTTP报文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跨域报文"><span class="nav-number">6.</span> <span class="nav-text">跨域报文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#preflight"><span class="nav-number">6.1.</span> <span class="nav-text">preflight</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CORS报文"><span class="nav-number">6.2.</span> <span class="nav-text">CORS报文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#身份认证"><span class="nav-number">6.3.</span> <span class="nav-text">身份认证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot-配置"><span class="nav-number">7.</span> <span class="nav-text">Spring-Boot 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">8.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
