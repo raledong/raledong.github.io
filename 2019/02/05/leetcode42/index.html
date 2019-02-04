@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目要求1234Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.For example, Given [0,1,0,2,1,0,1,3,2,1,2,">
+<meta name="keywords" content="刷题,leetcode,java,stack,dynamic programming,two-pointers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode42.Trapping Rain Water">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/leetcode42/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="题目要求1234Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.For example, Given [0,1,0,2,1,0,1,3,2,1,2,">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/leetcode42/图片1.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/leetcode42/图片2.png">
+<meta property="og:updated_time" content="2019-02-04T17:13:27.239Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="leetcode42.Trapping Rain Water">
+<meta name="twitter:description" content="题目要求1234Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.For example, Given [0,1,0,2,1,0,1,3,2,1,2,">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/leetcode42/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/05/leetcode42/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>leetcode42.Trapping Rain Water | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode42/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">leetcode42.Trapping Rain Water
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 01:08:22 / 修改时间：01:13:27" itemprop="dateCreated datePublished" datetime="2019-02-05T01:08:22+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.</span><br><span class="line"></span><br><span class="line">For example, </span><br><span class="line">Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.</span><br></pre></td></tr></table></figure>
+<img src="/2019/02/05/leetcode42/图片1.png" title="图片1">
+<p>假设这些是一些间隔的木板，问最多能够装多少水。也就是一个区域性的短板问题。其实一个区间能够乘的最大水量，取决于它的左右最近且最高的木板的长度。当然除了通过多个区间的和来计算总体的盛水量，还可以通过横向的划分来计算盛水量。这些将在接下来中的代码一一分析。官方也提供了一些<a href="https://leetcode.com/articles/trapping-rain-water/" target="_blank" rel="noopener">答案</a>，这里将给出相应的java实现的版本。<br><a id="more"></a></p>
+<h2 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h2><p>这里先讲一讲我在拿到这个题目时候的思路。我先通过堆栈的方法，找到一个封闭区间，该区间可以盛水，该区间的右节点可以作为下一个封闭区间的起点。这种方法思路非常直接，但是并不是高效的计算机思维。<br>堆栈的方法如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用堆栈，分别存储值和下标</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = height.length;</span><br><span class="line">    <span class="keyword">if</span>(length&lt;=<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Stack&lt;Integer&gt; s = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    Stack&lt;Integer&gt; index = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    s.push(<span class="number">0</span>);</span><br><span class="line">    index.push(<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> leftMost = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i&lt;length ; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> currentVal = height[i];</span><br><span class="line">        <span class="comment">//如果当前值比最左值大，则说明形成了一个封闭的盛水区间</span></span><br><span class="line">        <span class="keyword">if</span>(currentVal &gt;= leftMost)&#123;</span><br><span class="line">            <span class="keyword">while</span>(!s.isEmpty())&#123;</span><br><span class="line">                result += (leftMost - s.pop()) * index.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(currentVal);</span><br><span class="line">            index.push(<span class="number">1</span>);</span><br><span class="line">            leftMost = currentVal;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//如果当前值比最左值小，则说明该盛水区间仍然没到最右点</span></span><br><span class="line">            <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">            <span class="comment">//将所有比当前值小的区间填满，并将水平区间的个数插入栈中</span></span><br><span class="line">            <span class="keyword">while</span>(currentVal &gt; s.peek())&#123;</span><br><span class="line">                count += index.peek();</span><br><span class="line">                result += (currentVal - s.pop()) * index.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(currentVal);</span><br><span class="line">            index.push(count);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用双指针代替堆栈提高些许性能<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//双指针 不使用堆栈</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap3</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = height.length;</span><br><span class="line">    <span class="keyword">if</span>(length&lt;=<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获得可以盛水的区间</span></span><br><span class="line">    <span class="keyword">int</span> startIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(startIndex&lt;length-<span class="number">1</span> &amp;&amp; height[startIndex]&lt;=height[startIndex+<span class="number">1</span>])&#123;</span><br><span class="line">        startIndex++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里思路类似于上一段代码，只是可以填水的区间将值改为填水后的值</span></span><br><span class="line">    <span class="keyword">int</span> index = startIndex;</span><br><span class="line">    <span class="keyword">while</span>(++index &lt; length)&#123;</span><br><span class="line">        <span class="keyword">int</span> currentHeight = height[index];</span><br><span class="line">        <span class="keyword">if</span>(currentHeight &gt; height[startIndex])&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = index-<span class="number">1</span> ; i &gt; startIndex ; i--)&#123;</span><br><span class="line">                result += (height[startIndex] - height[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            startIndex = index;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = index ; i&gt;<span class="number">0</span> &amp;&amp; height[i] &gt; height[i-<span class="number">1</span>] ; i--)&#123;</span><br><span class="line">                result += (height[i] - height[i-<span class="number">1</span>]);</span><br><span class="line">                height[i-<span class="number">1</span>] = height[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里会降低代码效率的部分主要在于，对于盛水区间的高度的计算太冗杂了。只要获得左右木板高度的最小值，就是当前区间可以盛水的最大高度。在这里最大的问题就在于获得最远区间后，需要对区间内的小区间逐个遍历。这种方法虽然一次遍历数组就可以实现，但是还需要在子区间中反复计算才可以。</p>
+<h2 id="思路一：强行遍历"><a href="#思路一：强行遍历" class="headerlink" title="思路一：强行遍历"></a>思路一：强行遍历</h2><p>从整个数组的角度看来，如果找到区间左侧的最大值leftMax，以及区间右侧的最大值rightMax，就可以知道当前区间的盛水高度为Math.min(leftMax,rightMax)-height[i]。也就是传说中的木桶理论，短板决定盛水的高度。这样的话，代表在每个区间计算盛水值的时候，需要遍历整个数组。遍历整个数组，则需要O(n的平方)的时间复杂度。<br>这里的代码实现并不难，可以直接参考<a href="https://leetcode.com/articles/trapping-rain-water/#approach-1-brute-force-accepted" target="_blank" rel="noopener">官方提供的C++方法</a>。</p>
+<h2 id="思路二：动态编程-先遍历获得区间左右最大值再计算"><a href="#思路二：动态编程-先遍历获得区间左右最大值再计算" class="headerlink" title="思路二：动态编程 先遍历获得区间左右最大值再计算"></a>思路二：动态编程 先遍历获得区间左右最大值再计算</h2><p>思路一中，每一次对一个区间都要遍历整个数组才能获得左右最大值。但是其实，从<strong>左往右遍历</strong>一次数组，可以获得各个区间的<code>leftMax</code>。同理，从<strong>右往左遍历</strong>可以获得各个区间的<code>rightMax</code>。将这两个值都存在数组中，并对数组进行遍历，计算各个区间的盛水高度。时间复杂度为O(n),代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap3</span><span class="params">(<span class="keyword">int</span>[] height)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = height.length;</span><br><span class="line">    <span class="comment">//leftMax数组</span></span><br><span class="line">    <span class="keyword">int</span>[] left = <span class="keyword">new</span> <span class="keyword">int</span>[length];</span><br><span class="line">    <span class="comment">//rightMax数组</span></span><br><span class="line">    <span class="keyword">int</span>[] right = <span class="keyword">new</span> <span class="keyword">int</span>[length];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> leftMax = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rightMax = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i&lt;length ; i++)&#123;</span><br><span class="line">        leftMax = left[i] = Math.max(leftMax,    height[i]);</span><br><span class="line">        rightMax = right[length-i-<span class="number">1</span>] = Math.max(rightMax, height[length-i-<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span> ; j&lt;length ; j++)&#123;</span><br><span class="line">        result += Math.min(left[j], right[j]) - height[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该思路的官方讲解请<a href="https://leetcode.com/articles/trapping-rain-water/#approach-2-dynamic-programming-accepted" target="_blank" rel="noopener">戳这里</a><br>这里涉及了一个解题思路，叫做Dynamic Programming。这在我之前的博客中也有所提及，但是我仍然对这个概念比较模糊。这里有一个非常好的<a href="https://stackoverflow.com/questions/1065433/what-is-dynamic-programming" target="_blank" rel="noopener">解答帖子</a>供大家参考。笼统的来说，就是利用已知的解答来帮助解决目标问题。看上去好像是一句废话，但是具体实践中有多重形式，例如递归，自顶向下编码和自底向上编码等等。这些概念还是需要通过大量的题目和代码来感受啊。</p>
+<h2 id="思路三：堆栈的聪明使用"><a href="#思路三：堆栈的聪明使用" class="headerlink" title="思路三：堆栈的聪明使用"></a>思路三：堆栈的聪明使用</h2><p>在这里，堆栈允许我们渐进的通过横向分割而非之前传统的纵向分割的方式来累加计算盛水量。一旦当前区间的高度超过栈顶的元素，就代表栈顶元素有一个右边界。鉴于栈中的元素都是递减的，所以如果存在一个比栈顶元素大的栈中元素，则一定可以确定该区间的盛水量。代码如下：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap4</span><span class="params">(<span class="keyword">int</span>[] height)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = height.length;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>, current = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    Stack&lt;Integer&gt; s = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(current &lt; length)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!s.isEmpty() &amp;&amp; height[current] &gt; height[s.peek()])&#123;</span><br><span class="line">            <span class="keyword">int</span> top = s.pop();</span><br><span class="line">            <span class="keyword">if</span>(s.isEmpty())&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//获得两个节点之间的宽度</span></span><br><span class="line">            <span class="keyword">int</span> distance = current - s.peek() - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">int</span> tempHeight = Math.min(height[current], height[s.peek()]) - height[top];</span><br><span class="line">            result += tempHeight  * distance;</span><br><span class="line">        &#125;</span><br><span class="line">        s.push(current++);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="思路四：双指针的进阶"><a href="#思路四：双指针的进阶" class="headerlink" title="思路四：双指针的进阶"></a>思路四：双指针的进阶</h2><p>这里要从更高的高度来看这道题目，原文如下：</p>
+<img src="/2019/02/05/leetcode42/图片2.png" title="图片2">
+<p>这里的意思是这样的：</p>
+<blockquote>
+<p>经过实践证明，如果当前区间的leftMax&lt;rightMax，则当前区间的盛水量由leftMax决定，反之则由rightMax决定。<br>换句话说，假设能找到任意一个比当前区间高度值大的值，并且假设该值位于当前区间的右侧，那么该区间的盛水高度由leftMax决定。同理，如果该值位于当前区间的左侧，那么该区间的盛水高度由rightMax决定。</p>
+</blockquote>
+<p>这个结论可以使用反证法证明。</p>
+<p>假设能找到任意一个比当前区间高度值大的值，并且假设该值位于当前区间的右侧，则存在满足这样一个区间，该区间盛水高度由rightMax决定。<br>这说明，该区间的leftMax大于rightMax。假设当前区间下标为i，则一定存在一个j&lt;=i，height[j]=leftMax。其实，纵观双指针的遍历，我们可以知道，双指针最终会停在高度最高的区间，即height[index] = Max(leftMax, rightMax)上。每一次遍历都会将两个指针向相对较高的位置移动。<br>所以一旦左指针遍历到刚才的j节点，因为当前右指针指向的值都小于leftMax（rightMax&lt;leftMax），右指针则会一直移动，不可能出现当前的情况。<br>代码实现如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap5</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> right = height.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> leftMax=<span class="number">0</span>, rightMax=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">        <span class="keyword">if</span>(height[left] &lt; height[right])&#123;</span><br><span class="line">            leftMax = Math.max(height[left], leftMax);</span><br><span class="line">            result += leftMax - height[left];</span><br><span class="line">            left++;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            rightMax = Math.max(height[right], rightMax);</span><br><span class="line">            result += rightMax - height[right];</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/刷题/" rel="tag"># 刷题</a>
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/stack/" rel="tag"># stack</a>
+          
+            <a href="/tags/dynamic-programming/" rel="tag"># dynamic programming</a>
+          
+            <a href="/tags/two-pointers/" rel="tag"># two-pointers</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/05/leetcode54/" rel="next" title="leetcode54.Spiral Matrix">
+                <i class="fa fa-chevron-left"></i> leetcode54.Spiral Matrix
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/05/leetcode61/" rel="prev" title="leetcode61.Rotate List">
+                leetcode61.Rotate List <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">162</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">47</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目要求"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我的思路"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路一：强行遍历"><span class="nav-number">3.</span> <span class="nav-text">思路一：强行遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路二：动态编程-先遍历获得区间左右最大值再计算"><span class="nav-number">4.</span> <span class="nav-text">思路二：动态编程 先遍历获得区间左右最大值再计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路三：堆栈的聪明使用"><span class="nav-number">5.</span> <span class="nav-text">思路三：堆栈的聪明使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路四：双指针的进阶"><span class="nav-number">6.</span> <span class="nav-text">思路四：双指针的进阶</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
