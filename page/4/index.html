@@ -327,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode396/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode322/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -347,7 +347,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode396/" class="post-title-link" itemprop="url">leetcode396.Rotate Function</a>
+                <a href="/2019/02/04/leetcode322/" class="post-title-link" itemprop="url">leetcode322.Coin Change</a>
               
             
           </h1>
@@ -372,7 +372,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 01:02:20 / 修改时间：01:05:28" itemprop="dateCreated datePublished" datetime="2019-02-04T01:02:20+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 02:06:11 / 修改时间：02:07:27" itemprop="dateCreated datePublished" datetime="2019-02-04T02:06:11+08:00">2019-02-04</time>
             
 
             
@@ -437,12 +437,13 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Given an array of integers A and let n to be its length.</span><br><span class="line"></span><br><span class="line">Assume Bk to be an array obtained by rotating the array A k positions clock-wise, we define a &quot;rotation function&quot; F on A as follow:</span><br><span class="line"></span><br><span class="line">F(k) = 0 * Bk[0] + 1 * Bk[1] + ... + (n-1) * Bk[n-1].</span><br><span class="line"></span><br><span class="line">Calculate the maximum value of F(0), F(1), ..., F(n-1).</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">n is guaranteed to be less than 105.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">A = [4, 3, 2, 6]</span><br><span class="line"></span><br><span class="line">F(0) = (0 * 4) + (1 * 3) + (2 * 2) + (3 * 6) = 0 + 3 + 4 + 18 = 25</span><br><span class="line">F(1) = (0 * 6) + (1 * 4) + (2 * 3) + (3 * 2) = 0 + 4 + 6 + 6 = 16</span><br><span class="line">F(2) = (0 * 2) + (1 * 6) + (2 * 4) + (3 * 3) = 0 + 6 + 8 + 9 = 23</span><br><span class="line">F(3) = (0 * 3) + (1 * 2) + (2 * 6) + (3 * 4) = 0 + 2 + 12 + 12 = 26</span><br><span class="line"></span><br><span class="line">So the maximum value of F(0), F(1), F(2), F(3) is F(3) = 26.</span><br></pre></td></tr></table></figure>
-<p>Bk代表对数组A在位置k上进行顺时针的旋转后生成的数组。<code>F(k) = 0 * Bk[0] + 1 * Bk[1] + ... + (n-1) * Bk[n-1]</code>，要求返回获得的最大的F(k)的值。</p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line">coins = [1, 2, 5], amount = 11</span><br><span class="line">return 3 (11 = 5 + 5 + 1)</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">coins = [2], amount = 3</span><br><span class="line">return -1.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">You may assume that you have an infinite number of each kind of coin.</span><br></pre></td></tr></table></figure>
+<p>这里模拟实现了一个换钱算法。传入的参数为手上有的纸币的面额以及希望兑换的面额。这里假设纸币的数量是无穷的。</p>
+<p>这题本质上考察的是动态规划思想。这里有两种动态规划的方法，分别从递归和非递归的角度解决这个问题。具体的情况还是要看数据的分布情况来确定选择哪种方法。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode396/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode322/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -502,7 +503,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode397/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode301/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -522,7 +523,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode397/" class="post-title-link" itemprop="url">leetcode397.Integer Replacement</a>
+                <a href="/2019/02/04/leetcode301/" class="post-title-link" itemprop="url">leetcode301.Remove Invalid Parentheses</a>
               
             
           </h1>
@@ -547,7 +548,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 00:59:24 / 修改时间：01:00:14" itemprop="dateCreated datePublished" datetime="2019-02-04T00:59:24+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 02:04:40 / 修改时间：02:05:50" itemprop="dateCreated datePublished" datetime="2019-02-04T02:04:40+08:00">2019-02-04</time>
             
 
             
@@ -612,186 +613,12 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Given a positive integer n and you can do operations as follow:</span><br><span class="line"></span><br><span class="line">If n is even, replace n with n/2.</span><br><span class="line">If n is odd, you can replace n with either n + 1 or n - 1.</span><br><span class="line">What is the minimum number of replacements needed for n to become 1?</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line"></span><br><span class="line">Input:</span><br><span class="line">8</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">3</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">8 -&gt; 4 -&gt; 2 -&gt; 1</span><br><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">Input:</span><br><span class="line">7</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">4</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">7 -&gt; 8 -&gt; 4 -&gt; 2 -&gt; 1</span><br><span class="line">or</span><br><span class="line">7 -&gt; 6 -&gt; 3 -&gt; 2 -&gt; 1</span><br></pre></td></tr></table></figure>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.</span><br><span class="line"></span><br><span class="line">Note: The input string may contain letters other than the parentheses ( and ).</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">&quot;()())()&quot; -&gt; [&quot;()()()&quot;, &quot;(())()&quot;]</span><br><span class="line">&quot;(a)())()&quot; -&gt; [&quot;(a)()()&quot;, &quot;(a())()&quot;]</span><br><span class="line">&quot;)(&quot; -&gt; [&quot;&quot;]</span><br></pre></td></tr></table></figure>
+<p>现在有一个字符串包含一些左右括号以及字母。一个合法的字符串是指左括号和右括号必定成对出现。要求得出用最少次数的删除可以得到的所有的合法字符串。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode397/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode373/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/04/leetcode373/" class="post-title-link" itemprop="url">leetcode373.Find K Pairs with Smallest Sums</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-04 00:47:53 / 修改时间：00:56:40" itemprop="dateCreated datePublished" datetime="2019-02-04T00:47:53+08:00">2019-02-04</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">You are given two integer arrays nums1 and nums2 sorted in ascending order and an integer k.</span><br><span class="line"></span><br><span class="line">Define a pair (u,v) which consists of one element from the first array and one element from the second array.</span><br><span class="line"></span><br><span class="line">Find the k pairs (u1,v1),(u2,v2) ...(uk,vk) with the smallest sums.</span><br></pre></td></tr></table></figure>
-<p>两个单调递增的整数数组，现分别从数组1和数组2中取一个数字构成数对，求找到k个和最小的数对。<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode373/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode301/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -851,7 +678,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode330/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode319/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -871,7 +698,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode330/" class="post-title-link" itemprop="url">leetcode330.Patching Array</a>
+                <a href="/2019/02/04/leetcode319/" class="post-title-link" itemprop="url">leetcode319.Bulb Switcher</a>
               
             
           </h1>
@@ -896,7 +723,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 00:42:56 / 修改时间：00:58:49" itemprop="dateCreated datePublished" datetime="2019-02-04T00:42:56+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 02:03:15 / 修改时间：02:04:01" itemprop="dateCreated datePublished" datetime="2019-02-04T02:03:15+08:00">2019-02-04</time>
             
 
             
@@ -961,362 +788,12 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that any number in range [1, n] inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line"></span><br><span class="line">Input: nums = [1,3], n = 6</span><br><span class="line">Output: 1 </span><br><span class="line">Explanation:</span><br><span class="line">Combinations of nums are [1], [3], [1,3], which form possible sums of: 1, 3, 4.</span><br><span class="line">Now if we add/patch 2 to nums, the combinations are: [1], [2], [3], [1,3], [2,3], [1,2,3].</span><br><span class="line">Possible sums are 1, 2, 3, 4, 5, 6, which now covers the range [1, 6].</span><br><span class="line">So we only need 1 patch.</span><br><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">Input: nums = [1,5,10], n = 20</span><br><span class="line">Output: 2</span><br><span class="line">Explanation: The two patches can be [2, 4].</span><br><span class="line">Example 3:</span><br><span class="line"></span><br><span class="line">Input: nums = [1,2,2], n = 5</span><br><span class="line">Output: 0</span><br></pre></td></tr></table></figure>
-<p>假设有一个有序的正整数数组nums和一个整数n，最少添加几个元素到这个数组中，使得从1-n的所有整数都可以由这个数组中的值的或是几个值的和构成。</p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">There are n bulbs that are initially off. You first turn on all the bulbs. Then, you turn off every second bulb. On the third round, you toggle every third bulb (turning on if it&apos;s off or turning off if it&apos;s on). For the ith round, you toggle every i bulb. For the nth round, you only toggle the last bulb. Find how many bulbs are on after n rounds.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">Given n = 3. </span><br><span class="line"></span><br><span class="line">At first, the three bulbs are [off, off, off].</span><br><span class="line">After first round, the three bulbs are [on, on, on].</span><br><span class="line">After second round, the three bulbs are [on, off, on].</span><br><span class="line">After third round, the three bulbs are [on, off, off]. </span><br><span class="line"></span><br><span class="line">So you should return 1, because there is only one bulb is on.</span><br></pre></td></tr></table></figure>
+<p>一共有n个初始状态为关闭的灯泡。第一次打开所有灯泡，第二次每隔一个灯泡关闭一个灯泡，第三次每隔两个灯泡按一下开关。依次类推，问第n次之后开着的灯泡的数量有几个？<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode330/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode368/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/04/leetcode368/" class="post-title-link" itemprop="url">leetcode368.Largest Divisible Subset</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-04 00:38:47 / 修改时间：00:52:36" itemprop="dateCreated datePublished" datetime="2019-02-04T00:38:47+08:00">2019-02-04</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Given a set of distinct positive integers, find the largest subset such that every pair (Si, Sj) of elements in this subset satisfies:</span><br><span class="line"></span><br><span class="line">Si % Sj = 0 or Sj % Si = 0.</span><br><span class="line"></span><br><span class="line">If there are multiple solutions, return any subset is fine.</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line"></span><br><span class="line">Input: [1,2,3]</span><br><span class="line">Output: [1,2] (of course, [1,3] will also be ok)</span><br><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">Input: [1,2,4,8]</span><br><span class="line">Output: [1,2,4,8]</span><br></pre></td></tr></table></figure>
-<p>假设有一组值唯一的正整数数组，找到元素最多的一个子数组，这个子数组中的任选两个元素都可以构成Si % Sj = 0 或 Sj % Si = 0。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode368/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode377/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/04/leetcode377/" class="post-title-link" itemprop="url">leetcode377.Combination Sum IV</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-04 00:25:41 / 修改时间：00:55:46" itemprop="dateCreated datePublished" datetime="2019-02-04T00:25:41+08:00">2019-02-04</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Given an integer array with all positive numbers and no duplicates, find the number of possible combinations that add up to a positive integer target.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">nums = [1, 2, 3]</span><br><span class="line">target = 4</span><br><span class="line"></span><br><span class="line">The possible combination ways are:</span><br><span class="line">(1, 1, 1, 1)</span><br><span class="line">(1, 1, 2)</span><br><span class="line">(1, 2, 1)</span><br><span class="line">(1, 3)</span><br><span class="line">(2, 1, 1)</span><br><span class="line">(2, 2)</span><br><span class="line">(3, 1)</span><br><span class="line"></span><br><span class="line">Note that different sequences are counted as different combinations.</span><br><span class="line"></span><br><span class="line">Therefore the output is 7.</span><br><span class="line"></span><br><span class="line">Follow up:</span><br><span class="line">What if negative numbers are allowed in the given array?</span><br><span class="line">How does it change the problem?</span><br><span class="line">What limitation we need to add to the question to allow negative numbers?</span><br></pre></td></tr></table></figure>
-<p>有一个不包含重复值的正整数数组nums，问从数组中选择几个数，其和为target，这样的数的组合有几种？<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode377/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode319/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1376,7 +853,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/03/leetcode392/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode318/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1396,7 +873,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/03/leetcode392/" class="post-title-link" itemprop="url">leetcode392. Is Subsequence</a>
+                <a href="/2019/02/04/leetcode318/" class="post-title-link" itemprop="url">leetcode318.Maximum Product of Word Lengths</a>
               
             
           </h1>
@@ -1421,24 +898,12 @@
                 
               
 
-              <time title="创建时间：2019-02-03 01:01:21" itemprop="dateCreated datePublished" datetime="2019-02-03T01:01:21+08:00">2019-02-03</time>
+              <time title="创建时间：2019-02-04 02:01:52 / 修改时间：02:02:46" itemprop="dateCreated datePublished" datetime="2019-02-04T02:01:52+08:00">2019-02-04</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-02-04 00:54:30" itemprop="dateModified" datetime="2019-02-04T00:54:30+08:00">2019-02-04</time>
               
             
           </span>
@@ -1498,12 +963,187 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Given a string s and a string t, check if s is subsequence of t.</span><br><span class="line"></span><br><span class="line">You may assume that there is only lower case English letters in both s and t. t is potentially a very long (length ~= 500,000) string, and s is a short string (&lt;=100).</span><br><span class="line"></span><br><span class="line">A subsequence of a string is a new string which is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie, &quot;ace&quot; is a subsequence of &quot;abcde&quot; while &quot;aec&quot; is not).</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line">s = &quot;abc&quot;, t = &quot;ahbgdc&quot;</span><br><span class="line"></span><br><span class="line">Return true.</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">s = &quot;axc&quot;, t = &quot;ahbgdc&quot;</span><br><span class="line"></span><br><span class="line">Return false.</span><br><span class="line"></span><br><span class="line">Follow up:</span><br><span class="line">If there are lots of incoming S, say S1, S2, ... , Sk where k &gt;= 1B, and you want to check one by one to see if T has its subsequence. In this scenario, how would you change your code?</span><br></pre></td></tr></table></figure>
-<p>如何判断字符串s是否是字符串t的一个子序列。子序列是指s中的字母均按照相对位置存在于t中，比如”abc”是”ahbfdc”的一个子序列，但是”axc”就不是”ahbgdc”的一个子序列。</p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Given a string array words, find the maximum value of length(word[i]) * length(word[j]) where the two words do not share common letters. </span><br><span class="line">You may assume that each word will contain only lower case letters. If no such two words exist, return 0.</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line">Given [&quot;abcw&quot;, &quot;baz&quot;, &quot;foo&quot;, &quot;bar&quot;, &quot;xtfn&quot;, &quot;abcdef&quot;]</span><br><span class="line">Return 16</span><br><span class="line">The two words can be &quot;abcw&quot;, &quot;xtfn&quot;.</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">Given [&quot;a&quot;, &quot;ab&quot;, &quot;abc&quot;, &quot;d&quot;, &quot;cd&quot;, &quot;bcd&quot;, &quot;abcd&quot;]</span><br><span class="line">Return 4</span><br><span class="line">The two words can be &quot;ab&quot;, &quot;cd&quot;.</span><br><span class="line"></span><br><span class="line">Example 3:</span><br><span class="line">Given [&quot;a&quot;, &quot;aa&quot;, &quot;aaa&quot;, &quot;aaaa&quot;]</span><br><span class="line">Return 0</span><br><span class="line">No such pair of words.</span><br></pre></td></tr></table></figure>
+<p>有一个字符串数组，从该字符串数组中找到两个字符串，要求满足这两个字符串之间没有相同的字母，同时它们的长度的乘积最大。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/03/leetcode392/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode318/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode295/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode295/" class="post-title-link" itemprop="url">leetcode295.Find Median from Data Stream</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 02:00:24 / 修改时间：02:01:23" itemprop="dateCreated datePublished" datetime="2019-02-04T02:00:24+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.</span><br><span class="line"></span><br><span class="line">Examples: </span><br><span class="line">[2,3,4] , the median is 3</span><br><span class="line"></span><br><span class="line">[2,3], the median is (2 + 3) / 2 = 2.5</span><br><span class="line"></span><br><span class="line">Design a data structure that supports the following two operations:</span><br><span class="line"></span><br><span class="line">void addNum(int num) - Add a integer number from the data stream to the data structure.</span><br><span class="line">double findMedian() - Return the median of all elements so far.</span><br><span class="line">For example:</span><br><span class="line"></span><br><span class="line">addNum(1)</span><br><span class="line">addNum(2)</span><br><span class="line">findMedian() -&gt; 1.5</span><br><span class="line">addNum(3) </span><br><span class="line">findMedian() -&gt; 2</span><br></pre></td></tr></table></figure>
+<p>这里需要我们设计一个数据结构，使得我们可以从当前的字符流中获取中位数。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/04/leetcode295/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1563,7 +1203,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode343/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1583,7 +1223,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/02/跨域问题的一次深入研究/" class="post-title-link" itemprop="url">跨域问题的一次深入研究</a>
+                <a href="/2019/02/04/leetcode343/" class="post-title-link" itemprop="url">leetcode343.Integer Break</a>
               
             
           </h1>
@@ -1608,24 +1248,12 @@
                 
               
 
-              <time title="创建时间：2019-02-02 18:34:50" itemprop="dateCreated datePublished" datetime="2019-02-02T18:34:50+08:00">2019-02-02</time>
+              <time title="创建时间：2019-02-04 01:56:23 / 修改时间：01:57:10" itemprop="dateCreated datePublished" datetime="2019-02-04T01:56:23+08:00">2019-02-04</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-02-03 00:44:54" itemprop="dateModified" datetime="2019-02-03T00:44:54+08:00">2019-02-03</time>
               
             
           </span>
@@ -1642,14 +1270,14 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
 
                 
                 
                   ，
                 
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
 
                 
                 
@@ -1685,17 +1313,12 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在业务代码中深受跨域问题困扰，因此特别写一篇博客来记录一下自己对跨域的理解以及使用到的参考资料。本文的项目背景基于vue+vuex+axios+springboot。涉及以下内容：</p>
-<ul>
-<li>何为跨域</li>
-<li>HTTP跨域的请求究竟长啥样，里面的参数分别代表什么意思</li>
-<li>SpringBoot配置跨域请求</li>
-</ul>
-<p>如果对跨域有所了解的盆友可以直接跳到SpringBoot配置部分查看具体配置，或者是参考文章末尾Spring官网对CORS配置的博客链接。<br>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Given a positive integer n, break it into the sum of at least two positive integers and maximize the product of those integers. </span><br><span class="line">Return the maximum product you can get.</span><br><span class="line"></span><br><span class="line">For example, given n = 2, return 1 (2 = 1 + 1); given n = 10, return 36 (10 = 3 + 3 + 4).</span><br><span class="line"></span><br><span class="line">Note: You may assume that n is not less than 2 and not larger than 58.</span><br></pre></td></tr></table></figure>
+<p>将一个正整数分解为两个或两个以上的正整数，要求这些正整数的乘积最大。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/02/跨域问题的一次深入研究/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode343/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1704,6 +1327,705 @@
         
       
     </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode300/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode300/" class="post-title-link" itemprop="url">leetcode300.Longest Increasing Subsequence</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 01:54:29 / 修改时间：01:55:55" itemprop="dateCreated datePublished" datetime="2019-02-04T01:54:29+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Given an unsorted array of integers, find the length of longest increasing subsequence.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given [10, 9, 2, 5, 3, 7, 101, 18],</span><br><span class="line">The longest increasing subsequence is [2, 3, 7, 101], therefore the length is 4. Note that there may be more than one LIS combination, it is only necessary for you to return the length.</span><br><span class="line"></span><br><span class="line">Your algorithm should run in O(n2) complexity.</span><br><span class="line"></span><br><span class="line">Follow up: Could you improve it to O(n log n) time complexity?</span><br></pre></td></tr></table></figure>
+<p>找到整数数组中最长的递增子数组。该子数组可以为不连续的。如题目中例子所示，<code>[10, 9, 2, 5, 3, 7, 101, 18]</code>得到的最长子数组为<code>[2,3,7,101]</code>。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/04/leetcode300/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode328/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode328/" class="post-title-link" itemprop="url">leetcode328.Odd Even Linked List</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 01:52:19 / 修改时间：01:53:54" itemprop="dateCreated datePublished" datetime="2019-02-04T01:52:19+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Given a singly linked list, group all odd nodes together followed by the even nodes. </span><br><span class="line">Please note here we are talking about the node number and not the value in the nodes.</span><br><span class="line"></span><br><span class="line">You should try to do it in place. </span><br><span class="line">The program should run in O(1) space complexity and O(nodes) time complexity.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line">Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL,</span><br><span class="line">return 1-&gt;3-&gt;5-&gt;2-&gt;4-&gt;NULL.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">The relative order inside both the even and odd groups should remain as it was in the input. </span><br><span class="line">The first node is considered odd, the second node even and so on ...</span><br></pre></td></tr></table></figure>
+<p>将一个链表中的节点按照奇数位上的节点在前，偶数位上的节点在后重新排序。<br>这里需要注意的是节点之间的相对顺序不可以改变。即<code>1-&gt;2-&gt;3-&gt;4</code>不可以变为<code>1-&gt;3-&gt;4-&gt;2</code>，只能是<code>1-&gt;3-&gt;2-&gt;4</code>。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/04/leetcode328/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode312/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode312/" class="post-title-link" itemprop="url">leetcode312.Burst Balloons</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 01:50:32 / 修改时间：01:51:48" itemprop="dateCreated datePublished" datetime="2019-02-04T01:50:32+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Given n balloons, indexed from 0 to n-1. Each balloon is painted with a number on it represented by array nums. You are asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] * nums[right] coins. Here left and right are adjacent indices of i. After the burst, the left and right then becomes adjacent.</span><br><span class="line"></span><br><span class="line">Find the maximum coins you can collect by bursting the balloons wisely.</span><br><span class="line"></span><br><span class="line">Note: </span><br><span class="line">(1) You may imagine nums[-1] = nums[n] = 1. They are not real therefore you can not burst them.</span><br><span class="line">(2) 0 ≤ n ≤ 500, 0 ≤ nums[i] ≤ 100</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">Given [3, 1, 5, 8]</span><br><span class="line"></span><br><span class="line">Return 167</span><br><span class="line"></span><br><span class="line">nums = [3,1,5,8] --&gt; [3,5,8] --&gt;   [3,8]   --&gt;  [8]  --&gt; []</span><br><span class="line">coins =  3*1*5      +  3*5*8    +  1*3*8      + 1*8*1   = 167</span><br></pre></td></tr></table></figure>
+<p>这里讲了一个炸气球小游戏的规则。当我们选中一个气球并炸掉它后，会得到该气球以及其相邻两个气球的分数的乘积，并加入我们的积分。<br>之后该气球将消失，从而其左右两个气球成为相邻的气球。问如何选择气球才能使得积分数最高。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/04/leetcode312/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode321/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode321/" class="post-title-link" itemprop="url">leetcode321.Create Maximum Number</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 01:47:55 / 修改时间：01:50:03" itemprop="dateCreated datePublished" datetime="2019-02-04T01:47:55+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Given two arrays of length m and n with digits 0-9 representing two numbers. Create the maximum number of length k &lt;= m + n from digits of the two. The relative order of the digits from the same array must be preserved. Return an array of the k digits. You should try to optimize your time and space complexity.</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line">nums1 = [3, 4, 6, 5]</span><br><span class="line">nums2 = [9, 1, 2, 5, 8, 3]</span><br><span class="line">k = 5</span><br><span class="line">return [9, 8, 6, 5, 3]</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">nums1 = [6, 7]</span><br><span class="line">nums2 = [6, 0, 4]</span><br><span class="line">k = 5</span><br><span class="line">return [6, 7, 6, 0, 4]</span><br><span class="line"></span><br><span class="line">Example 3:</span><br><span class="line">nums1 = [3, 9]</span><br><span class="line">nums2 = [8, 9]</span><br><span class="line">k = 3</span><br><span class="line">return [9, 8, 9]</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/04/leetcode321/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
 
     
 
@@ -1744,7 +2066,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1789,7 +2111,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-count">62</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1875,7 +2197,27 @@
                     
                       
                     
-                    <span class="site-state-item-count">26</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

@@ -110,7 +110,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/跨域异常.png">
 <meta property="og:image" content="http://yoursite.com/2019/02/02/跨域问题的一次深入研究/简单请求.png">
 <meta property="og:image" content="http://yoursite.com/images/扫码_搜索联合传播样式-微信标准绿版.png">
-<meta property="og:updated_time" content="2019-02-02T16:44:54.168Z">
+<meta property="og:updated_time" content="2019-02-04T12:19:34.647Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跨域问题的一次深入研究">
 <meta name="twitter:description" content="前言最近在业务代码中深受跨域问题困扰，因此特别写一篇博客来记录一下自己对跨域的理解以及使用到的参考资料。本文的项目背景基于vue+vuex+axios+springboot。涉及以下内容：  何为跨域 HTTP跨域的请求究竟长啥样，里面的参数分别代表什么意思 SpringBoot配置跨域请求  如果对跨域有所了解的盆友可以直接跳到SpringBoot配置部分查看具体配置，或者是参考文章末尾Spri">
@@ -394,7 +394,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-02-03 00:44:54" itemprop="dateModified" datetime="2019-02-03T00:44:54+08:00">2019-02-03</time>
+                <time title="修改时间：2019-02-04 20:19:34" itemprop="dateModified" datetime="2019-02-04T20:19:34+08:00">2019-02-04</time>
               
             
           </span>
@@ -465,7 +465,6 @@
 <p>An origin is defined by the scheme, host, and port of a URL. Generally speaking, documents retrieved from distinct origins are isolated from each other. For example, if a document retrieved from <a href="http://example.com/doc.html" target="_blank" rel="noopener">http://example.com/doc.html</a> tries to access the DOM of a document retrieved from <a href="https://example.com/target.html" target="_blank" rel="noopener">https://example.com/target.html</a>, the user agent will disallow access because the origin of the first document, (http, example.com, 80), does not match the origin of the second document (https, example.com, 443).</p>
 </blockquote>
 <p>总而言之，同源就是指拥有同样的schema，主机和端口号的URL，不满足以上三点的任何一点都代表着这两个URL非同源，它们之间的相互访问就会产生跨域问题。</p>
-<!-- more -->
 <p>这里再借用MDN上的URL是否同源的例子：</p>
 <img src="/2019/02/02/跨域问题的一次深入研究/1843570511-5b066b804bca1_articlex.png" title="跨域图片">
 <p>而在HTTP访问中，又有了些许的变化。比如我们通常会从CDN上获取CSS，JS等静态资源，而这些静态资源的域名和当前的域并不同源，但是HTTP允许这样的跨域访问。因此，我们可以将HTTP上的跨域分为三类：</p>
@@ -637,7 +636,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-count">62</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -723,7 +722,27 @@
                     
                       
                     
-                    <span class="site-state-item-count">26</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
