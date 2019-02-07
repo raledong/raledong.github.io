@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="过去几年容器逐渐成为了打包和部署代码的流行的方式。容器镜像解决很多现有的打包和部署工具所带来的问题，初次以外，还为我们提供了构建分布式应用的全新的思路。就如SOA提倡将应用拆分为模块化的内聚的服务，容器应当进一步提倡将这些服务拆分为紧密协作的模块化容器。通过构建应用边界，容器使用户能够使用模块化，可重用的组件构建其服务，从而使得服务比单机容器构建的应用程序更可靠，更具可扩展性并且构建速度更快。 从">
+<meta name="keywords" content="java,翻译,分布式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：分布式系统Toolkit模式">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="过去几年容器逐渐成为了打包和部署代码的流行的方式。容器镜像解决很多现有的打包和部署工具所带来的问题，初次以外，还为我们提供了构建分布式应用的全新的思路。就如SOA提倡将应用拆分为模块化的内聚的服务，容器应当进一步提倡将这些服务拆分为紧密协作的模块化容器。通过构建应用边界，容器使用户能够使用模块化，可重用的组件构建其服务，从而使得服务比单机容器构建的应用程序更可靠，更具可扩展性并且构建速度更快。 从">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/图片1.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/图片2.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/图片3.png">
+<meta property="og:updated_time" content="2019-02-04T18:55:37.969Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：分布式系统Toolkit模式">
+<meta name="twitter:description" content="过去几年容器逐渐成为了打包和部署代码的流行的方式。容器镜像解决很多现有的打包和部署工具所带来的问题，初次以外，还为我们提供了构建分布式应用的全新的思路。就如SOA提倡将应用拆分为模块化的内聚的服务，容器应当进一步提倡将这些服务拆分为紧密协作的模块化容器。通过构建应用边界，容器使用户能够使用模块化，可重用的组件构建其服务，从而使得服务比单机容器构建的应用程序更可靠，更具可扩展性并且构建速度更快。 从">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：分布式系统Toolkit模式 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：分布式系统Toolkit模式
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 02:52:45 / 修改时间：02:55:37" itemprop="dateCreated datePublished" datetime="2019-02-05T02:52:45+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>过去几年容器逐渐成为了打包和部署代码的流行的方式。容器镜像解决很多现有的打包和部署工具所带来的问题，初次以外，还为我们提供了构建分布式应用的全新的思路。就如SOA提倡将应用拆分为模块化的内聚的服务，容器应当进一步提倡将这些服务拆分为紧密协作的模块化容器。通过构建应用边界，容器使用户能够使用模块化，可重用的组件构建其服务，从而使得服务比单机容器构建的应用程序更可靠，更具可扩展性并且构建速度更快。</p>
+<p>从VM向容器的演变从各种角度来说就如同当年从单机应用转化为模块化的面向对象的应用程序。容器镜像提供的抽象层与面向对象编程中类的抽象边界有很大的共同点，而且也提高了开发者的效率和程序的质量。就像正确的编码方式是将关注点分离为模块化对象一样，在容器中打包应用程序的正确方法是将关注点分离为模块化容器。根本上来说，这意味着不仅要将整个应用程序分解，而且要将任何一个服务器中的各个部分分解为多个模块化容器，这些容器易于参数化和重复使用。这就像现代语言中的标准语言库，大多数应用程序开发人员可以将由其他人编写的模块化容器组合在一起，并使用更高质量的组件更快地构建应用程序。</p>
+<p>从模块化容器方面进行思考的好处很多，特别是模块化容器提供以下内容：<br><a id="more"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加快应用的开发，因为容器可以在团队甚至是大型社区之间进行复用</span><br><span class="line"></span><br><span class="line">支持敏捷团队，因为容器边界是一个天然的边界，划分给各个团队。</span><br><span class="line"></span><br><span class="line">支持关注点分离，并专注于开发特定功能从而减少复杂的依赖和不可测试组件。</span><br></pre></td></tr></table></figure>
+<p>从模块化容器构建应用程序意味着考虑协作提供服务容器的共生组，而不是一个容器提供一个服务。在Kubernetes中，这种模块化容器服务的实施者是Pod。一个Pod是指一组共享文件系统，内核命名空间和IP地址的一组容器。Pod在K8s集群中是调度的基本单位，正是因为Pod中容器的共生特性要求它们共同安排在同一台机器上，而可靠地实现这一点的唯一方法是将容器组作为原子调度单元。</p>
+<p>当你从Pod的角度思考时，自然会出现一些模块化应用程序开发的通用模式，这些模式会多次重复出现。我相信，随着我们在Kubernetes的开发中向前发展，将会发现更多这些模式，但这里有三个我们常见的模式：</p>
+<h2 id="例子1：Sidecar容器"><a href="#例子1：Sidecar容器" class="headerlink" title="例子1：Sidecar容器"></a>例子1：Sidecar容器</h2><p>Sidecar容器拓展并且加强主容器，他们融合当前已有的容器并且将它们完善。举个例子，假设有一个运行这Nginx web应用的容器。添加另一个容器将文件系统与git仓库同步，在容器间共享文件系统，从而实现git的提交并部署。但是这种模块化实现使得git同步器可以交给另一个容器开发，并且跨不同的web服务器复用。因为这种模块化，你只需要编写并测试单个git同步应用并且提供给多个应用使用。而如果有别的团队开发了这个工具，你甚至不需要重复开发。</p>
+<img src="/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/图片1.png" title="图片1">
+<h2 id="例子2：Ambassador容器"><a href="#例子2：Ambassador容器" class="headerlink" title="例子2：Ambassador容器"></a>例子2：Ambassador容器</h2><p>Ambassador容器代理外界至本地的连接。比如，现在有一个Redis集群，包含多个读者和单个写者。 你可以创建一个Pod，包含主应用和Redis ambassador容器。ambassador容器作为代理分离读写请求分别交给对应的服务器。因为这两个容器共享一个网络命名空间，即他们共享一个IP地址，因此主应用可以用localhost访问ambassador服务，无需通过服务发现。从主应用的视角来看，就仿佛在localhost上连接了redis集群。这种方式非常方便，不仅因为不同的团队可以管理自己的组件，而且因为在开发环境中，你可以跳过代理，直接连接到Redis集群上。</p>
+<img src="/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/图片2.png" title="图片2">
+<img src="/2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/图片3.png" title="图片3">
+<h2 id="例子3：Adapter容器"><a href="#例子3：Adapter容器" class="headerlink" title="例子3：Adapter容器"></a>例子3：Adapter容器</h2><p>Adapter容器标准化输入输出。假设现在需要监控N个应用，每个应用可能使用了不同的方法来输出监控数据（比如JMX, StatsD等）。但是每个监控系统都希望用一个一致的数据模型来管理收集的数据。通过使用Adapter模式来组合容器，你可以创建一个pod将应用容器和适配器容器组合起来，从而将同质的监控数据转化为单个同一个的表现形式。同样的，因为这些Pod共享命名空间和文件系统，这两个容器间的协作简单明。</p>
+<h2 id="Refrence"><a href="#Refrence" class="headerlink" title="Refrence"></a>Refrence</h2><p><a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/sidecar" target="_blank" rel="noopener">Sidecar Pattern</a><br><a href="https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/" target="_blank" rel="noopener">Ambassador Pattern</a></p>
+<blockquote>
+<p>原文链接: <a href="https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/" target="_blank" rel="noopener">https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/</a> </p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/05/REST服务异常处理/" rel="next" title="REST服务异常处理">
+                <i class="fa fa-chevron-left"></i> REST服务异常处理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/05/猫头鹰的深夜翻译：微服务概述/" rel="prev" title="猫头鹰的深夜翻译：微服务概述">
+                猫头鹰的深夜翻译：微服务概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#例子1：Sidecar容器"><span class="nav-number">1.</span> <span class="nav-text">例子1：Sidecar容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子2：Ambassador容器"><span class="nav-number">2.</span> <span class="nav-text">例子2：Ambassador容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子3：Adapter容器"><span class="nav-number">3.</span> <span class="nav-text">例子3：Adapter容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refrence"><span class="nav-number">4.</span> <span class="nav-text">Refrence</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

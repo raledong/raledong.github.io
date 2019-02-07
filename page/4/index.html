@@ -327,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode40/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/AbstractRegistry源码阅读/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -347,7 +347,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/05/leetcode40/" class="post-title-link" itemprop="url">leetcode40.Combination Sum II</a>
+                <a href="/2019/02/05/AbstractRegistry源码阅读/" class="post-title-link" itemprop="url">Dubbo AbstractRegistry源码阅读</a>
               
             
           </h1>
@@ -372,7 +372,7 @@
                 
               
 
-              <time title="创建时间：2019-02-05 01:39:40 / 修改时间：01:40:40" itemprop="dateCreated datePublished" datetime="2019-02-05T01:39:40+08:00">2019-02-05</time>
+              <time title="创建时间：2019-02-05 03:54:44 / 修改时间：03:57:42" itemprop="dateCreated datePublished" datetime="2019-02-05T03:54:44+08:00">2019-02-05</time>
             
 
             
@@ -394,14 +394,193 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
 
                 
                 
                   ，
                 
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近因为工作需要在学习Dubbo的各种机制。其中深入学习了一下AbstractRegistry的实现机制。在此根据Dubbo源码对其实现进行一个总结。</p>
+<h2 id="Registry是干啥的"><a href="#Registry是干啥的" class="headerlink" title="Registry是干啥的"></a>Registry是干啥的</h2><img src="/2019/02/05/AbstractRegistry源码阅读/图片1.png" title="图片1">
+<p>首先看一下dubbo最简单的架构图。架构图中一共有五个元素，而Registry类就是对注册中心的抽象。<code>AbstractRegistry</code>是对注册中心的一个抽象的实现。</p>
+<img src="/2019/02/05/AbstractRegistry源码阅读/图片1.png" title="图片1">
+<p>可以看到它主要实现了<code>RegistryService</code>和<code>Node</code>接口。这两个接口分别定义了节点属性如Url地址，是否可用，以及注册中心服务的属性如注册，注销，订阅，通知等等。</p>
+<p>当服务启动时，会调用注册中心的<code>register</code>方法将自己的服务通过URL的方式发布到注册中心，而订阅其它服务时，会将订阅的服务通过URL发送给注册中心（URL中通常包含各种配置）。当服务需要优雅关闭时，会将自己从注册中心上解除注册。当服务出现变更时，会调用notify方法触发所有的监听器。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/05/AbstractRegistry源码阅读/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/固定窗口和滑动窗口算法了解一下/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/05/固定窗口和滑动窗口算法了解一下/" class="post-title-link" itemprop="url">固定窗口和滑动窗口算法了解一下</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 03:46:33 / 修改时间：03:49:17" itemprop="dateCreated datePublished" datetime="2019-02-05T03:46:33+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
 
                 
                 
@@ -439,11 +618,32 @@
         
           
             <a id="more"></a>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>思路和leetcode39 combination sum 非常类似，只是这里需要增加进行重复处理的部分。请参考我对leetcode39进行解答的<a href="https://segmentfault.com/a/1190000009322706" target="_blank" rel="noopener">这篇博客</a>。</p>
-<h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.</span><br><span class="line"></span><br><span class="line">Each number in C may only be used once in the combination.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">All numbers (including target) will be positive integers.</span><br><span class="line">The solution set must not contain duplicate combinations.</span><br><span class="line">For example, given candidate set [10, 1, 2, 7, 6, 1, 5] and target 8, </span><br><span class="line">A solution set is: </span><br><span class="line">[</span><br><span class="line">  [1, 7],</span><br><span class="line">  [1, 2, 5],</span><br><span class="line">  [2, 6],</span><br><span class="line">  [1, 1, 6]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p> 题目中新添的要求包括数组中存在重复值，而且数组中每个值只可以使用一次。</p>
-<h2 id="思路与代码"><a href="#思路与代码" class="headerlink" title="思路与代码"></a>思路与代码</h2><p>这题与leetcode39的思路基本相同，利用递归的方法记录前一次情况作为下一次的初始情况。需要注意的是，既然数组中存在重复的值，就要注意可能会将重复的情况加入结果数组。<br>例如，如果数组为[2,2,2,6],目标值为8，可能会在结果数组中出现多次[2,6]<br>同样的，在进行递归的子遍历的时候也要注意，可能会出现重复值，例如数组为[2,2,2,6],目标值为10，则结果集[2,2,6]也可能出现多次，所以在子遍历中也要记得去除重复情况。<br><strong>代码如下</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CombinationSum2_40</span> </span>&#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; combinationSum2(<span class="keyword">int</span>[] candidates, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        Arrays.sort(candidates);</span><br><span class="line">        <span class="keyword">int</span> length = candidates.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i&lt;length ; i++)&#123;</span><br><span class="line">            <span class="comment">//去除外围重复情况</span></span><br><span class="line">            <span class="keyword">if</span>(i&gt;<span class="number">0</span> &amp;&amp; candidates[i] == candidates[i-<span class="number">1</span>])&#123;<span class="keyword">continue</span>;&#125;</span><br><span class="line">            <span class="keyword">if</span>(candidates[i] == target)&#123;</span><br><span class="line">                result.add(Arrays.asList(candidates[i]));</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                List&lt;Integer&gt; temp = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">                temp.add(candidates[i]);</span><br><span class="line">                combinationSum2(candidates, target-candidates[i], i+<span class="number">1</span>, temp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">combinationSum2</span><span class="params">(<span class="keyword">int</span>[] candidates, <span class="keyword">int</span> target, <span class="keyword">int</span> startAt, List&lt;Integer&gt; currentList)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = startAt ; i&lt;candidates.length ; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(candidates[i] == target)&#123;</span><br><span class="line">                currentList.add(candidates[i]);</span><br><span class="line">                result.add(currentList);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(candidates[i] &gt; target)&#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(candidates[i] &lt; target)&#123;</span><br><span class="line">                List&lt;Integer&gt; temp = <span class="keyword">new</span> ArrayList&lt;Integer&gt;(currentList);</span><br><span class="line">                temp.add(candidates[i]);</span><br><span class="line">                combinationSum2(candidates, target-candidates[i], i+<span class="number">1</span>, temp);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//去除自遍历中的重复情况</span></span><br><span class="line">            <span class="keyword">while</span>(i&lt;candidates.length-<span class="number">1</span> &amp;&amp; candidates[i] == candidates[i+<span class="number">1</span>])&#123;i++;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在参与一个识别热点数据的需求开发。其中涉及了限流算法相关的内容。所以这里记录一下自己了解的各种限流算法，以及各个限流算法的实现。</p>
+<p>限流算法的应用场景非常广泛，比如通过限流来确保下游配置较差的应用不会被上游应用的大量请求击穿，无论是HTTP请求还是RPC请求，从而使得服务保持稳定。限流也同样可以用于客户端，比如当我们需要从微博上爬取数据时，我们需要在请求中携带token从而通过微博的网关验证。但是微博为了防止服务被单个客户端大量访问，往往会在服务端进行限流，比如可能是一个token一个小时只能发起1000次请求。但是爬虫发出的请求通常远远不止这个量级。所以在客户端进行限流可以确保我们的token不会失效或是查封。</p>
+<p>限流算法可以从多种角度分类，比如按照处理方式分为两种，一种是在超出限定流量之后会拒绝多余的访问，另一种是超出限定流量之后，只是报警或者是记录日志，访问仍然正常进行。</p>
+<p>目前比较常见的限流算法有以下几种：</p>
+<ul>
+<li>固定窗口</li>
+<li>滑动窗口</li>
+<li>令牌桶算法</li>
+<li>漏桶算法</li>
+</ul>
+<p>本文主要记录一下固定窗口和滑动窗口。令牌桶算法在谷歌的开源guava包中有实现，下次再开一篇文章分享一下。文中错误的地方欢迎指出！如果guava中实现了滑动窗口算法也请告诉我，急需，目前没有找到orz。</p>
+<h2 id="固定窗口"><a href="#固定窗口" class="headerlink" title="固定窗口"></a>固定窗口</h2><p>这是限流算法中最暴力的一种想法。既然我们希望某个API在一分钟内只能固定被访问N次（可能是出于安全考虑，也可能是出于服务器资源的考虑），那么我们就可以直接统计这一分钟开始对API的访问次数，如果访问次数超过了限定值，则抛弃后续的访问。直到下一分钟开始，再开放对API的访问。</p>
+<p>所有的暴力算法的共同点都是容易实现，而固定窗口限流的缺点也同样很明显。假设现在有一个恶意用户在上一分钟的最后一秒和下一分钟的第一秒疯狂的冲击API。按照固定窗口的限流规则，这些请求都能够访问成功，但是在这一秒内，服务将承受超过规定值的访问冲击（这个规定值很可能是服务器能够承受的最大负载），从而导致服务无法稳定提供。而且因为用户在这一秒内耗光了上一分钟和下一分钟的访问定额，从而导致别的用户无法享受正常的服务，对于服务提供方来说是完全不能接收的。</p>
+<p>这里自己做了一个简单的实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ScheduledExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FixedWindowRateLimiter</span> <span class="keyword">implements</span> <span class="title">RateLimiter</span>, <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_ALLOWED_VISIT_PER_SECOND = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> maxVisitPerSecond;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicInteger count;</span><br><span class="line"></span><br><span class="line">    FixedWindowRateLimiter()&#123;</span><br><span class="line">        <span class="keyword">this</span>.maxVisitPerSecond = DEFAULT_ALLOWED_VISIT_PER_SECOND;</span><br><span class="line">        <span class="keyword">this</span>.count = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FixedWindowRateLimiter(<span class="keyword">int</span> maxVisitPerSecond) &#123;</span><br><span class="line">        <span class="keyword">this</span>.maxVisitPerSecond = maxVisitPerSecond;</span><br><span class="line">        <span class="keyword">this</span>.count = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOverLimit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentQPS() &gt; maxVisitPerSecond;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">currentQPS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">visit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        count.incrementAndGet();</span><br><span class="line">        System.out.print(isOverLimit());</span><br><span class="line">        <span class="keyword">return</span> isOverLimit();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.currentQPS());</span><br><span class="line">        count.set(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();</span><br><span class="line">        FixedWindowRateLimiter rateLimiter = <span class="keyword">new</span> FixedWindowRateLimiter();</span><br><span class="line">        scheduledExecutorService.scheduleAtFixedRate(rateLimiter, <span class="number">0</span>, <span class="number">1</span>, TimeUnit.SECONDS);</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">                    rateLimiter.visit();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">                    rateLimiter.visit();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中RateLimiter是一个通用的接口，后面的其它限流算法也会实现该接口:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RateLimiter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isOverLimit</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">currentQPS</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">visit</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也可以不使用多线程的方式实现，更加简单高效：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FixedWindowRateLimiterWithoutMultiThread</span> <span class="keyword">implements</span> <span class="title">RateLimiter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Long lastVisitAt = System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_ALLOWED_VISIT_PER_SECOND = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> maxVisitPerSecond;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicInteger count;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FixedWindowRateLimiterWithoutMultiThread</span><span class="params">(<span class="keyword">int</span> maxVisitPerSecond)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.maxVisitPerSecond = maxVisitPerSecond;</span><br><span class="line">        <span class="keyword">this</span>.count = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FixedWindowRateLimiterWithoutMultiThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(DEFAULT_ALLOWED_VISIT_PER_SECOND);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOverLimit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count.get() &gt; maxVisitPerSecond;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">currentQPS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">visit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> now = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">synchronized</span> (lastVisitAt) &#123;</span><br><span class="line">            <span class="keyword">if</span> (now - lastVisitAt &gt; <span class="number">1000</span>) &#123;</span><br><span class="line">                lastVisitAt = now;</span><br><span class="line">                System.out.println(currentQPS());</span><br><span class="line">                count.set(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        count.incrementAndGet();</span><br><span class="line">        <span class="keyword">return</span> isOverLimit();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        RateLimiter rateLimiter = <span class="keyword">new</span> FixedWindowRateLimiterWithoutMultiThread();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">                    rateLimiter.visit();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">                    rateLimiter.visit();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h2><p>固定窗口就像是滑动窗口的一个特例。滑动窗口将固定窗口再等分为多个小的窗口，每一次对一个小的窗口进行流量控制。这种方法可以很好的解决之前的临界问题。</p>
+<img src="/2019/02/05/固定窗口和滑动窗口算法了解一下/图片1.png" title="图片1">
+<p>这里找的网上一个图，假设我们将1s划分为4个窗口，则每个窗口对应250ms。假设恶意用户还是在上一秒的最后一刻和下一秒的第一刻冲击服务，按照滑动窗口的原理，此时统计上一秒的最后750毫秒和下一秒的前250毫秒，这种方式能够判断出用户的访问依旧超过了1s的访问数量，因此依然会阻拦用户的访问。</p>
+<p>使用定时任务实现的滑动窗口代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SlidingWindowRateLimiter</span> <span class="keyword">implements</span> <span class="title">RateLimiter</span>, <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> maxVisitPerSecond;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_BLOCK = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> block;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicLong[] countPerBlock;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicLong count;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">int</span> index;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SlidingWindowRateLimiter</span><span class="params">(<span class="keyword">int</span> block, <span class="keyword">long</span> maxVisitPerSecond)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.block = block;</span><br><span class="line">        <span class="keyword">this</span>.maxVisitPerSecond = maxVisitPerSecond;</span><br><span class="line">        countPerBlock = <span class="keyword">new</span> AtomicLong[block];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i&lt; block ; i++) &#123;</span><br><span class="line">            countPerBlock[i] = <span class="keyword">new</span> AtomicLong();</span><br><span class="line">        &#125;</span><br><span class="line">        count = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SlidingWindowRateLimiter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(DEFAULT_BLOCK, DEFAULT_ALLOWED_VISIT_PER_SECOND);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOverLimit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentQPS() &gt; maxVisitPerSecond;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">currentQPS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">visit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        countPerBlock[index].incrementAndGet();</span><br><span class="line">        count.incrementAndGet();</span><br><span class="line">        <span class="keyword">return</span> isOverLimit();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(isOverLimit());</span><br><span class="line">        System.out.println(currentQPS());</span><br><span class="line">        System.out.println(<span class="string">"index:"</span> + index);</span><br><span class="line">        index = (index + <span class="number">1</span>) % block;</span><br><span class="line">        <span class="keyword">long</span> val = countPerBlock[index].getAndSet(<span class="number">0</span>);</span><br><span class="line">        count.addAndGet(-val);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SlidingWindowRateLimiter slidingWindowRateLimiter = <span class="keyword">new</span> SlidingWindowRateLimiter(<span class="number">10</span>, <span class="number">1000</span>);</span><br><span class="line">        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();</span><br><span class="line">        scheduledExecutorService.scheduleAtFixedRate(slidingWindowRateLimiter, <span class="number">100</span>, <span class="number">100</span>, TimeUnit.MILLISECONDS);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                    slidingWindowRateLimiter.visit();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">10</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                    slidingWindowRateLimiter.visit();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">10</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><blockquote>
+<p><a href="http://tech.domain.com.au/2017/11/protect-your-api-resources-with-rate-limiting/" target="_blank" rel="noopener">Protect Your API Resources with Rate Limiting</a></p>
+</blockquote>
+<blockquote>
+<p>项目地址：<br>项目仓库地址</p>
+</blockquote>
 
           
         
@@ -500,7 +700,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode48/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -520,7 +720,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/05/leetcode48/" class="post-title-link" itemprop="url">leetcode48.Rotate Image</a>
+                <a href="/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：持久化容器存储</a>
               
             
           </h1>
@@ -545,7 +745,7 @@
                 
               
 
-              <time title="创建时间：2019-02-05 01:37:36 / 修改时间：01:39:05" itemprop="dateCreated datePublished" datetime="2019-02-05T01:37:36+08:00">2019-02-05</time>
+              <time title="创建时间：2019-02-05 03:44:49 / 修改时间：03:45:25" itemprop="dateCreated datePublished" datetime="2019-02-05T03:44:49+08:00">2019-02-05</time>
             
 
             
@@ -567,14 +767,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
 
                 
                 
@@ -610,554 +803,19 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">You are given an n x n 2D matrix representing an image.</span><br><span class="line"></span><br><span class="line">Rotate the image by 90 degrees (clockwise).</span><br><span class="line"></span><br><span class="line">Follow up:</span><br><span class="line">Could you do this in-place?</span><br></pre></td></tr></table></figure>
-<p>也就是在不创造一个新的数组的情况下，将一个二维数组中的元素顺时针旋转90度<br>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>临时性存储是容器的一个很大的买点。“根据一个镜像启动容器，随意变更，然后停止变更重启一个容器。你看，一个全新的文件系统又诞生了。”</p>
+<p>在docker的语境下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># docker run -it centos</span><br><span class="line">[root@d42876f95c6a /]# echo &quot;Hello world&quot; &gt; /hello-file</span><br><span class="line">[root@d42876f95c6a /]# exit</span><br><span class="line">exit</span><br><span class="line"># docker run -it centos</span><br><span class="line">[root@a0a93816fcfe /]# cat /hello-file</span><br><span class="line">cat: /hello-file: No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>当我们围绕容器构建应用程序时，这个临时性存储非常有用。它便于水平扩展：我们只是从同一个镜像创建多个容器实例，每个实例都有自己独立的文件系统。它也易于升级：我们只是创建了一个新版本的映像，我们不必担心从现有容器实例中保留任何内容。它可以轻松地从单个系统移动到群集，或从内部部署移动到云：我们只需要确保集群或云可以访问registry中的镜像。而且它易于恢复：无论我们的程序崩溃对文件系统造成了什么损坏，我们只需要从镜像重新启动一个容器实例，之后就像从未发生过故障一样。</p>
+<p>因此，我们希望容器引擎依然提供临时存储。但是从教程示例转换到实际应用程序时，我们确实会遇到问题。真实的应用必修在某个地方存储数据。通常，我们将状态保存到某个数据存储中（SQL或是NOSQL）。这也引来了同样的问题。数据存储也是位于容器中吗？理想情况下，答案是肯定的，这样我们可以利用和应用层相同的滚动升级，冗余和故障转移机制。但是，要在容器中运行我们的数据存储，我们再也不能满足于临时存储。容器实例需要能够访问持久存储。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode48/#more" rel="contents">
+              <a class="btn" href="/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
           
           <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode49/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/05/leetcode49/" class="post-title-link" itemprop="url">leetcode49.Group Anagrams</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-05 01:35:17 / 修改时间：01:36:20" itemprop="dateCreated datePublished" datetime="2019-02-05T01:35:17+08:00">2019-02-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Given an array of strings, group anagrams together.</span><br><span class="line"></span><br><span class="line">For example, given: [&quot;eat&quot;, &quot;tea&quot;, &quot;tan&quot;, &quot;ate&quot;, &quot;nat&quot;, &quot;bat&quot;], </span><br><span class="line">Return:</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  [&quot;ate&quot;, &quot;eat&quot;,&quot;tea&quot;],</span><br><span class="line">  [&quot;nat&quot;,&quot;tan&quot;],</span><br><span class="line">  [&quot;bat&quot;]</span><br><span class="line">]</span><br><span class="line">Note: All inputs will be in lower-case.</span><br></pre></td></tr></table></figure>
-<p>将含有相同的字母但是排序可能不同的单词分类至不同的数组<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode49/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode46/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/05/leetcode46/" class="post-title-link" itemprop="url">leetcode46.Permutation</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-05 01:33:31 / 修改时间：01:34:46" itemprop="dateCreated datePublished" datetime="2019-02-05T01:33:31+08:00">2019-02-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Given a collection of distinct numbers, return all possible permutations.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">[1,2,3] have the following permutations:</span><br><span class="line">[</span><br><span class="line">  [1,2,3],</span><br><span class="line">  [1,3,2],</span><br><span class="line">  [2,1,3],</span><br><span class="line">  [2,3,1],</span><br><span class="line">  [3,1,2],</span><br><span class="line">  [3,2,1]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>也就是得出所有可能的排列组合结果<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode46/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode31/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/05/leetcode31/" class="post-title-link" itemprop="url">leetcode31.Next Permutation</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-05 01:31:44 / 修改时间：01:33:15" itemprop="dateCreated datePublished" datetime="2019-02-05T01:31:44+08:00">2019-02-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <a id="more"></a>
-<h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><pre><code>Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
-
-If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
-
-The replacement must be in-place, do not allocate extra memory.
-
-Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
-1,2,3 → 1,3,2
-3,2,1 → 1,2,3
-1,1,5 → 1,5,1
-</code></pre><p>翻译过来就是说，输入一个整数数组，该整数数组按照下标顺序代表一个数字，例如[1,2,3]代表整数123，要求改变数组中元素的顺序，找到比当前数字大的生成数中的最小值。如果当前数字代表的整数值已经是所有排列组合中的最大值，则返回当前数字组成的最小值。</p>
-<h2 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h2><p>如何才能找到一个值，不是过大也不是过小呢？其实，找到这几个数字所有排列组合的可能性，然后再和当前数字一一进行比较其实也是一个思路。可是这意味着大量无用的数字的生成和比较。想要知道如何生成所有排列组合结果，可以参考我的<a href="https://segmentfault.com/a/1190000009435594" target="_blank" rel="noopener">这篇博客</a><br>换句话说，我们要尽量用最少的比较的到最小的结果。一个数字中的各个位上的数如何调整顺序才能获得一个最小的更大值。首先，可以将低位移到高位，只要低位的数字比高位上的数字大。但是，为了确保的到尽可能小的最大值，一定要将移动的位确保越小越好。其次，要保证移动之后，高位以后的值为最小值。<br><strong>综上所述，思路如下</strong>：</p>
-<ol>
-<li>由最低位（下表为nums.length-2)开始，由低往高遍历，找到可以进行替换的最小位。</li>
-<li>可以替换的条件是，比当前位低的位上存在一个数，该数比当前位上的值大，且不存在另一个比该值小且比当前位上值大的数</li>
-<li>替换数值后，该进行替换的位后序的位上的值应当保证为最小值。<br>例如[1，3，2]，将百位上的值和个位上的值替换以后，还要保证百位以后的值为最小值，所以最后的结果为[2,1,3]</li>
-</ol>
-<p>实现代码如下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nextPermutation</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = nums.length - <span class="number">2</span> ; i&gt;=<span class="number">0</span> ; i--)&#123;</span><br><span class="line">        <span class="comment">//寻找可以替换的最低位</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span> ; j&lt;nums.length ; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i]&lt;nums[j])&#123;</span><br><span class="line">                <span class="keyword">int</span> temp = nums[i];</span><br><span class="line">                nums[i] = nums[j];</span><br><span class="line">                nums[j] = temp;</span><br><span class="line">                <span class="comment">//确保替换位的后续位的值最小</span></span><br><span class="line">                Arrays.sort(nums, i+<span class="number">1</span>, nums.length);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//若当前位不可替换，则自当前位开始排序，以保证下一位可以在不进行完整遍历的前提下找到最小的更大值</span></span><br><span class="line">        Arrays.sort(nums,i,nums.length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
         
       
     </div>
@@ -1212,7 +870,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode47/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：如何优化MYSQL查询/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1232,7 +890,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/05/leetcode47/" class="post-title-link" itemprop="url">leetcode47.Permutations II</a>
+                <a href="/2019/02/05/猫头鹰的深夜翻译：如何优化MYSQL查询/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：如何优化MYSQL查询</a>
               
             
           </h1>
@@ -1257,7 +915,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 
               
 
-              <time title="创建时间：2019-02-05 01:30:32 / 修改时间：01:31:27" itemprop="dateCreated datePublished" datetime="2019-02-05T01:30:32+08:00">2019-02-05</time>
+              <time title="创建时间：2019-02-05 03:42:35 / 修改时间：03:44:07" itemprop="dateCreated datePublished" datetime="2019-02-05T03:42:35+08:00">2019-02-05</time>
             
 
             
@@ -1279,14 +937,14 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
 
                 
                 
                   ，
                 
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
 
                 
                 
@@ -1322,12 +980,21 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Given a collection of numbers that might contain duplicates, return all possible unique permutations.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">[1,1,2] have the following unique permutations:</span><br><span class="line">[</span><br><span class="line">  [1,1,2],</span><br><span class="line">  [1,2,1],</span><br><span class="line">  [2,1,1]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>对于其基础题PermutationsI请参考我的<a href="https://segmentfault.com/a/1190000009435594" target="_blank" rel="noopener">另一篇博客</a><br>这里添加的难度在于，排列组合的数字中可能存在重复。这就需要想方法，将结果集中重复的结果删去。而这里，我参考了另一名答题者的答案，<strong>在试图将数字添入结果集中时，就判断会不会产生重复的结果</strong>，从而使避免重复。<br>
+          <h2 id="1-在所有用于where-order-by和group-by的列上添加索引"><a href="#1-在所有用于where-order-by和group-by的列上添加索引" class="headerlink" title="1. 在所有用于where,order by和group by的列上添加索引"></a>1. 在所有用于<code>where</code>,<code>order by</code>和<code>group by</code>的列上添加索引</h2><p>索引除了能够确保唯一的标记一条记录，还能是MySQL服务器更快的从数据库中获取结果。索引在排序中的作用也非常大。</p>
+<p>Mysql的索引可能会占据额外的空间，并且会一定程度上降低插入，删除和更新的性能。但是，如果你的表格有超过10行数据，那么索引就能极大的降低查找的执行时间。</p>
+<p>强烈建议使用“最坏情况的数据样本”来测试MySql查询，从而更清晰的了解查询在生产中的行为方式。</p>
+<p>假设你正在一个超过500行的数据库表中执行如下的查询语句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;select customer_id, customer_name from customers where customer_id=&apos;345546&apos;</span><br></pre></td></tr></table></figure></p>
+<p>上述查询会迫使Mysql服务器执行一个全表扫描来获得所查找的数据。</p>
+<p>型号，Mysql提供了一个特别的<code>Explain</code>语句，用来分析你的查询语句的性能。当你将查询语句添加到该关键词后面时，MySql会显示优化器对该语句的所有信息。</p>
+<p>如果我们用explain语句分析一下上面的查询，会得到如下的分析结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select customer_id, customer_name from customers where customer_id=&apos;140385&apos;;</span><br><span class="line">+----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+-------------+</span><br><span class="line">| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |</span><br><span class="line">+----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+-------------+</span><br><span class="line">|  1 | SIMPLE      | customers | NULL       | ALL  | NULL          | NULL | NULL    | NULL |  500 |    10.00 | Using where |</span><br><span class="line">+----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+-------------+</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，优化器展示出了非常重要的信息，这些信息可以帮助我们微调数据库表。首先，MySql会执行一个全表扫描，因为key列为Null。其次，MySql服务器已经明确表示它将要扫描500行的数据来完成这次查询。</p>
+<p>为了优化上述查询，我们只需要在<code>customer_id</code>这一列上添加一个索引m即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; Create index customer_id ON customers (customer_Id);</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure></p>
+<p>如果我们再次执行explain语句，会得到如下结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; Explain select customer_id, customer_name from customers where customer_id=&apos;140385&apos;;</span><br><span class="line">+----+-------------+-----------+------------+------+---------------+-------------+---------+-------+------+----------+-------+</span><br><span class="line">| id | select_type | table     | partitions | type | possible_keys | key         | key_len | ref   | rows | filtered | Extra |</span><br><span class="line">+----+-------------+-----------+------------+------+---------------+-------------+---------+-------+------+----------+-------+</span><br><span class="line">|  1 | SIMPLE      | customers | NULL       | ref  | customer_id   | customer_id | 13      | const |    1 |   100.00 | NULL  |</span><br><span class="line">+----+-------------+-----------+------------+------+---------------+-------------+---------+-------+------+----------+-------+</span><br></pre></td></tr></table></figure></p>
+<p>从上述的输出结果，显然MySQL服务器会使用索引customer_id来查询表格。可以看需要扫描的行数为1。虽然我只是在一个行数为500的表格中执行这条查询语句，索引在检索一个更大的数据集的时候优化程度更加明显。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode47/#more" rel="contents">
+              <a class="btn" href="/2019/02/05/猫头鹰的深夜翻译：如何优化MYSQL查询/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1387,7 +1054,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode30/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/linux常用指令学习记录/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1407,7 +1074,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/05/leetcode30/" class="post-title-link" itemprop="url">leetcode30.Substring with Concatenation of All Words</a>
+                <a href="/2019/02/05/linux常用指令学习记录/" class="post-title-link" itemprop="url">linux常用指令学习记录</a>
               
             
           </h1>
@@ -1432,7 +1099,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 
               
 
-              <time title="创建时间：2019-02-05 01:26:29 / 修改时间：01:29:10" itemprop="dateCreated datePublished" datetime="2019-02-05T01:26:29+08:00">2019-02-05</time>
+              <time title="创建时间：2019-02-05 03:40:04 / 修改时间：03:41:48" itemprop="dateCreated datePublished" datetime="2019-02-05T03:40:04+08:00">2019-02-05</time>
             
 
             
@@ -1454,14 +1121,14 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
 
                 
                 
                   ，
                 
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
 
                 
                 
@@ -1497,12 +1164,11 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">You are given a string, s, and a list of words, words, that are all of the same length. Find all starting indices of substring(s) in s that is a concatenation of each word in words exactly once and without any intervening characters.</span><br><span class="line"></span><br><span class="line">For example, given:</span><br><span class="line">s: &quot;barfoothefoobarman&quot;</span><br><span class="line">words: [&quot;foo&quot;, &quot;bar&quot;]</span><br><span class="line"></span><br><span class="line">You should return the indices: [0,9].</span><br><span class="line">(order does not matter).</span><br></pre></td></tr></table></figure>
-<p>输入一个字符串s和一个字符串数组words，其中words中的每个word的长度都相等。在字符串中找到所有子字符串的起始下标，只要该子字符串满足words中所有单词的连接结果（顺序无关）<br>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要为学习贴，用来记录一些linux上的常用指令以供参考。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode30/#more" rel="contents">
+              <a class="btn" href="/2019/02/05/linux常用指令学习记录/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1562,7 +1228,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode22/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/红黑树插入操作的java实现/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1582,7 +1248,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/05/leetcode22/" class="post-title-link" itemprop="url">leetcode22.Generate Parentheses</a>
+                <a href="/2019/02/05/红黑树插入操作的java实现/" class="post-title-link" itemprop="url">红黑树插入操作的java实现</a>
               
             
           </h1>
@@ -1607,7 +1273,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 
               
 
-              <time title="创建时间：2019-02-05 01:23:11 / 修改时间：01:26:01" itemprop="dateCreated datePublished" datetime="2019-02-05T01:23:11+08:00">2019-02-05</time>
+              <time title="创建时间：2019-02-05 03:36:59 / 修改时间：03:39:07" itemprop="dateCreated datePublished" datetime="2019-02-05T03:36:59+08:00">2019-02-05</time>
             
 
             
@@ -1629,14 +1295,14 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
 
                 
                 
                   ，
                 
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
 
                 
                 
@@ -1672,12 +1338,193 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.</span><br><span class="line"></span><br><span class="line">For example, given n = 3, a solution set is:</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  &quot;((()))&quot;,</span><br><span class="line">  &quot;(()())&quot;,</span><br><span class="line">  &quot;(())()&quot;,</span><br><span class="line">  &quot;()(())&quot;,</span><br><span class="line">  &quot;()()()&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>即生成成对的括号，其中括号的数量为n<br>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>网上有非常多的关于红黑树理论的描述，本文的重点将不在于此，但是会在文中给出优秀文章的链接。对红黑树不了解的建议先阅读文章再看实现。本红黑树实现不支持多线程环境。因为删除操作灰常复杂，所以后续更新。源码在文末可以查看。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/</a><br><a href="https://www.geeksforgeeks.org/red-black-tree-set-2-insert/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/red-black-tree-set-2-insert/</a><br><a href="http://www.codebytes.in/2014/10/red-black-tree-java-implementation.html" target="_blank" rel="noopener">http://www.codebytes.in/2014/10/red-black-tree-java-implementation.html</a><br><a href="https://blog.csdn.net/eson_15/article/details/51144079" target="_blank" rel="noopener">https://blog.csdn.net/eson_15/article/details/51144079</a></p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode22/#more" rel="contents">
+              <a class="btn" href="/2019/02/05/红黑树插入操作的java实现/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/docker指令学习记录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/05/docker指令学习记录/" class="post-title-link" itemprop="url">docker指令学习记录</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 03:34:12 / 修改时间：03:35:58" itemprop="dateCreated datePublished" datetime="2019-02-05T03:34:12+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文为学习整理和参考文章，不具有教程的功能。其次，后面将会陆续更新各种应用的容器化部署的实践，如MySQL容器化，Jenkins容器化，以供读者参考。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/05/docker指令学习记录/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1737,7 +1584,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode88/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：设计模式EventBus/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1757,7 +1604,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/05/leetcode88/" class="post-title-link" itemprop="url">leetcode88.Merge Sorted Array</a>
+                <a href="/2019/02/05/猫头鹰的深夜翻译：设计模式EventBus/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：设计模式EventBus</a>
               
             
           </h1>
@@ -1782,7 +1629,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 
               
 
-              <time title="创建时间：2019-02-05 01:21:37 / 修改时间：01:22:43" itemprop="dateCreated datePublished" datetime="2019-02-05T01:21:37+08:00">2019-02-05</time>
+              <time title="创建时间：2019-02-05 03:29:10 / 修改时间：03:33:26" itemprop="dateCreated datePublished" datetime="2019-02-05T03:29:10+08:00">2019-02-05</time>
             
 
             
@@ -1804,14 +1651,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
 
                 
                 
@@ -1847,12 +1687,15 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2. The number of elements initialized in nums1 and nums2 are m and n respectively.</span><br></pre></td></tr></table></figure>
-<p>将两个有序数组合并至其中一个数组并且该新数组仍然有序。<br>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天，我们将介绍一个比较新的设计模式（也就是没有在GoF那本书中出现过的一种设计模式），这个设计模式就是Event Bus设计模式。</p>
+<h2 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h2><p>假设一个大型应用中，有大量的组件彼此间存在交互。而你希望能够在组件通信的同时能够满足低耦合和关注点分离原则。Event Bus设计模式是一个很好的解决方案。</p>
+<p>Event Bus的概念和网络中的总线拓扑概念类似。即存在某种管道，而所有的电脑都连接在这条管道之上。其中的任何一台电脑发送的消息都将分发给总线上所有其它的主机。然后，每台主机决定是否接收还是抛弃掉这条消息。</p>
+<img src="/2019/02/05/猫头鹰的深夜翻译：设计模式EventBus/图片1.png" title="图片1">
+<p>在组件的层面上也是类似的：主机对应着应用的组件，消息对应于事件（event）或者数据。而管道是<code>Event Bus</code>对象。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode88/#more" rel="contents">
+              <a class="btn" href="/2019/02/05/猫头鹰的深夜翻译：设计模式EventBus/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1860,7 +1703,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
           <!--/noindex-->
         
       
-    </p></div>
+    </div>
 
     
 
@@ -1912,7 +1755,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode55/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/docker实战/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1932,7 +1775,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/05/leetcode55/" class="post-title-link" itemprop="url">leetcode55.Jump Game</a>
+                <a href="/2019/02/05/docker实战/" class="post-title-link" itemprop="url">docker实战</a>
               
             
           </h1>
@@ -1957,7 +1800,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 
               
 
-              <time title="创建时间：2019-02-05 01:19:05 / 修改时间：01:20:31" itemprop="dateCreated datePublished" datetime="2019-02-05T01:19:05+08:00">2019-02-05</time>
+              <time title="创建时间：2019-02-05 03:25:32 / 修改时间：03:28:33" itemprop="dateCreated datePublished" datetime="2019-02-05T03:25:32+08:00">2019-02-05</time>
             
 
             
@@ -1979,14 +1822,21 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
 
                 
                 
                   ，
                 
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a></span>
 
                 
                 
@@ -2022,12 +1872,15 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Given an array of non-negative integers, you are initially positioned at the first index of the array.</span><br><span class="line"></span><br><span class="line">Each element in the array represents your maximum jump length at that position.</span><br><span class="line"></span><br><span class="line">Determine if you are able to reach the last index.</span><br><span class="line"></span><br><span class="line">For example:</span><br><span class="line">A = [2,3,1,1,4], return true.</span><br><span class="line"></span><br><span class="line">A = [3,2,1,0,4], return false.</span><br></pre></td></tr></table></figure>
-<p>翻译过来就是，假设有一个数组，该数组中的元素全部都是非负整数。当前起点为数组中下标为零的位置，要走到数组的最后一个下标。其中，数组中每一个元素代表当前下标下可以前进的最大步数。如果可以从起点走向终点，那么返回true，否则返回false<br>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>网上找过很多文章，关于通过docker构建mysql容器并将应用容器和docker容器关联起来的文章不多。本文将给出具体的范例。此处为项目的<a href="https://github.com/raledong/container_demo.git" target="_blank" rel="noopener">源码</a></p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>该教程要求在宿主机上配置了：</p>
+<ul>
+<li>docker</li>
+<li>maven
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/leetcode55/#more" rel="contents">
+              <a class="btn" href="/2019/02/05/docker实战/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -2035,7 +1888,178 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
           <!--/noindex-->
         
       
-    </p></div>
+    </li></ul></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/TaskExecutor/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/05/TaskExecutor/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：Spring线程 TaskExecutor</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 03:20:50 / 修改时间：03:23:12" itemprop="dateCreated datePublished" datetime="2019-02-05T03:20:50+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在多线程中web应用很常见，尤其当你需要开发长期任务。</p>
+<p>在Spring中，我们可以额外注意并使用框架已经提供的工具，而不是创造我们自己的线程。</p>
+<p>Spring提供了<code>TaskExecutor</code>作为Executors的抽象。这个接口类似于<code>java.util.concurrent.Executor</code>接口。在spring中有许多预先开发好的该接口的实现，可以在<a href="https://docs.spring.io/spring/docs/2.5.x/reference/scheduling.html" target="_blank" rel="noopener">官方文档</a>中详细查看。</p>
+<p>通过在Spring上下文中配置一个TaskExecutor的实现，你可以将你的TaskExecutor的实现注入到bean中，并可以在bean中访问到该线程池。</p>
+<p>在bean中使用线程池的方式如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.gkatzioura.service;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.task.TaskExecutor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by gkatzioura on 4/26/17.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsynchronousService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> TaskExecutor taskExecutor;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeAsynchronously</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        taskExecutor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="comment">//TODO add long running task</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/05/TaskExecutor/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
 
     
 
@@ -2076,7 +2100,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2121,7 +2145,7 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">162</span>
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2142,7 +2166,31 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2249,7 +2297,49 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
                     
                       
                     
-                    <span class="site-state-item-count">47</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

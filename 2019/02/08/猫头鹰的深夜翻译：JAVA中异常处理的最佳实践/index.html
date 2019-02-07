@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言异常处理的问题之一是知道何时以及如何去使用它。我会讨论一些异常处理的最佳实践，也会总结最近在异常处理上的一些争论。 作为程序员，我们想要写高质量的能够解决问题的代码。但是，异常经常是伴随着代码产生的副作用。没有人喜欢副作用，因此我们会试图用自己的方式来解决这个问题。我看过不少的程序用下面的方法应对异常：1234567public void consumeAndForgetAllExceptio">
+<meta name="keywords" content="java,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：JAVA中异常处理的最佳实践">
+<meta property="og:url" content="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言异常处理的问题之一是知道何时以及如何去使用它。我会讨论一些异常处理的最佳实践，也会总结最近在异常处理上的一些争论。 作为程序员，我们想要写高质量的能够解决问题的代码。但是，异常经常是伴随着代码产生的副作用。没有人喜欢副作用，因此我们会试图用自己的方式来解决这个问题。我看过不少的程序用下面的方法应对异常：1234567public void consumeAndForgetAllExceptio">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/图片1.png">
+<meta property="og:updated_time" content="2019-02-07T16:13:53.211Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：JAVA中异常处理的最佳实践">
+<meta name="twitter:description" content="前言异常处理的问题之一是知道何时以及如何去使用它。我会讨论一些异常处理的最佳实践，也会总结最近在异常处理上的一些争论。 作为程序员，我们想要写高质量的能够解决问题的代码。但是，异常经常是伴随着代码产生的副作用。没有人喜欢副作用，因此我们会试图用自己的方式来解决这个问题。我看过不少的程序用下面的方法应对异常：1234567public void consumeAndForgetAllExceptio">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：JAVA中异常处理的最佳实践 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：JAVA中异常处理的最佳实践
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-08 00:04:15 / 修改时间：00:13:53" itemprop="dateCreated datePublished" datetime="2019-02-08T00:04:15+08:00">2019-02-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>异常处理的问题之一是知道何时以及如何去使用它。我会讨论一些异常处理的最佳实践，也会总结最近在异常处理上的一些争论。</p>
+<p>作为程序员，我们想要写高质量的能够解决问题的代码。但是，异常经常是伴随着代码产生的副作用。没有人喜欢副作用，因此我们会试图用自己的方式来解决这个问题。我看过不少的程序用下面的方法应对异常：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">consumeAndForgetAllExceptions</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ...some code that <span class="keyword">throws</span> exceptions</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">        ex.printStacktrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面这段代码的问题在哪里？</p>
+<p>一旦一个异常被抛出之后，正常的执行流程会停止并且将控制交给捕捉块。捕捉块捕获异常，然后只是把它的信息打印了一下。之后程序正常运行，就像没有任何事情发生一样。<br><a id="more"></a></p>
+<p>那下面的这种方法呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">someMethod</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这是一个空方法，里面没有任何的代码。为什么一个空方法能够抛出异常？JAVA并不阻止你这么做。最近，我遇到了一些和这个很相似的代码，明明代码块中没有抛出异常的语句，却在方法声明中抛出异常。当我问开发人员为什么这么做，他会回答“我知道这样会影响API，但是我之前就这么做的而且效果还不错”。</p>
+<p>C++社区花了好久才决定如何使用异常。这场争论也在JAVA社区产生了。我看到不少JAVA开发人员艰难的使用异常。如果不能够正确使用的话，异常会影响程序的性能，因为它需要使用内存和CPU来创建，抛出以及捕获。如果过度使用的话，会使得代码难以阅读，并且影响API的使用人员。我们都知道这将会带来代码漏洞以及坏味道。客户端代码常会通过忽略这个异常或是直接将其抛出来避开这个问题，就像之前的两个例子那样。</p>
+<h2 id="异常的本质"><a href="#异常的本质" class="headerlink" title="异常的本质"></a>异常的本质</h2><p>从广义的角度来说，一共有三种不同的场景会导致异常的产生：</p>
+<ul>
+<li>编程错误导致的异常：这一类的异常是因为不恰当的编程带来的（比如<code>NullPointerException</code>,<code>IllegalArgumentException</code>）。客户端通常无法对这些错误采取任何措施</li>
+<li>客户端代码的错误：客户端代码在API允许的范围之外使用API，从而违背了合约。客户端可以通过异常中提供的有用信息，采用一些替代方法。比如，当解析格式不正确的XML文件时，会抛出异常。这个异常中包含导致该错误发生的XML内容的具体位置。客户端可以通过这些信息采取回复措施。</li>
+<li>资源失效导致的异常：比如系统内存不足或是网络连接失败。客户端面对资源失效的回应是要根据上下文来决定的。客户端可以在一段时间之后试着重新连接或是记录资源失效日志然后暂停应用程序。</li>
+</ul>
+<h2 id="JAVA异常类型"><a href="#JAVA异常类型" class="headerlink" title="JAVA异常类型"></a>JAVA异常类型</h2><p>JAVA定义了两种异常：</p>
+<ul>
+<li>需检查的异常：从<code>Exception</code>类继承的异常都是需检查异常。客户端需要处理API抛出的这一类异常，通过try-catch或是继续抛出。</li>
+<li>无需检查的异常：<code>RuntimeException</code>也是<code>Exception</code>的子类。但是，继承了<code>RuntimeException</code>的类受到了特殊的待遇。客户端代码无需专门处理这一类异常。</li>
+</ul>
+<p>下图展示了<code>NullPointerException</code>的继承树：<br><img src="/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/图片1.png" title="图片1"></p>
+<p>上图中，<code>NullPointerException</code>继承自<code>RuntimeException</code>，因此它也是一个无需检查的异常。</p>
+<p>我看到过大量使用需检查异常只在极少数时候使用无需检查异常的。最近，JAVA社区在需检查异常的真正价值上爆发了热烈的讨论。这场辩论源于JAVA是第一个包含需检查异常的主流OO框架。C++和C#根本没有需检查异常。这些语言中所有的异常都是无需检查的。</p>
+<p>从低层抛出的需检查异常强制要求调用方捕获或是抛出该异常。如果客户端不能有效的处理该异常，API和客户端之间的异常协议将会带来极大的负担。客户端的开发人员可能会通过将异常抑制在一个空的捕获块中或是直接抛出它。从而又将这个负担交给了客户端的调用方。</p>
+<p>还有人指责需检查异常会破坏封装，看下面这段代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getAllAccounts</span><span class="params">()</span> <span class="keyword">throws</span></span></span><br><span class="line"><span class="function">    FileNotFoundException, SQLException</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>getAllAccounts()</code>方法抛出了两个需检查异常。调用这个方法的客户端必须明确的处理这两种具体的异常，即使它们并不清楚<code>getAllAccount()</code>内究竟是哪个文件访问或是数据库访问失败了，而且它们也没有提供文件系统或是数据库的逻辑。因此，这样的异常处理导致方法和调用者之前出现了不当的强耦合。</p>
+<h2 id="设计API的最佳实践"><a href="#设计API的最佳实践" class="headerlink" title="设计API的最佳实践"></a>设计API的最佳实践</h2><p>在讨论了这些之后，我们可以来探讨一下如何设计一个正确抛出异常的良好的API。</p>
+<p><strong>1.在选择抛出需确定异常或是无需确定异常时，问自己这样的一个问题：客户端代码在遇到异常时会进行怎样的处理？</strong><br>如果客户端能够采取措施从这个异常中恢复过来，那就选择需确定异常。如果客户端不能采取有效的措施，就选择无需确定异常。有效的措施是指从异常中恢复的措施，而不仅仅是记录错误日志。</p>
+<p>除此以外，尽量选择无需确定的异常：它的优点在于不会强迫客户端显式地处理这种异常。它会冒泡到任何你想捕获它的地方。JAVA API提供了许多无需检查的异常如<code>NullPointerException</code>, <code>IllegalArgumentException</code>和<code>IllegalStateException</code>。我倾向于使用JAVA提供的标准的异常，尽量不去创建自己的异常。</p>
+<p><strong>2.保留封装</strong><br>永远不要将特定于实现的异常传递到更高层。比如，不要将数据层的<code>SQLException</code>传递出去。业务层不需要了解<code>SQLException</code>。你有两个选择：</p>
+<ul>
+<li>将<code>SQLException</code>转换为另一个需检查异常，如果客户代码需要从异常中恢复。</li>
+<li>将<code>SQLException</code>转换为无需检查异常，如果客户端代码无法对其进行处理。</li>
+</ul>
+<p>大多数时候，客户代码无法解决<code>SQLException</code>。这时候就将其转化为无需检查的异常。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dataAccessCode</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        ..some code that <span class="keyword">throws</span> SQLException</span><br><span class="line">    &#125;<span class="keyword">catch</span>(SQLException ex)&#123;</span><br><span class="line">        ex.printStacktrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里的catch块并没有做任何事情。不如通过如下的方式解决它：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dataAccessCode</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        ..some code that <span class="keyword">throws</span> SQLException</span><br><span class="line">    &#125;<span class="keyword">catch</span>(SQLException ex)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里将<code>SQLException</code>转化为了<code>RuntimeException</code>。如果<code>SQLException</code>出现了，catch块就会抛出一个运行时异常。当前执行的线程将会停止并报告该异常。但是，该异常并没有影响到我的业务逻辑模块，它无需进行异常处理，更何况它根本无法对<code>SQLException</code>进行任何操作。如果我的catch块需要根异常原因，可以使用<code>getCause()</code>方法。</p>
+<p>如果你确信业务层可以采取补救措施，你可以将其转化为一个更有意义的无需检查异常。但是我觉得抛出RuntimeException足以适用大多数的场景。</p>
+<p><strong>3.当无法提供更加有用信息时，不要自定义异常</strong><br>下面这段代码有什么问题？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DuplicateUsernameException</span></span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">Exception</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>它没有给客户端代码提供任何有用的信息，除了一个稍微具有含义的命名。不要忘了<code>Exception</code>类和别的类一样，在里面你可以添加一下方法供客户端调用，获得有用的信息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DuplicateUsernameException</span></span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">Exception</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> DuplicateUsernameException </span><br><span class="line">        (String username)&#123;....&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">requestedUsername</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> String[] availableNames()&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>新版本的异常提供了两个有用的方法:<code>requestedUsername()</code>，它会返回请求的名字，和<code>availableNames()</code>，它会返回一组相近的可用的用户名。客户端可以使用这些方法来获取有用的信息。但是如果你不准备添加这些额外的信息，那就抛出一个标准的异常即可。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"Username already taken"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>如果你觉得客户端代码在记录日志之外对这个异常不能进行任何操作，那么最好抛出无需检查异常:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Username already taken"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>除此以外，你还可以提供一个方法来检查用户名是否已经被使用。</p>
+<p><strong>4.文档化异常</strong><br>你可以使用Javadoc的<code>@throws</code>标记来记录需检查异常和无需检查异常。但是，我倾向于写单元测试来文档化异常。单元测试允许我在使用中查看异常，并且作为一个可以被执行的文档来使用。无论你采用哪种方法，尽量使你的客户端代码了解你的API会抛出的异常。这里提供了<code>IndexOutOfBoundsException</code>的单元测试。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testIndexOutOfBoundsException</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ArrayList blankList = <span class="keyword">new</span> ArrayList();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        blankList.get(<span class="number">10</span>);</span><br><span class="line">        fail(<span class="string">"Should raise an IndexOutOfBoundsException"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IndexOutOfBoundsException success) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面这段代码在调用<code>blankList.get(10);</code>应当抛出<code>IndexOutOfBoundsException</code>。如果没有抛出该异常，则会执行<code>fail(&quot;Should raise an IndexOutOfBoundsException&quot;);</code>显式的说明该测试失败了。通过为异常编写测试，你不仅能记录异常如何触发，而且使你的代码在经过这些测试后更加健壮。</p>
+<h2 id="使用异常的最佳实践"><a href="#使用异常的最佳实践" class="headerlink" title="使用异常的最佳实践"></a>使用异常的最佳实践</h2><p><strong>1.自觉清理资源</strong><br>如果你在使用如数据库连接或是网络连接之类的资源，要确保你及时的清理这些资源。如果你调用的API仅仅出发了无需检查异常，你仍然需要在使用后主动清理。使用<code>try-catch</code>块。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dataAccessCode</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Connection conn = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        conn = getConnection();</span><br><span class="line">        <span class="comment">//..some code that throws SQLException</span></span><br><span class="line">    &#125;<span class="keyword">catch</span>(SQLException ex)&#123;</span><br><span class="line">        ex.printStacktrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span>&#123;</span><br><span class="line">        DBUtil.closeConnection(conn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DBUtil</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> closeConnection</span><br><span class="line">        (Connection conn)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            conn.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span>(SQLException ex)&#123;</span><br><span class="line">            logger.error(<span class="string">"Cannot close connection"</span>);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>DBUtil</code>类关闭<code>Connection</code>连接。这里的重点在于在<code>finally</code>块中关闭连接，无论是否出现了异常。</p>
+<p><strong>2.永远不要使用异常来控制流</strong><br>生成栈追踪的代价很昂贵，它的价值在于debug过程中使用。在一个流程控制中，栈追踪应当被忽视，因为客户端只想知道如何进行。</p>
+<p>在下面的代码中，<code>MaximumCountReachedException</code>被用来进行流程控制：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">useExceptionsForFlowControl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            increaseCount();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (MaximumCountReachedException ex) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//Continue execution</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increaseCount</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> MaximumCountReachedException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (count &gt;= <span class="number">5000</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> MaximumCountReachedException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>useExceptionsForFlowControl()</code>通过无限循环来增加计数，直到抛出异常。这种方式使得代码难以阅读，而且影响代码性能。只在出现异常的场景抛出异常。</p>
+<p><strong>3.不要无视或是压制异常</strong><br>当API的方法会抛出异常的时候，它在提醒你应当采取一些措施。如果需检查异常没有任何意义，那就干脆将其转化为无需检查异常再重新抛出。不要单纯的用catch捕获它然后继续执行，仿佛什么都没有发生一样。</p>
+<p><strong>4.不要捕获最高层异常</strong><br>继承<code>RuntimeException</code>的异常同样是<code>Exception</code>的子类。捕获<code>Exception</code>的同时，也捕获了运行时异常：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">..</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception ex)&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>5.只记录异常一次</strong><br>将同一个异常多次记入日志会使得检查追踪栈的开发人员感到困惑，不知道何处是报错的根源。所以只记录一次。</p>
+<blockquote>
+<p>原文链接: <a href="http://www.onjava.com/pub/a/onjava/2003/11/19/exceptions.html" target="_blank" rel="noopener">http://www.onjava.com/pub/a/onjava/2003/11/19/exceptions.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/07/CompletableFuture的20例子/" rel="next" title="猫头鹰的深夜翻译：使用JAVA CompletableFuture的20例子">
+                <i class="fa fa-chevron-left"></i> 猫头鹰的深夜翻译：使用JAVA CompletableFuture的20例子
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/" rel="prev" title="猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议">
+                猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常的本质"><span class="nav-number">2.</span> <span class="nav-text">异常的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA异常类型"><span class="nav-number">3.</span> <span class="nav-text">JAVA异常类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计API的最佳实践"><span class="nav-number">4.</span> <span class="nav-text">设计API的最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用异常的最佳实践"><span class="nav-number">5.</span> <span class="nav-text">使用异常的最佳实践</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

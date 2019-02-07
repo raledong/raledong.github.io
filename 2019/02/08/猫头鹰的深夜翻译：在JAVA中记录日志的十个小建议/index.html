@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言首先，这篇文章没有进行任何的日志功能的详细介绍，而是对日志提出了几种最佳实践。适合对日志记录有所了解的同学阅读。下面是正文： JAVA日志管理既是一门科学，又是一门艺术。科学的部分是指了解写日志的工具以及其API，而选择日志的格式，消息的格式，日志记录的内容，哪种消息对应于哪一种日志级别，则完全是基于经验。从过去的实践证明，JAVA的日志记录会严重的影响性能。我也曾多次亲眼见到在DEBUG模式">
+<meta name="keywords" content="java,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议">
+<meta property="og:url" content="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言首先，这篇文章没有进行任何的日志功能的详细介绍，而是对日志提出了几种最佳实践。适合对日志记录有所了解的同学阅读。下面是正文： JAVA日志管理既是一门科学，又是一门艺术。科学的部分是指了解写日志的工具以及其API，而选择日志的格式，消息的格式，日志记录的内容，哪种消息对应于哪一种日志级别，则完全是基于经验。从过去的实践证明，JAVA的日志记录会严重的影响性能。我也曾多次亲眼见到在DEBUG模式">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/图片1.png">
+<meta property="og:updated_time" content="2019-02-07T16:20:08.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议">
+<meta name="twitter:description" content="前言首先，这篇文章没有进行任何的日志功能的详细介绍，而是对日志提出了几种最佳实践。适合对日志记录有所了解的同学阅读。下面是正文： JAVA日志管理既是一门科学，又是一门艺术。科学的部分是指了解写日志的工具以及其API，而选择日志的格式，消息的格式，日志记录的内容，哪种消息对应于哪一种日志级别，则完全是基于经验。从过去的实践证明，JAVA的日志记录会严重的影响性能。我也曾多次亲眼见到在DEBUG模式">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-08 00:14:38 / 修改时间：00:20:08" itemprop="dateCreated datePublished" datetime="2019-02-08T00:14:38+08:00">2019-02-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先，这篇文章没有进行任何的日志功能的详细介绍，而是对日志提出了几种最佳实践。适合对日志记录有所了解的同学阅读。<br>下面是正文：</p>
+<p>JAVA日志管理既是一门科学，又是一门艺术。科学的部分是指了解写日志的工具以及其API，而选择日志的格式，消息的格式，日志记录的内容，哪种消息对应于哪一种日志级别，则完全是基于经验。从过去的实践证明，JAVA的日志记录会严重的影响性能。我也曾多次亲眼见到在DEBUG模式下运行的在线股票交易程序，比在WARN或是其它更高层次模式下运行时延时要严重的多。延时和速度是任何电子交易平台或是股票交易平台的一个重大关注点，所以我们必须了解并掌握JAVA日志及其最佳实践。这不仅仅只是为了用在金融或是投资银行领域，它适用于所有既追求速度又需要日志功能的应用。</p>
+<h2 id="为何需要日志"><a href="#为何需要日志" class="headerlink" title="为何需要日志"></a>为何需要日志</h2><p>这是一个很基本的争议，人们会争辩说，我们可以使用<code>System.out.println()</code>来打印消息，为何还需要日志呢？每个人刚开始接触JAVA时，都使用<code>System.out.println()</code>在控制台打印消息。但是它的功能远远没有日志记录API如<code>log4j</code>或是<code>java.util.logging</code>强大。如果你正在写一个java服务器应用，那么你只有通过日志文件才能知道你的服务器在做什么。如果你没有记录任何日志，那么没有人知道你的服务器在干啥。而如果你的服务器作为一个中间件连接到应用中时，比如从股票交易系统或是电子交易系统获得输入流，将其转换并标准化后发送到输出流，这时日志就更为重要。没有日志你根本不知道究竟哪里出了问题。因此，日志在JAVA中是必不可少的。</p>
+<a id="more"></a>
+<h2 id="JAVA中有哪些不同的日志级别"><a href="#JAVA中有哪些不同的日志级别" class="headerlink" title="JAVA中有哪些不同的日志级别"></a>JAVA中有哪些不同的日志级别</h2><p>使用过JAVA日志的童鞋一定知道这些基础的日志级别比如<code>DEBUG, INFO, WARN和ERROR</code>。</p>
+<p><code>DEBUG</code>是最低的限制级别。这个级别只能用于开发和测试环境中，不可以用于生产环境。</p>
+<p><code>INFO</code>略高于<code>DEBUG</code>的限制级别，我们应该用这个级别记录一些信息型消息比如服务器启动成功，输入的数据，输出的数据等等。</p>
+<p><code>WARN</code>的限制级别高于<code>INFO</code>，它用来记录警告信息比如客户端和服务器之间的连接中断，数据库连接丢失，Socket达到上限。这些信息是最为重要的，因为你可以在这些信息出现时发出警告，从而让运维团队管理应用程序的运行，并及时处理这些报错。</p>
+<p><code>ERROR</code>比<code>WARN</code>的限制级别还高，用于记录<code>ERROR</code>和<code>Exception</code>。你可以在该日志级别上设置警报装置，并且提醒运维团队对之做出处理。<code>ERROR</code>非常重要，你必须将其记录下来。</p>
+<p><code>FATAL</code>是指可能导致程序终止的非常严重的时间。在这种事件之后你的应用很可能会崩溃。</p>
+<p><code>OFF</code>具有最高的级别，旨在关闭JAVA中的日志功能。</p>
+<p>这些日志级别是根据<code>slf4j</code>整理的，和<code>java.util.logging</code>API中定义的级别不太一样。<code>java.util.logging</code>还提供了其它的基于问题严重性进行划分的日志级别如<code>SEVERE, FINER, FINEST, FATAL</code>等。</p>
+<h2 id="使用log4j还是java-util-logging"><a href="#使用log4j还是java-util-logging" class="headerlink" title="使用log4j还是java.util.logging"></a>使用log4j还是java.util.logging</h2><img src="/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/图片1.png" title="图片1">
+<p>我会推荐使用log4j，你可能会对此持有异议。我也同意<code>java.util.logging</code>的功能很强大，但是我发现<code>log4j</code>更易于使用。你已经了解了<code>log4j</code>的各个日志级别，这里每个级别都非常恰当的描述了其功能。log4j还提供了额外的灵活性，你无需重新启动应用来改变日志的级别。当然，你也可以在java.util.logging中通过JMX实现这个功能。</p>
+<p>log4j还允许我们在配置文件<code>log4j.xml</code>中设置每个类的日志级别。你既可以使用XML文件也可以使用properties文件进行配置。而且log4j是线程安全的。它被设计用于高并发的系统中。在另一方面，我发现<code>java.util.logging</code>中的<code>Formatter</code>和<code>Appender</code>功能非常棒。</p>
+<h2 id="为何在JAVA中使用日志会影响性能"><a href="#为何在JAVA中使用日志会影响性能" class="headerlink" title="为何在JAVA中使用日志会影响性能"></a>为何在JAVA中使用日志会影响性能</h2><p>通常来说，记录日志越频繁，所需的IO操作就越多，从而影响了应用的性能。因此为每一个消息选择一个合适的日志级别是非常重要的。既然我们不能不使用JAVA日志，那么我们只能控制日志的级别以及在那个级别上记录的日志内容。所以，一定要在<code>isDebugEnabled()</code>代码块中记录DEBUG消息，如下所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(logger.isDebugEnabled())&#123;</span><br><span class="line">    logger.debug(<span class="string">"java logging level is DEBUG Enabled"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在生产环境中一定要使用<code>WARN</code>或是更高级别的日志记录等级，一定不要使用<code>DEBUG</code>。它很可能成为性能下降的罪魁祸首。</p>
+<h2 id="JAVA日志的10个小建议"><a href="#JAVA日志的10个小建议" class="headerlink" title="JAVA日志的10个小建议"></a>JAVA日志的10个小建议</h2><h3 id="1-将DEBUG日志访日isDebugEnabled代码块"><a href="#1-将DEBUG日志访日isDebugEnabled代码块" class="headerlink" title="1.将DEBUG日志访日isDebugEnabled代码块"></a>1.将DEBUG日志访日<code>isDebugEnabled</code>代码块</h3><p>它能显著的减少因为字符串拼接而带来的性能的影响。</p>
+<h3 id="2-谨慎的消息的等级"><a href="#2-谨慎的消息的等级" class="headerlink" title="2.谨慎的消息的等级"></a>2.谨慎的消息的等级</h3><p>当你在编写服务器端应用时，这一点显得格外的重要，因为它是你观察服务器运行情况的唯一途径。如果你记录了太多的日志，则会影响服务器的性能，但是如果你不记录重要的信息如输入数据和输出数据，那么就很难识别究竟发生了什么问题。</p>
+<h3 id="3-使用slf4j或是java-util-loggin"><a href="#3-使用slf4j或是java-util-loggin" class="headerlink" title="3.使用slf4j或是java.util.loggin"></a>3.使用slf4j或是java.util.loggin</h3><p>我推荐slf4j因为它的灵活性非常高。它允许在不重启应用的前提下更改日志级别。你可以通过log4j的看门狗来不停的寻找目录中的<code>log4j.xml</code>配置文件，并且在找到后重置日志配置。</p>
+<h3 id="4-log4j可以为不同的类配置不同的日志级别"><a href="#4-log4j可以为不同的类配置不同的日志级别" class="headerlink" title="4.log4j可以为不同的类配置不同的日志级别"></a>4.log4j可以为不同的类配置不同的日志级别</h3><p>你可以将一些类设置为<code>INFO</code>级别，再将另一些类设置为<code>WARN</code>级别或是<code>ERROR</code>级别。</p>
+<h3 id="5-日志的格式化"><a href="#5-日志的格式化" class="headerlink" title="5.日志的格式化"></a>5.日志的格式化</h3><p>不要忘了记录线程的名称和完整的JAVA类名，因为如果有多个线程同时在执行这段代码，你可能根本找不出事件序列。在我看来，这一条建议最为重要</p>
+<h3 id="6-从日志中生成报告"><a href="#6-从日志中生成报告" class="headerlink" title="6.从日志中生成报告"></a>6.从日志中生成报告</h3><p>在记录日志时要保证一致性和信息性，从而可以分析日志。</p>
+<h3 id="7-使用前缀来说明哪一部分代码在打印日志"><a href="#7-使用前缀来说明哪一部分代码在打印日志" class="headerlink" title="7.使用前缀来说明哪一部分代码在打印日志"></a>7.使用前缀来说明哪一部分代码在打印日志</h3><p>前缀是指如客户端，数据库或是Session等等。之后你可以使用<code>grep</code>或是<code>find</code>来找到和这些关键字相关的日志。我在进行了这种实践后发现它非常有助于debug或是调查事件，尤其是当日志文件很庞大的时候。你可以将所有数据库级别的日志加上前缀<code>DB_LOG</code>，再将所有SESSION级别的日志加上前缀<code>SESSION_LOG</code></p>
+<h3 id="8-如果某个日志没有分配等级，则将其继承最近级别的等级"><a href="#8-如果某个日志没有分配等级，则将其继承最近级别的等级" class="headerlink" title="8.如果某个日志没有分配等级，则将其继承最近级别的等级"></a>8.如果某个日志没有分配等级，则将其继承最近级别的等级</h3><p>这也是为什么我们总是将日志等级分配到根日志上<code>log4j.rootLogger=DEBUG.</code></p>
+<h3 id="9-没有日志和过度日志都是不好的"><a href="#9-没有日志和过度日志都是不好的" class="headerlink" title="9.没有日志和过度日志都是不好的"></a>9.没有日志和过度日志都是不好的</h3><p>原因前面已经说明</p>
+<h3 id="10-自检日志并调整日志"><a href="#10-自检日志并调整日志" class="headerlink" title="10.自检日志并调整日志"></a>10.自检日志并调整日志</h3><p>最好用英文记录日志，而且要有良好的可读性，从而在查阅时能够快速理解日志。</p>
+<h3 id="11-使用标准化格式而不要自行拼接"><a href="#11-使用标准化格式而不要自行拼接" class="headerlink" title="11.使用标准化格式而不要自行拼接"></a>11.使用标准化格式而不要自行拼接</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">logger.debug(<span class="string">"No of Orders "</span> + noOfOrder + <span class="string">" for client: "</span> + client);<span class="comment">//不好</span></span><br><span class="line">logger.debug(<span class="string">"No of Orders &#123;&#125; for client: &#123;&#125;"</span>, noOfOrder, client);</span><br></pre></td></tr></table></figure>
+<h2 id="补充：记录哪些信息以及各个信息对应什么级别的日志"><a href="#补充：记录哪些信息以及各个信息对应什么级别的日志" class="headerlink" title="补充：记录哪些信息以及各个信息对应什么级别的日志"></a>补充：记录哪些信息以及各个信息对应什么级别的日志</h2><h3 id="1-不要记录敏感信息"><a href="#1-不要记录敏感信息" class="headerlink" title="1.不要记录敏感信息"></a>1.不要记录敏感信息</h3><p>不要记录敏感信息如密码，身份证号，信用卡号或账户号。</p>
+<h3 id="2-尽量记录决策性信息"><a href="#2-尽量记录决策性信息" class="headerlink" title="2.尽量记录决策性信息"></a>2.尽量记录决策性信息</h3><p>比如，一个JAVA应用需要从偏好文件或是环境中加载配置，如果没有找到就使用默认的配置。如果你在使用默认配置，那么你应当记录如下信息：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.info(<span class="string">"Not able to load personal settings, default Setting selected for user : &#123;&#125;"</span>, user);</span><br></pre></td></tr></table></figure></p>
+<p>这个日志丢失了一个关键性信息，为什么无法加载到个人配置？因此如果出现异常的话，还应当记录异常。当然，这条日志也提供了有用的信息，比如究竟是哪个用户遇到了这个问题。</p>
+<h3 id="3-一致性"><a href="#3-一致性" class="headerlink" title="3.一致性"></a>3.一致性</h3><p>一致性在日志和编码中都很重要。无论你采用哪种格式，你都应当坚持一致性。你应当花些时间仔细考虑日志的格式，从而用它来捕获有用的信息。</p>
+<h3 id="4-记录一切出现问题时辅助debug的信息"><a href="#4-记录一切出现问题时辅助debug的信息" class="headerlink" title="4.记录一切出现问题时辅助debug的信息"></a>4.记录一切出现问题时辅助debug的信息</h3><p>举个例子，我们经常在应用中将String转化为Date，如果String的格式不正确的话，我们通常会抛出ParseException。但是我经常看到有的代码里捕获了这个异常之后，将Date赋值为null并打印如下日志：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.info(<span class="string">"failed to convert String to date"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>看到这行日志的时候，你根本不知道那个date传入了不合法的值。它也没有打印出不合法的String的内容究竟是什么。你需要这些信息来解决这个问题。一个更好的日志信息如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.info(<span class="string">"invalid startDate: &#123;&#125;"</span>, startDate);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>原文链接: <a href="http://javarevisited.blogspot.com/2011/05/top-10-tips-on-logging-in-java.html#axzz582SLutOK" target="_blank" rel="noopener">http://javarevisited.blogspot.com/2011/05/top-10-tips-on-logging-in-java.html#axzz582SLutOK</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/" rel="next" title="猫头鹰的深夜翻译：JAVA中异常处理的最佳实践">
+                <i class="fa fa-chevron-left"></i> 猫头鹰的深夜翻译：JAVA中异常处理的最佳实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/08/猫头鹰的深夜翻译：使用组合模式来开关灯/" rel="prev" title="猫头鹰的深夜翻译：使用组合模式来开关灯">
+                猫头鹰的深夜翻译：使用组合模式来开关灯 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为何需要日志"><span class="nav-number">2.</span> <span class="nav-text">为何需要日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA中有哪些不同的日志级别"><span class="nav-number">3.</span> <span class="nav-text">JAVA中有哪些不同的日志级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用log4j还是java-util-logging"><span class="nav-number">4.</span> <span class="nav-text">使用log4j还是java.util.logging</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为何在JAVA中使用日志会影响性能"><span class="nav-number">5.</span> <span class="nav-text">为何在JAVA中使用日志会影响性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA日志的10个小建议"><span class="nav-number">6.</span> <span class="nav-text">JAVA日志的10个小建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-将DEBUG日志访日isDebugEnabled代码块"><span class="nav-number">6.1.</span> <span class="nav-text">1.将DEBUG日志访日isDebugEnabled代码块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-谨慎的消息的等级"><span class="nav-number">6.2.</span> <span class="nav-text">2.谨慎的消息的等级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-使用slf4j或是java-util-loggin"><span class="nav-number">6.3.</span> <span class="nav-text">3.使用slf4j或是java.util.loggin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-log4j可以为不同的类配置不同的日志级别"><span class="nav-number">6.4.</span> <span class="nav-text">4.log4j可以为不同的类配置不同的日志级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-日志的格式化"><span class="nav-number">6.5.</span> <span class="nav-text">5.日志的格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-从日志中生成报告"><span class="nav-number">6.6.</span> <span class="nav-text">6.从日志中生成报告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-使用前缀来说明哪一部分代码在打印日志"><span class="nav-number">6.7.</span> <span class="nav-text">7.使用前缀来说明哪一部分代码在打印日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-如果某个日志没有分配等级，则将其继承最近级别的等级"><span class="nav-number">6.8.</span> <span class="nav-text">8.如果某个日志没有分配等级，则将其继承最近级别的等级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-没有日志和过度日志都是不好的"><span class="nav-number">6.9.</span> <span class="nav-text">9.没有日志和过度日志都是不好的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-自检日志并调整日志"><span class="nav-number">6.10.</span> <span class="nav-text">10.自检日志并调整日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-使用标准化格式而不要自行拼接"><span class="nav-number">6.11.</span> <span class="nav-text">11.使用标准化格式而不要自行拼接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充：记录哪些信息以及各个信息对应什么级别的日志"><span class="nav-number">7.</span> <span class="nav-text">补充：记录哪些信息以及各个信息对应什么级别的日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-不要记录敏感信息"><span class="nav-number">7.1.</span> <span class="nav-text">1.不要记录敏感信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-尽量记录决策性信息"><span class="nav-number">7.2.</span> <span class="nav-text">2.尽量记录决策性信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-一致性"><span class="nav-number">7.3.</span> <span class="nav-text">3.一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-记录一切出现问题时辅助debug的信息"><span class="nav-number">7.4.</span> <span class="nav-text">4.记录一切出现问题时辅助debug的信息</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

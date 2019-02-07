@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言spring是一个用于创建web和企业应用的一个很流行的框架。和别的只关注于一点的框架不同，Spring框架通过投资并组合项目提供了大量的功能来满足现代的业务需求。 Spring提供了许多灵活的方式来配置bean，如XML，注解和JavaConfig。随着功能数量的增加，复杂度也提升了，导致Spring应用的配置变得单调乏味且容易出错。 Spring团队开发出SpringBoot来解决配置复杂">
+<meta name="keywords" content="java,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：为什么要使用Spring Boot？">
+<meta property="og:url" content="http://yoursite.com/2019/02/08/Boot？/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言spring是一个用于创建web和企业应用的一个很流行的框架。和别的只关注于一点的框架不同，Spring框架通过投资并组合项目提供了大量的功能来满足现代的业务需求。 Spring提供了许多灵活的方式来配置bean，如XML，注解和JavaConfig。随着功能数量的增加，复杂度也提升了，导致Spring应用的配置变得单调乏味且容易出错。 Spring团队开发出SpringBoot来解决配置复杂">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-02-07T16:36:34.634Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：为什么要使用Spring Boot？">
+<meta name="twitter:description" content="前言spring是一个用于创建web和企业应用的一个很流行的框架。和别的只关注于一点的框架不同，Spring框架通过投资并组合项目提供了大量的功能来满足现代的业务需求。 Spring提供了许多灵活的方式来配置bean，如XML，注解和JavaConfig。随着功能数量的增加，复杂度也提升了，导致Spring应用的配置变得单调乏味且容易出错。 Spring团队开发出SpringBoot来解决配置复杂">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/08/Boot？/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：为什么要使用Spring Boot？ | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/Boot？/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：为什么要使用Spring Boot？
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-08 00:33:47 / 修改时间：00:36:34" itemprop="dateCreated datePublished" datetime="2019-02-08T00:33:47+08:00">2019-02-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>spring是一个用于创建web和企业应用的一个很流行的框架。和别的只关注于一点的框架不同，Spring框架通过投资并组合项目提供了大量的功能来满足现代的业务需求。</p>
+<p>Spring提供了许多灵活的方式来配置bean，如<strong>XML</strong>，<strong>注解</strong>和<strong>JavaConfig</strong>。随着功能数量的增加，复杂度也提升了，导致Spring应用的配置变得单调乏味且容易出错。</p>
+<p>Spring团队开发出SpringBoot来解决配置复杂的问题。</p>
+<p>但是在深入了解SpringBoot之前，我们会快速了解一下Spring框架，看一看SpringBoot究竟试图解决什么问题。</p>
+<p>在这篇文章中将会涉及：</p>
+<ul>
+<li>Spring框架概览</li>
+<li>使用SpringMVC和JPA(Hibernate)的Web应用</li>
+<li>SpringBoot初体验<a id="more"></a>
+</li>
+</ul>
+<h2 id="Spring框架概览"><a href="#Spring框架概览" class="headerlink" title="Spring框架概览"></a>Spring框架概览</h2><p>如果你是一个JAVA开发人员，那么你很可能听说过Spring框架，并且可能已经在项目中使用过它。Spring框架最初创建是为了依赖注入容器，但是它的功能远远不止这个。</p>
+<p><strong>Spring之所以流行是以下几个原因：</strong></p>
+<ul>
+<li>Spring的依赖注入功能支持编写可测试的代码</li>
+<li>既简单又强大的数据库事务管理功能</li>
+<li>Spring简化了和其它框架的集成如JPA/Hibernate ORM, Struts/JSF等WEB框架</li>
+<li>用于构建Web应用程序最先进的Web MVC框架</li>
+</ul>
+<p>还有很多Spring的兄弟框架辅助Spring来解决当代业务需求：</p>
+<ul>
+<li>Spring Data ： 简化了从关联型数据库和NoSQL数据库中获取数据</li>
+<li>Spring Batch：强大的批量处理框架</li>
+<li>Spring Security：健壮的安全管理框架，用于保护应用程序</li>
+<li>Spring Social：支持和社交网络应用如Facebook，Twitter，LinkedIn，Github等的集成</li>
+<li>Spring Integration：企业集成模式的实现，通过使用轻量级的消息和声明适配器和别的企业应用集成。</li>
+</ul>
+<p>还有很多其他解决各种各样当代应用开发需求的有趣的项目。更多详情可以参考<a href="http://spring.io/projects" target="_blank" rel="noopener">Spring官网</a></p>
+<p>在早期，Spring框架提供了基于XML的方式来配置bean。后来Spring引入了基于XML的DSL，注解和基于JavaConfig的方法来配置bean。</p>
+<p>让我们快速了解一下这些不同的配置风格：</p>
+<h3 id="基于XML的配置"><a href="#基于XML的配置" class="headerlink" title="基于XML的配置"></a>基于XML的配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userService"</span> <span class="attr">class</span>=<span class="string">"com.sivalabs.myapp.service.UserService"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"userDao"</span> <span class="attr">ref</span>=<span class="string">"userDao"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userDao"</span> <span class="attr">class</span>=<span class="string">"com.sivalabs.myapp.dao.JdbcUserDao"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSource"</span> <span class="attr">class</span>=<span class="string">"org.apache.commons.dbcp.BasicDataSource"</span> <span class="attr">destroy-method</span>=<span class="string">"close"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"com.mysql.jdbc.Driver"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:mysql://localhost:3306/test"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"root"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"secret"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="基于注解的配置"><a href="#基于注解的配置" class="headerlink" title="基于注解的配置"></a>基于注解的配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> UserDao userDao;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserService</span><span class="params">(UserDao dao)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.userDao = dao;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcUserDao</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> DataSource dataSource;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JdbcUserDao</span><span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dataSource = dataSource;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="基于JavaConfig的配置"><a href="#基于JavaConfig的配置" class="headerlink" title="基于JavaConfig的配置"></a>基于JavaConfig的配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserService <span class="title">userService</span><span class="params">(UserDao dao)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> UserService(dao);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDao <span class="title">userDao</span><span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JdbcUserDao(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">dataSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        BasicDataSource dataSource = <span class="keyword">new</span> BasicDataSource();</span><br><span class="line">        dataSource.setDriverClassName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line">        dataSource.setUrl(<span class="string">"jdbc:mysql://localhost:3306/test"</span>);</span><br><span class="line">        dataSource.setUsername(<span class="string">"root"</span>);</span><br><span class="line">        dataSource.setPassword(<span class="string">"secret"</span>);</span><br><span class="line">        <span class="keyword">return</span> dataSource;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Wow…Spring为做同一件事情提供了那么多方法，我们甚至可以在同一个应用中将三者混合使用。</p>
+<blockquote>
+<p>高灵活性既有好的一面也有坏的一面。初次使用Spring的人往往会困惑，不知道该使用哪种方法。目前来说，Spring团队推荐使用基于JavaConfig的方法来提供更高的灵活性。</p>
+</blockquote>
+<p>但是没有一劳永逸的解决方法。每个人都应当基于应用的需求来选择方法。</p>
+<p>好了，现在你看到了各种Spring配置的风格。<br>让我们看一下经典的SpringMVC + JPA/Hibernate的Web应用的配置。</p>
+<h2 id="一个只用Spring-MVC-和JPA-Hibernate-的Web应用"><a href="#一个只用Spring-MVC-和JPA-Hibernate-的Web应用" class="headerlink" title="一个只用Spring MVC 和JPA(Hibernate)的Web应用"></a>一个只用Spring MVC 和JPA(Hibernate)的Web应用</h2><p>在了解什么是SpringBoot以及它提供了什么功能之前，让我们看一个经典的Spring Web项目的配置，它的痛点是什么。然后我们会讨论SpringBoot是如何解决这些问题的。</p>
+<h3 id="第一步：配置Maven依赖"><a href="#第一步：配置Maven依赖" class="headerlink" title="第一步：配置Maven依赖"></a>第一步：配置Maven依赖</h3><p>我们首先要做的就是在<code>pom.xml</code>文件中配置所有的依赖。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 </span></span></span><br><span class="line"><span class="tag"><span class="string">                        http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.sivalabs<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springmvc-jpa-demo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>springmvc-jpa-demo<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span>      </span><br><span class="line">        <span class="tag">&lt;<span class="name">failOnMissingWebXml</span>&gt;</span>false<span class="tag">&lt;/<span class="name">failOnMissingWebXml</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-webmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.data<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-data-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.2.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jcl-over-slf4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.13<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.13<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.13<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.h2database<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>h2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.190<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-dbcp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-dbcp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.38<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-entitymanager<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.11.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.thymeleaf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>thymeleaf-spring4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>我们已经配置好了所需的jar依赖，包括Spring MVC, Spring Data JPA, JPA/Hibernate, Thymeleaf, 和 Log4j。</p>
+<h3 id="第二步：使用JavaConfig配置Service-Dao层"><a href="#第二步：使用JavaConfig配置Service-Dao层" class="headerlink" title="第二步：使用JavaConfig配置Service/Dao层"></a>第二步：使用JavaConfig配置Service/Dao层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="meta">@EnableJpaRepositories</span>(basePackages=<span class="string">"com.sivalabs.demo"</span>)</span><br><span class="line"><span class="meta">@PropertySource</span>(value = &#123; <span class="string">"classpath:application.properties"</span> &#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Environment env;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> PropertySourcesPlaceholderConfigurer <span class="title">placeHolderConfigurer</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PropertySourcesPlaceholderConfigurer();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;init-db:false&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String initDatabase;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PlatformTransactionManager <span class="title">transactionManager</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        EntityManagerFactory factory = entityManagerFactory().getObject();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JpaTransactionManager(factory);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalContainerEntityManagerFactoryBean <span class="title">entityManagerFactory</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        LocalContainerEntityManagerFactoryBean factory = <span class="keyword">new</span> LocalContainerEntityManagerFactoryBean();</span><br><span class="line">        HibernateJpaVendorAdapter vendorAdapter = <span class="keyword">new</span> HibernateJpaVendorAdapter();</span><br><span class="line">        vendorAdapter.setGenerateDdl(Boolean.TRUE);</span><br><span class="line">        vendorAdapter.setShowSql(Boolean.TRUE);</span><br><span class="line">        factory.setDataSource(dataSource());</span><br><span class="line">        factory.setJpaVendorAdapter(vendorAdapter);</span><br><span class="line">        factory.setPackagesToScan(<span class="string">"com.sivalabs.demo"</span>);</span><br><span class="line">        Properties jpaProperties = <span class="keyword">new</span> Properties();</span><br><span class="line">        jpaProperties.put(<span class="string">"hibernate.hbm2ddl.auto"</span>, env.getProperty(<span class="string">"hibernate.hbm2ddl.auto"</span>));</span><br><span class="line">        factory.setJpaProperties(jpaProperties);</span><br><span class="line">        factory.afterPropertiesSet();</span><br><span class="line">        factory.setLoadTimeWeaver(<span class="keyword">new</span> InstrumentationLoadTimeWeaver());</span><br><span class="line">        <span class="keyword">return</span> factory;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> HibernateExceptionTranslator <span class="title">hibernateExceptionTranslator</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HibernateExceptionTranslator();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">dataSource</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        BasicDataSource dataSource = <span class="keyword">new</span> BasicDataSource();</span><br><span class="line">        dataSource.setDriverClassName(env.getProperty(<span class="string">"jdbc.driverClassName"</span>));</span><br><span class="line">        dataSource.setUrl(env.getProperty(<span class="string">"jdbc.url"</span>));</span><br><span class="line">        dataSource.setUsername(env.getProperty(<span class="string">"jdbc.username"</span>));</span><br><span class="line">        dataSource.setPassword(env.getProperty(<span class="string">"jdbc.password"</span>));</span><br><span class="line">        <span class="keyword">return</span> dataSource;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSourceInitializer <span class="title">dataSourceInitializer</span><span class="params">(DataSource dataSource)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        DataSourceInitializer dataSourceInitializer = <span class="keyword">new</span> DataSourceInitializer();</span><br><span class="line">        dataSourceInitializer.setDataSource(dataSource);</span><br><span class="line">        ResourceDatabasePopulator databasePopulator = <span class="keyword">new</span> ResourceDatabasePopulator();</span><br><span class="line">        databasePopulator.addScript(<span class="keyword">new</span> ClassPathResource(<span class="string">"data.sql"</span>));</span><br><span class="line">        dataSourceInitializer.setDatabasePopulator(databasePopulator);</span><br><span class="line">        dataSourceInitializer.setEnabled(Boolean.parseBoolean(initDatabase));</span><br><span class="line">        <span class="keyword">return</span> dataSourceInitializer;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>AppCofig.java</code>配置类中我们做了以下几件事情：</p>
+<ul>
+<li>使用<code>@Configuration</code>将其标记为Spring配置类</li>
+<li>使用<code>@EnableTransactionManagement</code>支持基于注解的事务管理</li>
+<li>使用<code>@EnableJpaRepositories</code>说明在寻找Spring Data JPA库</li>
+<li>使用<code>@PropertySource</code>和<code>PropertySourcesPlaceholderConfigure</code>配置PropertyPlaceHolder bean，它将会从<code>application.properties</code>文件中读取配置。</li>
+<li>定义<code>DataSource</code>，<code>JPA EntityManagerFactory</code>和<code>JpaTransactionManager</code>。</li>
+<li>配置<code>DataSourceInitializer</code>，从而在应用启动时执行<code>data.sql</code>脚本来初始化数据库。</li>
+</ul>
+<p>我们需要在<code>application.properties</code>文件中配置属性占位符值：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jdbc.driverClassName=com.mysql.jdbc.Driver</span><br><span class="line">jdbc.url=jdbc:mysql://localhost:3306/test</span><br><span class="line">jdbc.username=root</span><br><span class="line">jdbc.password=admin</span><br><span class="line">init-db=true</span><br><span class="line">hibernate.dialect=org.hibernate.dialect.MySQLDialect</span><br><span class="line">hibernate.show_sql=true</span><br><span class="line">hibernate.hbm2ddl.auto=update</span><br></pre></td></tr></table></figure></p>
+<p>我们可以创建一个简单的SQL脚本<code>data.sql</code>，将样本数据添加到<code>User</code>表中：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> <span class="keyword">user</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(<span class="keyword">id</span>, <span class="keyword">name</span>) <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'Siva'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(<span class="keyword">id</span>, <span class="keyword">name</span>) <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'Prasad'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(<span class="keyword">id</span>, <span class="keyword">name</span>) <span class="keyword">values</span>(<span class="number">3</span>,<span class="string">'Reddy'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>我们可以创建包含基本配置的<code>log4j.properties</code>文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">log4j.rootCategory=INFO, stdout</span><br><span class="line">log4j.appender.stdout=org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.stdout.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern=%5p %t %c&#123;2&#125;:%L - %m%n</span><br><span class="line">log4j.category.org.springframework=INFO</span><br><span class="line">log4j.category.com.sivalabs=DEBUG</span><br></pre></td></tr></table></figure></p>
+<h3 id="第三步：配置Spring-MVC-Web层"><a href="#第三步：配置Spring-MVC-Web层" class="headerlink" title="第三步：配置Spring MVC Web层"></a>第三步：配置Spring MVC Web层</h3><p>我们还需要配置Thymeleaf的<code>ViewResolver</code>，i18n的<code>ResourceHandler</code>和<code>MessageSource</code>等。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages = &#123; <span class="string">"com.sivalabs.demo"</span>&#125;) </span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TemplateResolver <span class="title">templateResolver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        TemplateResolver templateResolver = <span class="keyword">new</span> ServletContextTemplateResolver();</span><br><span class="line">        templateResolver.setPrefix(<span class="string">"/WEB-INF/views/"</span>);</span><br><span class="line">        templateResolver.setSuffix(<span class="string">".html"</span>);</span><br><span class="line">        templateResolver.setTemplateMode(<span class="string">"HTML5"</span>);</span><br><span class="line">        templateResolver.setCacheable(<span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">return</span> templateResolver;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SpringTemplateEngine <span class="title">templateEngine</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SpringTemplateEngine templateEngine = <span class="keyword">new</span> SpringTemplateEngine();</span><br><span class="line">        templateEngine.setTemplateResolver(templateResolver());</span><br><span class="line">        <span class="keyword">return</span> templateEngine;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ThymeleafViewResolver <span class="title">viewResolver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ThymeleafViewResolver thymeleafViewResolver = <span class="keyword">new</span> ThymeleafViewResolver();</span><br><span class="line">        thymeleafViewResolver.setTemplateEngine(templateEngine());</span><br><span class="line">        thymeleafViewResolver.setCharacterEncoding(<span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="keyword">return</span> thymeleafViewResolver;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        registry.addResourceHandler(<span class="string">"/resources/**"</span>).addResourceLocations(<span class="string">"/resources/"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureDefaultServletHandling</span><span class="params">(DefaultServletHandlerConfigurer configurer)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        configurer.enable();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"messageSource"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> MessageSource <span class="title">configureMessageSource</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        ReloadableResourceBundleMessageSource messageSource = <span class="keyword">new</span> ReloadableResourceBundleMessageSource();</span><br><span class="line">        messageSource.setBasename(<span class="string">"classpath:messages"</span>);</span><br><span class="line">        messageSource.setCacheSeconds(<span class="number">5</span>);</span><br><span class="line">        messageSource.setDefaultEncoding(<span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="keyword">return</span> messageSource;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在<code>WebMvcConfig.java</code>配置中，我们做了以下几件事情：</p>
+<ul>
+<li>使用<code>@Configuration</code>注解将其标记为配置类</li>
+<li>使用<code>@EnbaleWebMvc</code>支持基于注解的Spring MVC配置</li>
+<li>通过注册<code>TemplateResolver, SpringTemplateEngine, ThymeleafViewResolver</code>来配置ThymeleafViewResolver。</li>
+<li>注册了ResourceHandler bean来说明对路径为<code>URI/resources/**</code>的静态资源的访问将会定向至<code>/resources/direcotry</code>。</li>
+<li>配置<code>MessageSource</code>来从<code>messages-{country-code}.properties</code>加载i18n信息。</li>
+</ul>
+<p>目前为止我们没有任何消息需要配置，所以只在<code>src/main/resources</code>文件夹中创建一个空的<code>message.properties</code>文件。</p>
+<h3 id="第四步：注册Spring-MVC的前端控制器DispatcherServlet"><a href="#第四步：注册Spring-MVC的前端控制器DispatcherServlet" class="headerlink" title="第四步：注册Spring MVC的前端控制器DispatcherServlet"></a>第四步：注册Spring MVC的前端控制器DispatcherServlet</h3><p>在Servlet3.x之前我们需要在<code>web.xml</code>文件中注册Servlets/Filters。从Servlet3.x开始我们可以直接使用代码在<code>ServletContainerInitializer</code>中注册。</p>
+<p>SpringMVC提供了一个很方便的类<code>AbstractAnnotationConfigDispatcherServletInitializer</code>来注册<code>DispatcherServlet</code>。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringWebAppInitializer</span> <span class="keyword">extends</span> <span class="title">AbstractAnnotationConfigDispatcherServletInitializer</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getRootConfigClasses()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Class&lt;?&gt;[] &#123; AppConfig.class&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getServletConfigClasses()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Class&lt;?&gt;[] &#123; WebMvcConfig.class &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> String[] getServletMappings()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String[] &#123; <span class="string">"/"</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Filter[] getServletFilters() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> Filter[]&#123; <span class="keyword">new</span> OpenEntityManagerInViewFilter() &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在<code>SpringWebAppInitializer.java</code>类中我们做了以下几件事情：</p>
+<ul>
+<li>将<code>AppConfig.class</code>配置为<code>RootConfigClassess</code>，使其成为应用上下文并包含被所有其它上下文所共享的bean定义。</li>
+<li>将<code>WebMvcConfig.class</code>配置为<code>ServletConfigClasses</code>，它包含WebMvc bean的上下文。</li>
+<li>将<code>/</code>作为<code>ServletMapping</code>，意味着所有的请求都将被<code>DispatcherServlet</code>处理  </li>
+<li>注册<code>OpenEntityManagerInViewFilter</code>作为Servlet过滤器，从而使我们可以在渲染视图的时候惰性加载JPA实体的集合。</li>
+</ul>
+<h3 id="第五步：创建JPA实体和JPA-DAO"><a href="#第五步：创建JPA实体和JPA-DAO" class="headerlink" title="第五步：创建JPA实体和JPA DAO"></a>第五步：创建JPA实体和JPA DAO</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span>(strategy=GenerationType.AUTO)</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="comment">//setters and getters</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">User</span>, <span class="title">Integer</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第六步：创建SpringMVC控制器"><a href="#第六步：创建SpringMVC控制器" class="headerlink" title="第六步：创建SpringMVC控制器"></a>第六步：创建SpringMVC控制器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span> UserRepository userRepo;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">home</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        model.addAttribute(<span class="string">"users"</span>, userRepo.findAll());</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"index"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第七步：创建一个Thymeleaf视图-WEB-INF-views-index-html来渲染用户列表"><a href="#第七步：创建一个Thymeleaf视图-WEB-INF-views-index-html来渲染用户列表" class="headerlink" title="第七步：创建一个Thymeleaf视图/WEB-INF/views/index.html来渲染用户列表"></a>第七步：创建一个Thymeleaf视图<code>/WEB-INF/views/index.html</code>来渲染用户列表</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/1999/xhtml"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">thead</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">th</span>&gt;</span>Id<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">th</span>&gt;</span>Name<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">thead</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">th:each</span>=<span class="string">"user : $&#123;users&#125;"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;user.id&#125;"</span>&gt;</span>Id<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;user.name&#125;"</span>&gt;</span>Name<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们现在可以启动应用了。但是在那之前我们需要在IDE中下载并配置服务器如Tomcat，Jetty或是Wildfly。</p>
+<p>你可以下载Tomcat8并在你最喜欢的IDE中配置它，然后运行应用并在浏览器中访问<code>http://localhost:8080/springmvcjpa-demo</code>，你应当会看见一个用户列表。</p>
+<p>耶…我们做到了。</p>
+<p>但是等等…只是为了展示一个从数据库中获取的用户列表，工作量未免太大了吧？<br>让我们客观的来看。所有的配置不只是为了这个应用场景，它还适用于所有其他的应用。<br>而且，再次强调，如果你想快速上手并运行，这里的工作量太大了。<br>还有一个问题是，假设你想开发另一个有相似技术栈的SpringMVC应用？那么你就需要复制粘贴这些配置并且修改。但是记住，当你需要重复的做一件事情的时候，你就应当寻找一个将其自动化的方法。</p>
+<p>除了需要一遍遍的写相同的配置，你还发现以下问题了吗？</p>
+<ul>
+<li>你需要为特定的Spring版本寻找兼容的库并且配置这些库</li>
+<li>在95%的情况下我们用相同的方式配置<code>DataSource, EntitymanagerFactory,TransactionManager</code>，spring不能自动帮我完成这些事情吗？</li>
+<li>同样的，我们在大多数情况下都用相同的方式配置SpringMVC beans如<code>ViewResolver, MessageSource</code>。</li>
+</ul>
+<blockquote>
+<p>如果Spring能够自动帮我完成这些事情，那真的是美滋滋！</p>
+</blockquote>
+<p>想想一下，如果Spring能够自动配置beans？如果你能够使用简单的自定义属性来自定义自动配置的过程？</p>
+<p>比如，你希望要将DispatcherServlet映射的URL模式从<code>/</code>改变为<code>/app/</code>。你还希望不要将Thymeleaf视图放在<code>/WEB-INF/views</code>文件夹中而是<code>/WEB-INF/templates/</code>文件夹中。</p>
+<p>所以基本上你希望Spring自动完成这些事情但是允许你用一种简单的方式重写默认的配置。</p>
+<p>那么，你讲进入SpringBoot的世界，在那里你将梦想成真！</p>
+<h2 id="Spring-Boot初体验"><a href="#Spring-Boot初体验" class="headerlink" title="Spring Boot初体验"></a>Spring Boot初体验</h2><p>欢迎来到Spring Boot！Spring Boot正是你所寻找的东西、它会自动帮你完成配置并允许你重写默认的配置。</p>
+<p>我将用一个例子来说明。让我们实现和之前相同的Web应用，不过这次我们使用Spring Boot。</p>
+<h3 id="第一步：创建一个基于Maven的Spring-Boot项目"><a href="#第一步：创建一个基于Maven的Spring-Boot项目" class="headerlink" title="第一步：创建一个基于Maven的Spring Boot项目"></a>第一步：创建一个基于Maven的Spring Boot项目</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 </span></span></span><br><span class="line"><span class="tag"><span class="string">                        http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.sivalabs<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hello-springboot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hello-springboot<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-thymeleaf<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-devtools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Wow!我们的<code>pom.xml</code>文件突然变得好短！</p>
+<h3 id="第二步：在application-properties中配置Datasource-JPA属性"><a href="#第二步：在application-properties中配置Datasource-JPA属性" class="headerlink" title="第二步：在application.properties中配置Datasource/JPA属性"></a>第二步：在application.properties中配置Datasource/JPA属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.url=jdbc:mysql://localhost:3306/test</span><br><span class="line">spring.datasource.username=root</span><br><span class="line">spring.datasource.password=admin</span><br><span class="line">spring.datasource.initialize=true</span><br><span class="line">spring.jpa.hibernate.ddl-auto=update</span><br><span class="line">spring.jpa.show-sql=true</span><br></pre></td></tr></table></figure>
+<h3 id="第三步：创建JPA实体和Repository"><a href="#第三步：创建JPA实体和Repository" class="headerlink" title="第三步：创建JPA实体和Repository"></a>第三步：创建JPA实体和Repository</h3><p>这里和Spring中创建的<code>User.java, UserRepository.java和HomeController.java</code>相同。</p>
+<h3 id="第四步：创建Thymeleaf视图展示用户列表"><a href="#第四步：创建Thymeleaf视图展示用户列表" class="headerlink" title="第四步：创建Thymeleaf视图展示用户列表"></a>第四步：创建Thymeleaf视图展示用户列表</h3><p>将<strong>springmvc-jpa-demo</strong>项目中的<code>/WEB-INF/views/index.html</code>复制到新项目的<code>src/-main/resources/templates</code>文件夹中。</p>
+<h3 id="第五步：创建SpringBoot入口类"><a href="#第五步：创建SpringBoot入口类" class="headerlink" title="第五步：创建SpringBoot入口类"></a>第五步：创建SpringBoot入口类</h3><p>创建一个带有main方法的<code>Application.java</code>类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在运行<code>Application.java</code>并且在浏览器上访问<code>http://localhost:8080/</code><br>你应该能够看到一个用户列表的表格。太酷了！<br>okok，我听到你在大喊“发生了什么？”<br>让我来解释发生了什么。</p>
+<p><strong>1.简单的依赖管理</strong></p>
+<ul>
+<li>首先，可以看到我们使用了一些形如<code>spring-boot-starter-*</code>的依赖。记住我说过“95%的情况下我们会使用相同个配置”。所以当你添加了<code>sping-boot-starter-web</code>依赖时，它会自动拉取开发SpringMVC所常用的库如<code>Spring-webmvc</code>，<code>jackson-json</code>，<code>validation-api</code>和<code>tomcat</code></li>
+<li>我们还添加了<code>spring-boot-starter-data-jpa</code>依赖。它会拉取所有<code>spring-data-jpa</code>的依赖，还会添加<code>Hibernate</code>库因为大多数应用都是用Hibernate作为JPA的实现。</li>
+</ul>
+<p><strong>2.自动配置</strong></p>
+<ul>
+<li><code>spring-boot-starter-web</code>不仅仅添加了和其相关的依赖，还默认配置了常见的bean比如<code>DispatcherServlet, ResourceHandlers, MessageSource</code>。</li>
+<li>我们还添加了<code>spring-boot-starter-Thymeleaf</code>依赖，它不仅添加Thymeleaf库还会自动配置<code>ThyemeleafViewResovler</code>。</li>
+<li>我们没有定义任何的<code>DataSource, EntityManagerFactory, TransactionManager</code>等bean，但是它们被自动创建了。怎么做到的？如果我们有内存级数据库如<code>H2</code>或是<code>HSQL</code>，那么SpringBoot就会自动创建一个内存的<code>EntityManager</code>并且注册<code>EntityManagerFactory</code>,将<code>TransactionsManager</code>beans按照默认自动配置。但是我们在使用MySQL，因此我们需要明确提供MySQL连接的详情。我们已经在<code>application.properties</code>中配置了连接详细信息，Spring Boot会利用这些配置创建一个<code>DataSource</code>。</li>
+</ul>
+<p><strong>3.嵌入式Servlet容器的支持</strong><br>最重要的是，我们使用<code>@SpringApplication</code>注解创建了一个简单的包含main函数的Java类。我们可以运行main方法启动应用并且通过<code>http://localhost:8080/</code>访问。</p>
+<p>servlet容器是哪里来的？<br><code>spring-boot-starter-web</code>自动拉取了<code>spring-boot-starter-tomcat</code>。当我们运行main方法时，它将tomcat作为内嵌容器启动，我们无需将应用部署到外部安装的tomcat服务器上。</p>
+<p>顺便说一下，你注意到我们的打包方式是jar而不是war吗。太棒了！</p>
+<p>好吧，那要是我想要用Jetty服务器而不是tomcat怎么办呢？很简单，你只需要在<code>spring-boot-starter-web</code>中exclude掉<code>spring-boot-starter-tomcat</code>然后include<code>spring-boot-starter-jetty</code>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章我们快速了解了一下各种Sring配置的风格，并且了解了配置Spring应用的复杂性。同时我们也快速了解了如何通过spring-boot创建一个简单的web应用。</p>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/why-springboot" target="_blank" rel="noopener">https://dzone.com/articles/why-springboot</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/08/猫头鹰的深夜翻译：使用组合模式来开关灯/" rel="next" title="猫头鹰的深夜翻译：使用组合模式来开关灯">
+                <i class="fa fa-chevron-left"></i> 猫头鹰的深夜翻译：使用组合模式来开关灯
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/08/API设计准则/" rel="prev" title="猫头鹰的深夜翻译：JAVA8 API设计准则">
+                猫头鹰的深夜翻译：JAVA8 API设计准则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring框架概览"><span class="nav-number">2.</span> <span class="nav-text">Spring框架概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于XML的配置"><span class="nav-number">2.1.</span> <span class="nav-text">基于XML的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于注解的配置"><span class="nav-number">2.2.</span> <span class="nav-text">基于注解的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于JavaConfig的配置"><span class="nav-number">2.3.</span> <span class="nav-text">基于JavaConfig的配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个只用Spring-MVC-和JPA-Hibernate-的Web应用"><span class="nav-number">3.</span> <span class="nav-text">一个只用Spring MVC 和JPA(Hibernate)的Web应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步：配置Maven依赖"><span class="nav-number">3.1.</span> <span class="nav-text">第一步：配置Maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二步：使用JavaConfig配置Service-Dao层"><span class="nav-number">3.2.</span> <span class="nav-text">第二步：使用JavaConfig配置Service/Dao层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三步：配置Spring-MVC-Web层"><span class="nav-number">3.3.</span> <span class="nav-text">第三步：配置Spring MVC Web层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四步：注册Spring-MVC的前端控制器DispatcherServlet"><span class="nav-number">3.4.</span> <span class="nav-text">第四步：注册Spring MVC的前端控制器DispatcherServlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五步：创建JPA实体和JPA-DAO"><span class="nav-number">3.5.</span> <span class="nav-text">第五步：创建JPA实体和JPA DAO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第六步：创建SpringMVC控制器"><span class="nav-number">3.6.</span> <span class="nav-text">第六步：创建SpringMVC控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第七步：创建一个Thymeleaf视图-WEB-INF-views-index-html来渲染用户列表"><span class="nav-number">3.7.</span> <span class="nav-text">第七步：创建一个Thymeleaf视图/WEB-INF/views/index.html来渲染用户列表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot初体验"><span class="nav-number">4.</span> <span class="nav-text">Spring Boot初体验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步：创建一个基于Maven的Spring-Boot项目"><span class="nav-number">4.1.</span> <span class="nav-text">第一步：创建一个基于Maven的Spring Boot项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二步：在application-properties中配置Datasource-JPA属性"><span class="nav-number">4.2.</span> <span class="nav-text">第二步：在application.properties中配置Datasource/JPA属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三步：创建JPA实体和Repository"><span class="nav-number">4.3.</span> <span class="nav-text">第三步：创建JPA实体和Repository</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四步：创建Thymeleaf视图展示用户列表"><span class="nav-number">4.4.</span> <span class="nav-text">第四步：创建Thymeleaf视图展示用户列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五步：创建SpringBoot入口类"><span class="nav-number">4.5.</span> <span class="nav-text">第五步：创建SpringBoot入口类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

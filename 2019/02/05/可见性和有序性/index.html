@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="为什么要额外写一篇文章来研究volatile呢？是因为这可能是并发中最令人困惑以及最被误解的结构。我看过不少解释volatile的博客，但是大多数要么不完整，要么难以理解。我会从并发中最重要的一些因素开始说起： 原子性原子性是不可分割的操作。它们要么全部实现，要么全部不实现。Java中原子操作的最佳例子是将一个值赋给变量。 可见性可见性是指：无论是哪个线程对一个共享的变量作出的修改或是带来的影响，">
+<meta name="keywords" content="java,翻译,Concurrency">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：Volatile的原子性, 可见性和有序性">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/可见性和有序性/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="为什么要额外写一篇文章来研究volatile呢？是因为这可能是并发中最令人困惑以及最被误解的结构。我看过不少解释volatile的博客，但是大多数要么不完整，要么难以理解。我会从并发中最重要的一些因素开始说起： 原子性原子性是不可分割的操作。它们要么全部实现，要么全部不实现。Java中原子操作的最佳例子是将一个值赋给变量。 可见性可见性是指：无论是哪个线程对一个共享的变量作出的修改或是带来的影响，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/可见性和有序性/图片1.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/可见性和有序性/图片2.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/可见性和有序性/图片3.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/可见性和有序性/图片4.png">
+<meta property="og:updated_time" content="2019-02-05T14:52:17.076Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：Volatile的原子性, 可见性和有序性">
+<meta name="twitter:description" content="为什么要额外写一篇文章来研究volatile呢？是因为这可能是并发中最令人困惑以及最被误解的结构。我看过不少解释volatile的博客，但是大多数要么不完整，要么难以理解。我会从并发中最重要的一些因素开始说起： 原子性原子性是不可分割的操作。它们要么全部实现，要么全部不实现。Java中原子操作的最佳例子是将一个值赋给变量。 可见性可见性是指：无论是哪个线程对一个共享的变量作出的修改或是带来的影响，">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/可见性和有序性/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/05/可见性和有序性/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：Volatile的原子性, 可见性和有序性 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/可见性和有序性/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：Volatile的原子性, 可见性和有序性
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 22:48:18 / 修改时间：22:52:17" itemprop="dateCreated datePublished" datetime="2019-02-05T22:48:18+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Concurrency/" itemprop="url" rel="index"><span itemprop="name">Concurrency</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>为什么要额外写一篇文章来研究<code>volatile</code>呢？是因为这可能是并发中最令人困惑以及最被误解的结构。我看过不少解释<code>volatile</code>的博客，但是大多数要么不完整，要么难以理解。我会从并发中最重要的一些因素开始说起：</p>
+<p><strong>原子性</strong><br>原子性是不可分割的操作。它们要么全部实现，要么全部不实现。Java中原子操作的最佳例子是将一个值赋给变量。</p>
+<p><strong>可见性</strong><br>可见性是指：无论是哪个线程对一个共享的变量作出的修改或是带来的影响，读其他的线程都是可见的。</p>
+<p><strong>有序性</strong><br>有序性是指源码中指令是否会被编译器出于优化而改变执行顺序。有可能一个线程中的动作相对于另一个线程出现乱序。</p>
+<a id="more"></a>
+<p>现在举一个例子来理解这些因素：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApp</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upateVisitors</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       ++count; <span class="comment">//increment the visitors count</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>Hint: read-modify-write </em></p>
+<p>这一段代码中有一个试图更新应用（网页）的访客数量的方法。这段代码的问题在于<code>++count</code>指令不是原子性的，它包含三条独立的指令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">temp = count;   (read)</span><br><span class="line">temp = temp + <span class="number">1</span>;   (modify)</span><br><span class="line">count = temp;  (write)</span><br></pre></td></tr></table></figure></p>
+<p>因此，当一个线程正在执行此操作时，此指令可以被另一个线程预占。从而不是原子性操作。假设count的值为10，并且有如下的执行顺序：</p>
+<img src="/2019/02/05/可见性和有序性/图片1.png" title="图片1">
+<p>我们会发现：在某个很不巧合的时刻，两个线程同时读取到了值（10），然后彼此将其值加一。所以在这个过程有一个递增的操作丢失了。当实际输出取决于线程交错的结果时，这种情况被称为竞争条件（race condition）。这里丢失了一次递增。那么并发的哪些方面在这里缺失了？原子性。再考虑一个创建单例的例子（当然也是不好的例子）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(_instance == <span class="keyword">null</span>)</span><br><span class="line">   &#123; </span><br><span class="line">      _instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>Hint: check-then-act</em></p>
+<p>再一次的，可能有两个线程都判断这实例为null，并且都进入了if代码块。这会导致两个实例的创建。这里的问题在于代码块不是原子性的，而且实例的变化对别的线程不可见。这种不能同时在多个线程上执行的部分被称为关键部分（critical section）。对于关键部分，我们需要使用synchronized块和synchronized方法。</p>
+<p><strong>还是原子性</strong><br>为了确保原子性，我们通常使用锁来确保互斥。参考下面的例子，一个银行账户使用<code>synchronized</code>方法上锁。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BankAccount</span> </span>&#123;</span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">int</span> accountBalance;</span><br><span class="line"> <span class="function"><span class="keyword">synchronized</span> <span class="keyword">int</span> <span class="title">getAccountBalance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accountBalance;  </span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setAccountBalance</span><span class="params">(<span class="keyword">int</span> b)</span> <span class="keyword">throws</span> IllegalStateException </span>&#123;</span><br><span class="line">    accountBalance = b;</span><br><span class="line">    <span class="keyword">if</span> (accountBalance &lt; <span class="number">0</span>) &#123;</span><br><span class="line">     <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Sorry but account has negative Balance"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">depositMoney</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> balance = getAccountBalance();</span><br><span class="line">    setAccountBalance(balance + amount);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">withdrawMoney</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> balance = getAccountBalance();</span><br><span class="line">    setAccountBalance(balance - amount);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对共享变量<code>balance</code>的访问通过锁来保护，从而数据竞争不会有问题。这个类有问题吗？是有的。假设一个线程调用<code>depositMoney(50)</code>而另一个线程调用<code>withdrawMoney(50)</code>，并且<code>balance</code>的初始值为100。理想情况下操作完成后<code>balance</code>应该为0。但是我们无法保证得到这个结果：</p>
+<ul>
+<li><code>depositMoney</code>操作读取的<code>balance</code>值为100</li>
+<li><code>withdrawMoney</code>操作读取的<code>balance</code>值也是100，它在此基础上减去50元并将其设为50元。</li>
+<li>最终<code>depositMoney</code>在之前看到的<code>balance</code>值的基础上加上50，并将其设为150。</li>
+</ul>
+<p>再次因为没有保证原子性而丢失了一个更新。如果两种方法都被声明为同步，则将在整个方法期间确保锁定，并且改变将以原子方式进行。</p>
+<p><strong>再谈可见性</strong><br>如果一个线程的操作对另一个线程可见，那么其他线程也会观察到它的所有操作的结果。考虑下面的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LooperThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isDone = <span class="keyword">false</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       <span class="keyword">while</span>( !isDone ) &#123;</span><br><span class="line">          doSomeWork();</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stopWork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       isDone = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里缺失了什么？假设<code>LooperThread</code>的一个实例正在运行，主线程调用了<code>stopWord</code>来中止它。这两个线程之间没有实现同步。编译器会以为在第一个线程中没有对<code>isDone</code>执行写入操作，并且决定只读入<code>isDone</code>一次。于是，线程炸了！部分JVM可能会这样做，从而使其变成无限循环。因此答案显然是缺乏可见性。</p>
+<p><strong>再谈有序性</strong><br>有序性是关于事情发生的顺序。考虑下面的例子：</p>
+<img src="/2019/02/05/可见性和有序性/图片2.png" title="图片2">
+<p>在上述情况下，线程2能打印出<code>value = 0</code>吗？其实是有可能的。在编译器重新排序中<code>result=true</code>可能会在<code>value=1</code>之前出现。<code>value = 1</code>也可能不对线程2可见，然后线程2将加载<code>value = 0</code>。我们可以使用<code>volatile</code>解决这个问题吗？</p>
+<p><strong>CPU架构（多层RAMs）</strong><br>CPU现在通常多核，并且线程将在不同核心上运行。另外还有不同级别的高速缓存，如下图所示：</p>
+<img src="/2019/02/05/可见性和有序性/图片3.png" title="图片3">
+<p>当一个volatile变量被任何线程写入一个特定的核心，所有其他核心的值都需要更新，因为每个核心都有其自己的缓存，该缓存内有变量的旧值。消息传递给所有内核以更新值。</p>
+<p><strong>volatile</strong><br>根据Java文档，如果一个变量被声明为volatile，那么Java内存模型（在JDK 5之后）确保所有线程都看到变量的一致值。volatile就像是synchronized的一个亲戚，读取volatile数据就像是进入一个synchronized块，而写入volatile数据就像是从synchronized块中离开。当写入一个volatile值时，这个值直接写入主存而不是本地处理器的缓存，并且通过发送消息提醒其它内核的缓存该值的更新。<strong>Volatile不是原子性操作</strong></p>
+<blockquote>
+<p>volatile保证顺序性和可见性但是不保证互斥或是原子性。锁能保证原子性，可视性和顺序性。所以volatile不能代替synchronized。</p>
+</blockquote>
+<p><strong>volatile读与写</strong><br><code>volatile</code>提供了顺序性保障，这意味着编译器生成的指令不能以实际源代码指令定义的顺序以外的其他顺序执行操作结果。尽管生成的指令的顺序可能与源代码的原始顺序不同，但所产生的效果必须相同。我们还需要从Java Doc中观察以下关于读写的内容：</p>
+<blockquote>
+<p>当一个线程读取一个volatile变量时，它不仅会看到volatile的最新变化，还会看到导致变化的代码的副作用。</p>
+</blockquote>
+<p>我们需要了解以下有关读写volatile的内容:</p>
+<ul>
+<li>当一个线程写入一个volatile变量，另一个线程看到写入，第一个线程会告诉第二个线程关于内存变化的内容，直到它执行写入该volatile变量。</li>
+<li>在这里，线程2看到了线程1的内容。</li>
+</ul>
+<img src="/2019/02/05/可见性和有序性/图片4.png" title="图片4">
+<p><strong>我们可以声明 final 类型的volatile变量吗？</strong><br>如果一个变量是final的，我们不能改变它的值，volatile就是确保对其他线程可见的共享变量的更改。所以这是不允许的，并会导致编译错误。</p>
+<p><strong>为什么我们在并发编程中声明long / double为volatile？</strong><br>默认情况下long/double的读写不是原子性的。非原子性的double/long写操作会被当做两个写入操作：分别写入前32位和后32位。它可能会导致一个线程看到另一个线程写入的64位值的前32位，而第二个线程看到来自另一个线程写入的后32位。读写volatile的long/double类型变量总是原子性的。</p>
+<p><strong>Volatile vs Atomic类</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApp</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upateVisitors</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       ++count; <span class="comment">//increment the visitors count</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果我们将count声明为<code>atomic</code>，这段代码可以正常运行吗？可以的，而且当对变量进行增加或减少操作时，最好使用<code>atomic</code>类。<code>AtomicInteger</code>通常使用<code>volatile</code>或是CAS来实现线程安全。</p>
+<blockquote>
+<p>原文链接: <a href="http://flex4java.blogspot.kr/2015/03/volatile-atomicity-visibility-and.html" target="_blank" rel="noopener">http://flex4java.blogspot.kr/2015/03/volatile-atomicity-visibility-and.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+            <a href="/tags/Concurrency/" rel="tag"># Concurrency</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/05/Socket/" rel="next" title="初探Java Socket">
+                <i class="fa fa-chevron-left"></i> 初探Java Socket
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/05/CAS/" rel="prev" title="猫头鹰的深夜翻译：Java中的CAS(Compare And Swap)">
+                猫头鹰的深夜翻译：Java中的CAS(Compare And Swap) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

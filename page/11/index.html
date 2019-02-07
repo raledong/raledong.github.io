@@ -327,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode152/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode71/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -347,7 +347,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode152/" class="post-title-link" itemprop="url">leetcode152.Maximum Product Subarray</a>
+                <a href="/2019/02/04/leetcode71/" class="post-title-link" itemprop="url">leetcode71.Simplify Path</a>
               
             
           </h1>
@@ -372,7 +372,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 20:28:10 / 修改时间：20:31:20" itemprop="dateCreated datePublished" datetime="2019-02-04T20:28:10+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 23:26:26 / 修改时间：23:32:17" itemprop="dateCreated datePublished" datetime="2019-02-04T23:26:26+08:00">2019-02-04</time>
             
 
             
@@ -437,17 +437,550 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Find the contiguous subarray within an array (containing at least one number) which has the largest product.</span><br><span class="line"></span><br><span class="line">For example, given the array [2,3,-2,4],</span><br><span class="line">the contiguous subarray [2,3] has the largest product = 6.</span><br></pre></td></tr></table></figure>
-<p>从一个整数数组中找到一个子数组，该子数组中的所有元素的乘积最大。<br>比如数组[2,-3,-2,4]的最大乘积子数组为[2,3]</p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Given an absolute path for a file (Unix-style), simplify it.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">path = &quot;/home/&quot;, =&gt; &quot;/home&quot;</span><br><span class="line">path = &quot;/a/./b/../../c/&quot;, =&gt; &quot;/c&quot;</span><br><span class="line">click to show corner cases.</span><br><span class="line"></span><br><span class="line">Did you consider the case where path = &quot;/../&quot;?</span><br><span class="line">In this case, you should return &quot;/&quot;.</span><br><span class="line">Another corner case is the path might contain multiple slashes &apos;/&apos; together, such as &quot;/home//foo/&quot;.</span><br><span class="line">In this case, you should ignore redundant slashes and return &quot;/home/foo&quot;.</span><br></pre></td></tr></table></figure>
+<p>简化unix风格的绝对路径。<br>这里简单说一下unix风格的路径：</p>
+<ul>
+<li><code>.</code>表示当前文件夹，即不进行任何操作</li>
+<li><code>..</code>表示返回上层文件夹，如果已经至根目录，则不进行任何操作</li>
+<li><code>/</code>表示路径的分割线，多个连续的<code>/</code>等价于<code>/</code></li>
+</ul>
+<p>这里我们需要将复杂的unix路径，例如<code>/a/./b/../../c/</code>简化成最简形式<code>/c</code><br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode152/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode71/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
           
           <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode65/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode65/" class="post-title-link" itemprop="url">leetcode65.Valid Number</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 23:21:54 / 修改时间：23:25:54" itemprop="dateCreated datePublished" datetime="2019-02-04T23:21:54+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Validate if a given string is numeric.</span><br><span class="line"></span><br><span class="line">Some examples:</span><br><span class="line">&quot;0&quot; =&gt; true</span><br><span class="line">&quot; 0.1 &quot; =&gt; true</span><br><span class="line">&quot;abc&quot; =&gt; false</span><br><span class="line">&quot;1 a&quot; =&gt; false</span><br><span class="line">&quot;2e10&quot; =&gt; true</span><br><span class="line">Note: It is intended for the problem statement to be ambiguous. You should gather all requirements up front before implementing one.</span><br></pre></td></tr></table></figure>
+<p>写一个算法 判断输入的字符串是否是数字。<br>这道题的需求给的较为模糊，对于什么是数字并没有给出明确的定义。这里我要给出几个特殊的情况来说明数字究竟是什么。</p>
+<ol>
+<li>空值返回false</li>
+<li>字符串前后的空白字符不影响字符串最终的结果</li>
+<li><strong>1.</strong>以及<strong>.1</strong>都是符合标准的小数，但是<strong>.</strong>不符合</li>
+<li><strong>e</strong>的前后必须有数字，e前的数字可以为整数或是小数，e后的数字必须为正/负整数/0
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/04/leetcode65/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </li></ol></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode75/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode75/" class="post-title-link" itemprop="url">leetcode75.Sort Colors</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 23:09:47 / 修改时间：23:11:05" itemprop="dateCreated datePublished" datetime="2019-02-04T23:09:47+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.</span><br><span class="line"></span><br><span class="line">Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">You are not suppose to use the library&apos;s sort function for this problem.</span><br><span class="line">    </span><br><span class="line">Follow up:</span><br><span class="line">A rather straight forward solution is a two-pass algorithm using counting sort.</span><br><span class="line">First, iterate the array counting number of 0&apos;s, 1&apos;s, and 2&apos;s, then overwrite array with total number of 0&apos;s, then 1&apos;s and followed by 2&apos;s.</span><br><span class="line"></span><br><span class="line">Could you come up with an one-pass algorithm using only constant space?</span><br></pre></td></tr></table></figure>
+<p>假设一个数组中存在3个数字0，1，2。将数组中的数字排序，尽量实现O(n)时间复杂度。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/04/leetcode75/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode74/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/04/leetcode74/" class="post-title-link" itemprop="url">leetcode74.Search a 2D Matrix</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-04 22:58:37 / 修改时间：23:05:18" itemprop="dateCreated datePublished" datetime="2019-02-04T22:58:37+08:00">2019-02-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:</span><br><span class="line"></span><br><span class="line">Integers in each row are sorted from left to right.</span><br><span class="line">The first integer of each row is greater than the last integer of the previous row.</span><br><span class="line">For example,</span><br><span class="line"></span><br><span class="line">Consider the following matrix:</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  [1,   3,  5,  7],</span><br><span class="line">  [10, 11, 16, 20],</span><br><span class="line">  [23, 30, 34, 50]</span><br><span class="line">]</span><br><span class="line">Given target = 3, return true.</span><br></pre></td></tr></table></figure>
+<p>假设存在这样一个二维数组，该数组从左到右，从上到下均递增，且下一行第一个值比上一行最后一个值大。要求从里面找到一个目标值，存在则返回true，否则返回false</p>
+<h2 id="一维二分法"><a href="#一维二分法" class="headerlink" title="一维二分法"></a>一维二分法</h2><p>熟悉二分法的知道，在一个有序的一维数组中，可以只用O(lgn)的时间复杂度就可以从中判读出目标值是否存在。我们可以先对第一列上的值进行一次二分法遍历，确定了行后再在行中进行第二次的二分法遍历。总计的时间复杂度为O(lgn），代码如下：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">searchMatrix</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> row = matrix.length;</span><br><span class="line">    <span class="keyword">if</span>(row==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> column = matrix[<span class="number">0</span>].length;</span><br><span class="line">    <span class="keyword">if</span>(column==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> leftPointer = <span class="number">0</span>, rightPointer=row-<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(leftPointer&lt;=rightPointer)&#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (leftPointer+rightPointer) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(matrix[mid][<span class="number">0</span>]&lt;=target &amp;&amp; matrix[mid][column-<span class="number">1</span>]&gt;=target)&#123;</span><br><span class="line">            leftPointer = <span class="number">0</span>;</span><br><span class="line">            rightPointer = column-<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span>(leftPointer&lt;=rightPointer)&#123;</span><br><span class="line">                <span class="keyword">int</span> columnMid = (leftPointer + rightPointer) / <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(matrix[mid][columnMid] == target)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span> <span class="keyword">if</span>(matrix[mid][columnMid] &lt; target)&#123;</span><br><span class="line">                    rightPointer = columnMid-<span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    leftPointer = columnMid + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&lt;matrix[mid][<span class="number">0</span>])&#123;</span><br><span class="line">            rightPointer = mid-<span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            leftPointer = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二维二分法"><a href="#二维二分法" class="headerlink" title="二维二分法"></a>二维二分法</h2><p>如何能之间在二维数组上使用二分法呢。其实只要我们找到相应的左指针和右指针以及其对应的中间位置上的值即可。其实这个二维数组完全可以看成一个连续的一维数组，位于二维数组[i,j]位置可以看成一维数组中下标为[i*column+j].由此我们知道，左右指针对应中间节点在二维数组的下标为[mid/column][mid%column]。代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">searchMatrix2</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(matrix==<span class="keyword">null</span> || matrix.length==<span class="number">0</span> || matrix[<span class="number">0</span>].length==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> row = matrix.length;</span><br><span class="line">    <span class="keyword">int</span> column = matrix[<span class="number">0</span>].length;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> right = row*column-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(left&lt;=right)&#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (left + right) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> tempVal = matrix[mid/column][mid%column];</span><br><span class="line">        <span class="keyword">if</span>(tempVal == target)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(tempVal &lt; target)&#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
         
       
     </div>
@@ -502,7 +1035,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode187/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode77/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -522,7 +1055,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode187/" class="post-title-link" itemprop="url">leetcode187.Repeated DNA Sequences</a>
+                <a href="/2019/02/04/leetcode77/" class="post-title-link" itemprop="url">leetcode77.Combinations</a>
               
             
           </h1>
@@ -547,7 +1080,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 20:24:08 / 修改时间：20:27:20" itemprop="dateCreated datePublished" datetime="2019-02-04T20:24:08+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 22:56:52 / 修改时间：22:58:03" itemprop="dateCreated datePublished" datetime="2019-02-04T22:56:52+08:00">2019-02-04</time>
             
 
             
@@ -612,13 +1145,12 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: &quot;ACGAATTCCG&quot;. </span><br><span class="line">When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.</span><br><span class="line"></span><br><span class="line">Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given s = &quot;AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT&quot;,</span><br><span class="line"></span><br><span class="line">Return:</span><br><span class="line">[&quot;AAAAACCCCC&quot;, &quot;CCCCCAAAAA&quot;].</span><br></pre></td></tr></table></figure>
-<p>所有的DNA都是有A,C,G,T这四个字母组成的，比如<strong>“ACGAATTCCG”</strong>。在研究DNA的时候，从DNA序列中找到重复出现的模式是很有用的。这个问题要求我们在一个DNA序列中找到出现超过两次的长度为10的子序列。</p>
-<p>比如，假设DNA序列为<strong>AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT</strong>，那么找到的满足条件的子序列为<strong>[“AAAAACCCCC”, “CCCCCAAAAA”]</strong></p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">If n = 4 and k = 2, a solution is:</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  [2,4],</span><br><span class="line">  [3,4],</span><br><span class="line">  [2,3],</span><br><span class="line">  [1,2],</span><br><span class="line">  [1,3],</span><br><span class="line">  [1,4],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>有整数从1到n，问从中任选两个数有多少排列组合的结果（顺序无关）<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode187/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode77/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -626,7 +1158,7 @@
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -678,7 +1210,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode190/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode80/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -698,7 +1230,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode190/" class="post-title-link" itemprop="url">leetcode190.Reverse Bits</a>
+                <a href="/2019/02/04/leetcode80/" class="post-title-link" itemprop="url">leetcode80.Remove Duplicates from Sorted Array II</a>
               
             
           </h1>
@@ -723,7 +1255,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 20:20:09 / 修改时间：20:21:27" itemprop="dateCreated datePublished" datetime="2019-02-04T20:20:09+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 22:35:27 / 修改时间：22:56:25" itemprop="dateCreated datePublished" datetime="2019-02-04T22:35:27+08:00">2019-02-04</time>
             
 
             
@@ -788,11 +1320,12 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Reverse bits of a given 32 bits unsigned integer.</span><br><span class="line"></span><br><span class="line">For example, given input 43261596 (represented in binary as 00000010100101000001111010011100), </span><br><span class="line">return 964176192 (represented in binary as 00111001011110000010100101000000).</span><br><span class="line"></span><br><span class="line">Follow up:</span><br><span class="line">If this function is called many times, how would you optimize it?</span><br></pre></td></tr></table></figure>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Follow up for &quot;Remove Duplicates&quot;:</span><br><span class="line">What if duplicates are allowed at most twice?</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given sorted array nums = [1,1,1,2,2,3],</span><br><span class="line"></span><br><span class="line">Your function should return length = 5, with the first five elements of nums being 1, 1, 2, 2 and 3. It doesn&apos;t matter what you leave beyond the new length.</span><br></pre></td></tr></table></figure>
+<p>Remove Duplicates I 可以参考我的<a href="https://segmentfault.com/a/1190000008768457" target="_blank" rel="noopener">这篇博客</a><br>这题中添加了一个要求，就是允许存在两个重复值。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode190/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode80/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -800,7 +1333,7 @@
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -852,7 +1385,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode198-213/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode51-52/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -872,7 +1405,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode198-213/" class="post-title-link" itemprop="url">leetcode198-213.House Robber</a>
+                <a href="/2019/02/04/leetcode51-52/" class="post-title-link" itemprop="url">leetcode51-52.N-Queens</a>
               
             
           </h1>
@@ -897,7 +1430,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 20:11:14 / 修改时间：20:14:49" itemprop="dateCreated datePublished" datetime="2019-02-04T20:11:14+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 22:31:19 / 修改时间：22:34:57" itemprop="dateCreated datePublished" datetime="2019-02-04T22:31:19+08:00">2019-02-04</time>
             
 
             
@@ -962,12 +1495,14 @@
 
       
         
-          <h2 id="House-Robber-I"><a href="#House-Robber-I" class="headerlink" title="House Robber I"></a>House Robber I</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, </span><br><span class="line">the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police </span><br><span class="line">if two adjacent houses were broken into on the same night.</span><br><span class="line"></span><br><span class="line">Given a list of non-negative integers representing the amount of money of each house, </span><br><span class="line">determine the maximum amount of money you can rob tonight without alerting the police.</span><br></pre></td></tr></table></figure>
-<p>假设你现在是一个小偷，想要一整条街上的人家。你不能连着偷两家因为这样会触发警报系统。现在有一个nums数组存放着每一家中的可偷金额，问可以偷的最大金额为多少？</p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.</span><br></pre></td></tr></table></figure>
+<img src="/2019/02/04/leetcode51-52/图片1.png" title="图片1">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Given an integer n, return all distinct solutions to the n-queens puzzle.</span><br><span class="line"></span><br><span class="line">Each solution contains a distinct board configuration of the n-queens&apos; placement, where &apos;Q&apos; and &apos;.&apos; both indicate a queen and an empty space respectively.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">There exist two distinct solutions to the 4-queens puzzle:</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line"> [&quot;.Q..&quot;,  // Solution 1</span><br><span class="line">  &quot;...Q&quot;,</span><br><span class="line">  &quot;Q...&quot;,</span><br><span class="line">  &quot;..Q.&quot;],</span><br><span class="line"></span><br><span class="line"> [&quot;..Q.&quot;,  // Solution 2</span><br><span class="line">  &quot;Q...&quot;,</span><br><span class="line">  &quot;...Q&quot;,</span><br><span class="line">  &quot;.Q..&quot;]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这里的王后相当于国际围棋的王后，该王后一共有三种移动方式：水平、垂直，对角线。问要如何将n个王后布局在n*n的棋盘中保证她们不会互相伤害捏？<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode198-213/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode51-52/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -975,7 +1510,7 @@
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -1027,7 +1562,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode225/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode78/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1047,7 +1582,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode225/" class="post-title-link" itemprop="url">leetcode225.Implement stack using queues</a>
+                <a href="/2019/02/04/leetcode78/" class="post-title-link" itemprop="url">leetcode78.Subsets</a>
               
             
           </h1>
@@ -1072,7 +1607,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 20:06:35 / 修改时间：20:13:44" itemprop="dateCreated datePublished" datetime="2019-02-04T20:06:35+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 22:28:11 / 修改时间：22:30:16" itemprop="dateCreated datePublished" datetime="2019-02-04T22:28:11+08:00">2019-02-04</time>
             
 
             
@@ -1137,14 +1672,12 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Implement the following operations of a queue using stacks.</span><br><span class="line"></span><br><span class="line">push(x) -- Push element x to the back of queue.</span><br><span class="line">pop() -- Removes the element from in front of queue.</span><br><span class="line">peek() -- Get the front element.</span><br><span class="line">empty() -- Return whether the queue is empty.</span><br><span class="line">Notes:</span><br><span class="line">You must use only standard operations of a stack -- which means only push to top, peek/pop from top, size, and is empty operations are valid.</span><br><span class="line">Depending on your language, stack may not be supported natively. You may simulate a stack by using a list or deque (double-ended queue), as long as you use only standard operations of a stack.</span><br><span class="line">You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).</span><br></pre></td></tr></table></figure>
-<p>使用队列来模拟实现一个栈。<br>栈是指先进后出的数据结构，而队列则是先进先出的数据结构。<br>假设我们分别往栈和队列中顺序输入[1,2,3]，那么栈的输出是[3,2,1]，而队列的输出的[1,2,3]。</p>
-<p>队列的API包括在队列尾插入数据，输出队列头的数据，查看队列的长度，队列是否为空。</p>
-<p>那么我们现在看一下如何通过队列来实现栈的操作。</p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Given a set of distinct integers, nums, return all possible subsets.</span><br><span class="line"></span><br><span class="line">Note: The solution set must not contain duplicate subsets.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">If nums = [1,2,3], a solution is:</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  [3],</span><br><span class="line">  [1],</span><br><span class="line">  [2],</span><br><span class="line">  [1,2,3],</span><br><span class="line">  [1,3],</span><br><span class="line">  [2,3],</span><br><span class="line">  [1,2],</span><br><span class="line">  []</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>类似的题目有：<br>leetcode60 Permutation Sequence 可以参考<a href="https://segmentfault.com/a/1190000010006834" target="_blank" rel="noopener">这篇博客</a><br>leetcode77 Combinations 可以参考<a href="https://segmentfault.com/a/1190000010057342" target="_blank" rel="noopener">这篇博客</a><br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode225/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode78/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1152,7 +1685,7 @@
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -1204,7 +1737,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode224/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode86/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1224,7 +1757,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode224/" class="post-title-link" itemprop="url">leetcode224.Basic Calculator</a>
+                <a href="/2019/02/04/leetcode86/" class="post-title-link" itemprop="url">leetcode86.Partition List</a>
               
             
           </h1>
@@ -1249,7 +1782,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 20:02:06 / 修改时间：20:06:17" itemprop="dateCreated datePublished" datetime="2019-02-04T20:02:06+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 22:26:30 / 修改时间：22:27:48" itemprop="dateCreated datePublished" datetime="2019-02-04T22:26:30+08:00">2019-02-04</time>
             
 
             
@@ -1314,12 +1847,12 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Implement a basic calculator to evaluate a simple expression string.</span><br><span class="line"></span><br><span class="line">The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces .</span><br><span class="line"></span><br><span class="line">You may assume that the given expression is always valid.</span><br><span class="line"></span><br><span class="line">Some examples:</span><br><span class="line">&quot;1 + 1&quot; = 2</span><br><span class="line">&quot; 2-1 + 2 &quot; = 3</span><br><span class="line">&quot;(1+(4+5+2)-3)+(6+8)&quot; = 23</span><br><span class="line">Note: Do not use the eval built-in library function.</span><br></pre></td></tr></table></figure>
-<p>实现一个简单的计算器，这个计算器可以计算以String为输入的中序表达式。这个中序表达式包含<code>(),+,-和数字</code>。题目中也给出了例子。<br>还有一个比较特殊的情况为<code>(3)-(4)-(5) = -6</code></p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</span><br><span class="line"></span><br><span class="line">You should preserve the original relative order of the nodes in each of the two partitions.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,</span><br><span class="line">return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</span><br></pre></td></tr></table></figure>
+<p>将小于x的值放在前面，大于等于x的值放在后面，移动的过程中不改变数字之间的相对顺序。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode224/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1327,7 +1860,7 @@
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -1379,7 +1912,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode232/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode37/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rale Dong">
@@ -1399,7 +1932,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/04/leetcode232/" class="post-title-link" itemprop="url">leetcode232.Implement Queue using Stacks</a>
+                <a href="/2019/02/04/leetcode37/" class="post-title-link" itemprop="url">leetcode37.Sudoku Solver</a>
               
             
           </h1>
@@ -1424,7 +1957,7 @@
                 
               
 
-              <time title="创建时间：2019-02-04 19:53:53 / 修改时间：20:14:57" itemprop="dateCreated datePublished" datetime="2019-02-04T19:53:53+08:00">2019-02-04</time>
+              <time title="创建时间：2019-02-04 22:22:51 / 修改时间：22:25:52" itemprop="dateCreated datePublished" datetime="2019-02-04T22:22:51+08:00">2019-02-04</time>
             
 
             
@@ -1489,12 +2022,14 @@
 
       
         
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Implement the following operations of a queue using stacks.</span><br><span class="line"></span><br><span class="line">push(x) -- Push element x to the back of queue.</span><br><span class="line">pop() -- Removes the element from in front of queue.</span><br><span class="line">peek() -- Get the front element.</span><br><span class="line">empty() -- Return whether the queue is empty.</span><br><span class="line">Notes:</span><br><span class="line">You must use only standard operations of a stack -- which means only push to top, peek/pop from top, size, and is empty operations are valid.</span><br><span class="line">Depending on your language, stack may not be supported natively. You may simulate a stack by using a list or deque (double-ended queue), as long as you use only standard operations of a stack.</span><br><span class="line">You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).</span><br></pre></td></tr></table></figure>
-<p>通过队列实现一个栈的功能。栈的api为push（压入栈顶），pop（出栈），peek（栈顶元素），empty（栈是否为空）。这道题和之前的使用栈实现队列功能是类似的，可以参考我的<a href="https://segmentfault.com/a/1190000012685111" target="_blank" rel="noopener">这篇博客</a>。</p>
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Write a program to solve a Sudoku puzzle by filling the empty cells.</span><br><span class="line"></span><br><span class="line">Empty cells are indicated by the character &apos;.&apos;.</span><br><span class="line"></span><br><span class="line">You may assume that there will be only one unique solution.</span><br></pre></td></tr></table></figure>
+<img src="/2019/02/04/leetcode37/图片1.png" title="图片1.png">
+<img src="/2019/02/04/leetcode37/图片2.png" title="图片2.png">
+<p>也就是给出一个解决数独的方法，假设每个数独只有一个解决方案。<br>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode232/#more" rel="contents">
+              <a class="btn" href="/2019/02/04/leetcode37/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1502,532 +2037,7 @@
           <!--/noindex-->
         
       
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode148/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/04/leetcode148/" class="post-title-link" itemprop="url">leetcode148.Sort List</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-04 19:52:16 / 修改时间：19:53:26" itemprop="dateCreated datePublished" datetime="2019-02-04T19:52:16+08:00">2019-02-04</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sort a linked list in O(n log n) time using constant space complexity.</span><br></pre></td></tr></table></figure>
-<p>用O(n log n)的时间复杂度和O(1)的空间复杂度检索一个链表。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode148/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode202/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/04/leetcode202/" class="post-title-link" itemprop="url">leetcode202.Happy Number</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-04 19:49:14 / 修改时间：20:15:18" itemprop="dateCreated datePublished" datetime="2019-02-04T19:49:14+08:00">2019-02-04</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><img src="/2019/02/04/leetcode202/题目要求.png" title="题目要求">
-<p>实现一个算法来判断一个数字是否开心。一个开心数字是指将数字的各个位上的数求平方和，如果这个数字最终能够计算至1，那么这个数字就是一个开心数字。如果这个数字一直在某个圈中循环，那么这就不是一个开心数字。题目中也给了19这个例子。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode202/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode235-236/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/04/leetcode235-236/" class="post-title-link" itemprop="url">leetcode235-236.Lowest Common Ancestor</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-04 19:47:14 / 修改时间：19:48:57" itemprop="dateCreated datePublished" datetime="2019-02-04T19:47:14+08:00">2019-02-04</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="235题-题目要求"><a href="#235题-题目要求" class="headerlink" title="235题 题目要求"></a>235题 题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.</span><br><span class="line"></span><br><span class="line">According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</span><br><span class="line"></span><br><span class="line">        _______6______</span><br><span class="line">       /              \</span><br><span class="line">    ___2__          ___8__</span><br><span class="line">   /      \        /      \</span><br><span class="line">   0      _4       7       9</span><br><span class="line">         /  \</span><br><span class="line">         3   5</span><br><span class="line">For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.</span><br></pre></td></tr></table></figure>
-<p>现在有一棵搜索二叉树，这个二叉树的特点是左子树的节点一定小于根节点，而右子树的节点一定大于根节点。现在提供这棵树的根节点，并且输入两个节点，问这两个节点的最低共同父节点是谁？<br><em>最低共同父节点是指两个节点在沿父节点向上爬升时遇到的第一个共同父节点，同时它也允许父节点就是其本身，比如在上图中2和4的最低共同父节点就是2</em></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/04/leetcode235-236/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
+    </p></div>
 
     
 
@@ -2068,7 +2078,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2113,7 +2123,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">162</span>
+                    <span class="site-state-item-count">209</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2134,7 +2144,31 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2241,7 +2275,49 @@
                     
                       
                     
-                    <span class="site-state-item-count">47</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言基于角色的权限控制（RBAC)是管理用户对某种资源或操作的权限的通用方法。权限可以明确指定可以访问的资源和操作。基本原理如下：权限将被分配给某个角色，并将该角色分配给某个用户或者是用户组，而不是直接分配给某个用户。 角色与权限捆绑将权限与单个用户关联起来是一件很复杂的事情，随着更多的用户使用系统，维护用户的权限变得更加困难，且容易出错。权限的错误分配会阻止用户访问所需的系统，甚至是允许非授权用">
+<meta name="keywords" content="java,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言基于角色的权限控制（RBAC)是管理用户对某种资源或操作的权限的通用方法。权限可以明确指定可以访问的资源和操作。基本原理如下：权限将被分配给某个角色，并将该角色分配给某个用户或者是用户组，而不是直接分配给某个用户。 角色与权限捆绑将权限与单个用户关联起来是一件很复杂的事情，随着更多的用户使用系统，维护用户的权限变得更加困难，且容易出错。权限的错误分配会阻止用户访问所需的系统，甚至是允许非授权用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/图片1.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/图片2.png">
+<meta property="og:updated_time" content="2019-02-04T18:49:50.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制">
+<meta name="twitter:description" content="前言基于角色的权限控制（RBAC)是管理用户对某种资源或操作的权限的通用方法。权限可以明确指定可以访问的资源和操作。基本原理如下：权限将被分配给某个角色，并将该角色分配给某个用户或者是用户组，而不是直接分配给某个用户。 角色与权限捆绑将权限与单个用户关联起来是一件很复杂的事情，随着更多的用户使用系统，维护用户的权限变得更加困难，且容易出错。权限的错误分配会阻止用户访问所需的系统，甚至是允许非授权用">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 02:47:10 / 修改时间：02:49:50" itemprop="dateCreated datePublished" datetime="2019-02-05T02:47:10+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>基于角色的权限控制（RBAC)是管理用户对某种资源或操作的权限的通用方法。权限可以明确指定可以访问的资源和操作。基本原理如下：权限将被分配给某个角色，并将该角色分配给某个用户或者是用户组，而不是直接分配给某个用户。</p>
+<h2 id="角色与权限捆绑"><a href="#角色与权限捆绑" class="headerlink" title="角色与权限捆绑"></a>角色与权限捆绑</h2><p>将权限与单个用户关联起来是一件很复杂的事情，随着更多的用户使用系统，维护用户的权限变得更加困难，且容易出错。权限的错误分配会阻止用户访问所需的系统，甚至是允许非授权用户访问限制区域或是执行危险操作。</p>
+<p>在这篇文章中，我会介绍如何对应用开启权限控制。权限控制的模型有许多种，比如RBAC（基于角色的权限控制），DAC（自由访问控制）等。虽然文档中解释的原则可以应用于各种模型，但我选择RBAC作为参考，因为它被广泛接受并且非常直观。</p>
+<p>查看用户的活动通常只会产生用户执行的有限数量的操作（如读取数据，提交表单）。深入观察这些用户的行为会发现，这些行为通常一起执行，即执行A操作的用户往往也会执行B操作。比如，读取并更新报告，或者是添加和删除用户。这些都可以与角色绑定，比如编辑或是账户管理员。注意这里的角色并不一定和职称或是组织结构绑定，而是以有意义的方式反映相关的用户操作。当恰当划分好角色并分配给用户时，就可以将权限分配给每个角色，而非用户。管理少量角色的权限是一件相对简单的事情。<br><a id="more"></a></p>
+<p>如下，是没有角色作为中介的权限与用户图：</p>
+<img src="/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/图片1.png" title="图片1">
+<p>而如下，则是完全相同的用户和权限集，由角色组织：</p>
+<img src="/2019/02/05/猫头鹰的深夜翻译：对于RestAPI简单的基于身份的权限控制/图片2.png" title="图片2">
+<p>显而易见，角色使得权限管理更容易了</p>
+<h2 id="用户与群组绑定"><a href="#用户与群组绑定" class="headerlink" title="用户与群组绑定"></a>用户与群组绑定</h2><p>将用户与群组绑定是一种更好的实践。</p>
+<p>在观察用户关于上述角色的行为模式时，我们经常发现用户之间有很多共同之处，比如某一组用户常常行为相似–在共同的资源上执行相同的操作。这允许我们将用户组织到组中，然后将角色分配给少数组，而不是许多用户。比如，会发现一组用户都需要系统管理员权限，因此我们新建一个名叫账户管理员的群组，将用户添加到该组并将该角色分配给该组，而不是每个用户。</p>
+<h2 id="实现角色时的注意事项"><a href="#实现角色时的注意事项" class="headerlink" title="实现角色时的注意事项"></a>实现角色时的注意事项</h2><h3 id="不要将行为和验证细节耦合"><a href="#不要将行为和验证细节耦合" class="headerlink" title="不要将行为和验证细节耦合"></a>不要将行为和验证细节耦合</h3><p>在许多系统中，开发人员通过直接在实现方法上指定权限来限制对特定操作的访问。没错，就在代码上！通常，角色的验证通过注解添加到需要检查的方法上，比如这里提供了一个spring-security的一个范例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@PreAuthorize(&quot;hasRole(&apos;Editor&apos;)&quot;) public void update_order(Order order);</span><br></pre></td></tr></table></figure></p>
+<p>在不同语言和框架中,这种做法非常常见。虽然很容易实现，但遗憾的是，它在所需角色和动作的实现之间产生了不希望的耦合。想象一下有几十个方法都需要添加这样的注解。跟踪每一个角色的有效操作将会变得很艰难，几乎肯定会导致依赖于不准确或过时的文档，或者更糟糕的是 - 分散在您的应用程序中的未知，非托管权限。</p>
+<p>从客户的角度来看，这种耦合使得无法修改开发人员事先定义的角色集或者他们的权限，因为更改它意味着每次都必须编译和打包代码！这种用户体验也许不是我们的目标。</p>
+<h3 id="如何避免耦合"><a href="#如何避免耦合" class="headerlink" title="如何避免耦合"></a>如何避免耦合</h3><p>更好的方式是，首先从要由外部授权机制处理的代码中提取可能的操作列表，然后，我们可以使代码不知道角色或任何其他授权细节，简单地询问当前用户（无论它是否被检索）是否具有执行特定方法所需的权限（无论在何处定义）。</p>
+<p>这允许我们使用更加通用的注解，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Secured public void update_order(Order order);</span><br></pre></td></tr></table></figure></p>
+<p>角色和权限的映射（即执行特定操作的权限）现在可以在配置文件中完成，可以由客户轻松定制！<br>比如，假设有这样的一个<strong>roles_config.yml</strong>文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">order_manager:</span><br><span class="line">  - &apos;create_order&apos;</span><br><span class="line">  - &apos;view_order&apos;</span><br><span class="line">  - &apos;delete_order&apos;</span><br><span class="line">  - &apos;update_order&apos;</span><br><span class="line">order_inspector: </span><br><span class="line">  - &apos;viewer_order&apos;</span><br></pre></td></tr></table></figure></p>
+<p>由@secured注解的方法回去查询配置文件确定当前用户是否具有执行该操作的权限。这意味着当前用户必须具有order_manager的角色，而这一点也是很容易配置的。但是，授权机制必须知道如何将每个权限与代码中的特定方法相匹配，并且有人必须记录所有可用的方法（即create_order，view_order等）。</p>
+<h3 id="关注点分离–外部授权"><a href="#关注点分离–外部授权" class="headerlink" title="关注点分离–外部授权"></a>关注点分离–外部授权</h3><p>既然方法实现代码不包含授权细节，整个授权逻辑可以移动到单独的独立模块。通过使用通用标题（例如注解<code>@secure</code>），我们允许修改整个授权机制而不影响应用程序的代码。例如，可以将<code>@secure</code>实现为基于角色的检查，但也可以使用访问控制列表（ACL）。比如，检查当前用户是否列在订单的ACL列表中。另一种解决方案可以是通过询问第三方是否允许用户执行该动作来使用oauth。</p>
+<h2 id="Rest是最佳选择"><a href="#Rest是最佳选择" class="headerlink" title="Rest是最佳选择"></a>Rest是最佳选择</h2><h3 id="提取操作–举手之劳"><a href="#提取操作–举手之劳" class="headerlink" title="提取操作–举手之劳"></a>提取操作–举手之劳</h3><p>REST接口肯定更好，或者至少是最容易匹配这个模型的。设计良好的Rest服务通过标准的基于HTTP的API暴露资源和方法，资源通过URI定义，方法通过HTTP动词（如GET，PUT)等定义。</p>
+<p>比如，<code>POST http://www.domain.com/bookings</code>会创建一本新书，而<code>GET http://www.domain.com/orders/12345</code>会返回订单#12345的详情。这意味着可以轻而易举的获得资源的名称和对资源的操作。</p>
+<h3 id="请求网关"><a href="#请求网关" class="headerlink" title="请求网关"></a>请求网关</h3><p>除了标准的建模操作之外，REST服务通常是请求流中评估身份验证和授权的好地方，因为这通常是系统的主要入口点。为了使访问控制机制有意义，建议阻止所有其他到系统的路由，例如直接访问数据存储或代码中的任何远程调用机制。该架构的另一个重要优点是响应过滤，以防某些不应当返回给用户的数据写在响应中。</p>
+<h3 id="请求也是访问控制工具"><a href="#请求也是访问控制工具" class="headerlink" title="请求也是访问控制工具"></a>请求也是访问控制工具</h3><p>REST服务处理传入请求，这意味着请求中找到的信息可用于制定访问控制决策。一些有用的细节是：</p>
+<ul>
+<li>请求源：允许阻止来自不明IP或是网段的请求</li>
+<li>请求头：许多有意义的细节可以在请求头传递，比如用户凭证，从而支持全面的认证/授权过程。</li>
+<li>目标终端：如请求的URI所示。根据其他条件，访问可以仅限于应用程序端点的子集。例如，虽然version端点对所有人开放，但secret端点仅对经过身份验证的用户开放。</li>
+<li>目标方法：由HTTP动词（例如DELETE）表示，这意味着可以基于被调用的方法传递或阻止请求。</li>
+</ul>
+<h2 id="总而言之：用REST来实现权限控制"><a href="#总而言之：用REST来实现权限控制" class="headerlink" title="总而言之：用REST来实现权限控制"></a>总而言之：用REST来实现权限控制</h2><p>所有的资源将会通过REST的URI表示，操作通过HTTP动词表示，这能够覆盖所有能被执行且需要验证的操作。在下面的例子中，定义了三个角色：</p>
+<ul>
+<li>order_manager:能够查看，创建，更新和删除订单</li>
+<li>order_editor：能够查看，创建，更新订单，但不能删除他们</li>
+<li>order_inspector：只能查看订单</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">order_manager:</span><br><span class="line">  &apos;/orders&apos;:</span><br><span class="line">    - &apos;GET&apos;</span><br><span class="line">    - &apos;POST&apos;</span><br><span class="line">    - &apos;PUT&apos;</span><br><span class="line">    - &apos;DELETE&apos;</span><br><span class="line">order_editor:</span><br><span class="line">  &apos;/orders&apos;:</span><br><span class="line">    - &apos;GET&apos;</span><br><span class="line">    - &apos;POST&apos;</span><br><span class="line">    - &apos;PUT&apos;</span><br><span class="line">order_inspector:</span><br><span class="line">  &apos;/orders&apos;:</span><br><span class="line">    - &apos;GET&apos;</span><br></pre></td></tr></table></figure>
+<p>由此可见，REST天然能够实现权限控制。通过处理传入请求，REST服务能够检索有价值的信息，这些信息可以移交给单独的模块以执行身份验证和授权。如果用户被授权在目标资源上执行所请求的方法，则可以继续请求处理。否则，在到达任何内部应用程序代码之前拒绝进一步访问。</p>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/simple-secure-role-based-access-control-rbac-for-r" target="_blank" rel="noopener">https://dzone.com/articles/simple-secure-role-based-access-control-rbac-for-r</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/05/leetcode20/" rel="next" title="leetcode20.判断括号是否成对出现">
+                <i class="fa fa-chevron-left"></i> leetcode20.判断括号是否成对出现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/05/REST服务异常处理/" rel="prev" title="REST服务异常处理">
+                REST服务异常处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#角色与权限捆绑"><span class="nav-number">2.</span> <span class="nav-text">角色与权限捆绑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户与群组绑定"><span class="nav-number">3.</span> <span class="nav-text">用户与群组绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现角色时的注意事项"><span class="nav-number">4.</span> <span class="nav-text">实现角色时的注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不要将行为和验证细节耦合"><span class="nav-number">4.1.</span> <span class="nav-text">不要将行为和验证细节耦合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何避免耦合"><span class="nav-number">4.2.</span> <span class="nav-text">如何避免耦合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关注点分离–外部授权"><span class="nav-number">4.3.</span> <span class="nav-text">关注点分离–外部授权</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rest是最佳选择"><span class="nav-number">5.</span> <span class="nav-text">Rest是最佳选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提取操作–举手之劳"><span class="nav-number">5.1.</span> <span class="nav-text">提取操作–举手之劳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求网关"><span class="nav-number">5.2.</span> <span class="nav-text">请求网关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求也是访问控制工具"><span class="nav-number">5.3.</span> <span class="nav-text">请求也是访问控制工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总而言之：用REST来实现权限控制"><span class="nav-number">6.</span> <span class="nav-text">总而言之：用REST来实现权限控制</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
