@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言Git作为一个当前被最广泛使用的版本控制开发工具，是每一个学习软件开发的程序员所必须熟悉的。这里我将所有的Git指令收编整理，列出一个简单的表项，方便自己以后查询。对于初学者，可以从这个教程入手，可以非常快的理解其内在的功能。">
+<meta name="keywords" content="java,原创">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git指令收编整理">
+<meta property="og:url" content="http://yoursite.com/2019/02/09/git指令收编整理/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言Git作为一个当前被最广泛使用的版本控制开发工具，是每一个学习软件开发的程序员所必须熟悉的。这里我将所有的Git指令收编整理，列出一个简单的表项，方便自己以后查询。对于初学者，可以从这个教程入手，可以非常快的理解其内在的功能。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/git指令收编整理/图片1.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/git指令收编整理/图片2.png">
+<meta property="og:updated_time" content="2019-02-09T06:53:47.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git指令收编整理">
+<meta name="twitter:description" content="前言Git作为一个当前被最广泛使用的版本控制开发工具，是每一个学习软件开发的程序员所必须熟悉的。这里我将所有的Git指令收编整理，列出一个简单的表项，方便自己以后查询。对于初学者，可以从这个教程入手，可以非常快的理解其内在的功能。">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/09/git指令收编整理/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/09/git指令收编整理/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>git指令收编整理 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/git指令收编整理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">git指令收编整理
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:51:56 / 修改时间：14:53:47" itemprop="dateCreated datePublished" datetime="2019-02-09T14:51:56+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/" itemprop="url" rel="index"><span itemprop="name">Tool</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Git作为一个当前被最广泛使用的版本控制开发工具，是每一个学习软件开发的程序员所必须熟悉的。这里我将所有的Git指令收编整理，列出一个简单的表项，方便自己以后查询。对于初学者，可以<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">从这个教程</a>入手，可以非常快的理解其内在的功能。<br><a id="more"></a></p>
+<h2 id="指令整理"><a href="#指令整理" class="headerlink" title="指令整理"></a>指令整理</h2><blockquote>
+<p><code>git init</code> : 初始化当前目录为一个新的仓库，该仓库下包含一个master主分支<br><code>git init --bare</code> : 初始化当前目录为一个新的仓库，该仓库下不包含任何内容，一般用于初始化git服务器<br><code>git clone REMOTE_URL LOCAL_REPOSITORY_NAME</code>: 将位于REMOTE_URL上的仓库拉取到本地并且重命名为LOCAL_REPOSITORY_NAME<br><code>git status</code> : 查看当前git仓库的状态<br><code>git add filename1 [filename2|filename3]</code> : 将文件添加至index缓存目录中，可以一次性添加多个文件<br><code>git commit -m &#39;comment&#39;</code> : 将缓存目录下变动的内容提交至仓库中，comment中填写备注<br><code>git commit -a -m &#39;COMMENT&#39;</code>:快速提交，不经过缓存<br><code>git commit --amend</code>: 将暂存区中的文件和上一次提交合并<br><code>git diff [-filename]</code> : 查看当前工作区状态和上一次提交区别，若指令中包含文件名，则是查看当前文件和上一次提交的文件的区别<br><code>git diff --staged</code>: 查看已暂存的将要添加到下次提交里的内容<br><code>git log</code> : 查看变更日志<br><code>git log [-p] [-NUM] [-stat]</code> : -p用来显示每次提交的内容差异, -NUM用来说明显示最近NUM次的代码提交, -stat用来说明每次提交的简略的统计信息<br><code>git log --graph --pretty=oneline[full|fuller|short]</code> : 用图形化精简的展示变更日志<br><code>git reflog</code>:查看每一次操作，可以用来查找误删或者误移的版本<br><code>git checkout --  file</code> ： 可以丢弃工作区的修改，本质上checkout 文件指令是将工作区的文件回退至上次提交时的状态，上次提交可以是git commit 或git add操作，所以一旦误删，也可以通过该指令从缓存中回退该文件。<br><code>git reset HEAD filename</code> : 将仓库中的内容覆盖给索引去,其实这个指令等价于git reset –mixed HEAD filename，也就是将版本库中的这个文件覆盖缓存中的该文件<br><code>git reset [--hard|mixed|soft] [HEAD~n|commid id]</code> : 将HEAD指针回退至之前某个提交版本，在这里hard指强制回退，会同时刷新仓库，缓存和工作区文件，可能会带来数据的丢失。soft只会刷新仓库的文件，而缓存和工作区文件不会发生变动，如果想要提交还可以重新提交。mixed会刷新仓库和缓存区的内容，但不会修改工作区的内容。<br><code>git rm filename</code> : 删除文件，之后用git commit指令提交删除<br><code>git rm --cached FILE_NAME</code>:从缓存区而不是从工作区删除文件，通常用于误提交<br><code>git remote add origin git@server-name:path/repo-name.git</code> : 添加远程仓库URL<br><code>git push [-u] remoter-branch-name local-branch-name</code> : 向远程仓库提交代码，在第一次提交时需要加上-u指令<br><code>git clone git@server-name:path/repo-name.git</code> : 将远程的库拷贝至当前的目录下<br><code>git checkout -b branchname</code> : 创建分支并切换进入分支<br><code>git branch branchname</code> : 创建分支<br><code>git checkout branchname</code> : 进入分支<br><code>git branch</code> : 查看当前所有的分支，其中当前所在的分支名前会有*号标记<br><code>git branch -r</code> : 查看远程分支<br><code>git merge [--no-ff] [-m comment] branchname</code> : 将名为branchname的分支合并到当前的分支上,默认情况下采用fast-forward的形式合并分支，可以使用–no-ff取消该模式，保证日志可以记录每一次合并，从而不丢失分支信息。-m可以为合并添加备注<br><code>git merge --abort</code> : 放弃当前的合并<br><code>git branch -d branchname</code> : 将名为branchname的分支删除<br><code>git branch -D branchname</code> : 将名为branchname的分支强制删除，因为若分支中的信息没有提交会无法删除，此时可以使用强制删除<br><code>git stash[@{n}]</code> ： 将工作现场以及缓存区中的内容“储藏”起来，等以后恢复现场后继续工作。可以多次stash，可以通过指定n说明使用第n次存储的内容<br><code>git stash --keep-index</code>: 不要储藏任何你通过 git add 命令已暂存的东西<br><code>git stash [--include-untracked|-u]</code>： 默认情况下，git stash 只会储藏已经在索引中的文件。 如果指定 –include-untracked 或 -u 标记，Git 也会储藏任何创建的未跟踪文件。<br><code>git stash --patch</code> : Git 不会储藏所有修改过的任何东西，但是会交互式地提示哪些改动想要储藏、哪些改动需要保存在工作目录中<br><code>git stash branch &lt;BRANCH NAME&gt;</code> :<br><code>git stash list</code> : 查看存储的工作现场<br><code>git stash apply [stashId]</code> : 恢复现场但是不清除stash的内容，默认为最近一次stash内容<br><code>git stash drop</code> : 删除stash内容<br><code>git stash pop</code> : 恢复现场的同事清除stash内容<br><code>git remote [-v]</code> : 查看远程仓库的信息<br><code>git remote add &lt;shortname&gt; &lt;url&gt;</code>: 添加一个新的地址为url的仓库并且取名为shortname<br><code>git remote show [remote-name]</code>:查看远程仓库的状态<br><code>git remote rename &lt;ORIGIN_NAME&gt; &lt;NEW_NAME&gt;</code>:远程仓库的重命名<br><code>git remote rm &lt;REMOTE-NAME&gt;</code> : 删除远程仓库在本地的引用<br><code>git checkout -b localbranchname origin/remotebranch</code> : 默认情况下，clone下来后只能看到远程master分支，若想在远程的其它分支上工作，就必须创建和远程分支对应的分支<br><code>git pull [remote] [branch]</code> : 把最新的提交从远程分支抓下来,并且直接和当前的分支进行合并<br><code>git fetch [remote-url|remote-branch-name]</code>:将远程仓库的数据拉取到本地仓库，但是不会合并或修改当前的工作<br><code>git branch --set-upstream localbranchname origin/remotebranchname</code> : 创建本地分支和远程分支的链接关系<br><code>git branch -v</code> : 查看每一个分支的最后一次提交<br><code>git branch [--merged|--no-merged]</code> : 过滤列表中已经合并和尚未合并到当前分支的分支<br><code>git push origin branch-name</code> : 向远程分支提交更新<br><code>git tag -a tagname [-m comment] [commitid]</code> : 将当前的分支打上标签，默认是最近一次提交，也可以指定某次提交打上标签<br><code>git tag</code> : 查看所有标签<br><code>git show tagname</code> : 查看标签的详细信息<br><code>git tag -d tagname</code> : 删除某个标签<br><code>git push origin tagname</code> : 将标签推送到远程服务器<br><code>git push origin --tags</code> : 一次性推送所有还未推送的标签<br><code>git tag -d tagname + git push origin :refs/tags/tagname</code> : 删除远程的标签<br><code>git config --global alias.&lt;SHORT_NAME&gt; &lt;COMPLETE_NAME&gt;</code>:将COMPLETE_NAME的指令换成等价的缩写SHORT_NAME指令<br><code>git clean</code> : 从工作目录中移除未被追踪的文件, 最好先运行<code>git stash --all</code><br><code>git grep -n [--count] &lt;INFO&gt;</code> : 从提交历史或者工作目录中查找一个字符串或者正则表达式, -n是指Git所找到的匹配行号， –count使 Git 输出概述的信息，仅仅包括哪些文件包含匹配以及每个文件包含了多少个匹配，  -p看匹配的行是属于哪一个方法或者函数， –and 标志来查看复杂的字符串组合</p>
+</blockquote>
+<h2 id="场景举例"><a href="#场景举例" class="headerlink" title="场景举例"></a>场景举例</h2><h3 id="初次安装GIT后对git进行配置"><a href="#初次安装GIT后对git进行配置" class="headerlink" title="初次安装GIT后对git进行配置"></a>初次安装GIT后对git进行配置</h3><p>git的配置文件位于三个目录下，它们分别对应着不同的作用域，可以通过<code>git config进行操作</code>：</p>
+<blockquote>
+<p>1.<code>/etc/gitconfig</code> : 包含系统上每一个用户及他们仓库的通用配置。 如果使用带有 –system 选项的 git config 时，它会从此文件读写配置变量<br>2.<code>~/.gitconfig 或 ~/.config/git/config</code>: 只针对当前用户。可以传递 –global 选项让 Git 读写此文件<br>3.<code>.git/config</code>: 当前仓库中的config文件，其配置针对当前仓库。</p>
+</blockquote>
+<p>这三个文件下一个级别覆盖上一个级别的内容。也就是说本地的覆盖用户的，用户的覆盖全局的。</p>
+<p>在第一次安装完毕后， 应当适当的配置git的信息</p>
+<blockquote>
+<p><code>git config --global user.name &quot;NAME&quot;</code><br><code>git config --global user.email &quot;EMAIL&quot;</code><br><code>git config --list</code> 列出所有Git当时能找到的全部配置<br><code>git config KEY</code> 查找键为KEY的配置文件信息，比如<code>git config user.name</code></p>
+</blockquote>
+<p>这些<code>global</code>属性会作用于当前系统该用户所有的操作。如果想要对特定的仓库采用不同的属性，应当在那个仓库目录下使用没有<code>--global</code>标签的命令</p>
+<h3 id="利用github新建一个远程仓库"><a href="#利用github新建一个远程仓库" class="headerlink" title="利用github新建一个远程仓库"></a>利用github新建一个远程仓库</h3><p>在最开始的时候需要新建一个git项目并在远程github上同步从而实现项目的共同开发。基本流程就是先在远程仓库上新建一个项目，然后将本地的项目和远程连接。</p>
+<p>首先简单讲一下在github上新建项目<br>1.新建仓库<br><img src="/2019/02/09/git指令收编整理/图片1.png" title="图片1"></p>
+<p>2.初始化仓库，记住不要在仓库中添加任何内容包括readme文件<br><img src="/2019/02/09/git指令收编整理/图片2.png" title="图片2"></p>
+<p>3.创建完成后获得仓库的URL，可以一键复制</p>
+<p>至此远程的仓库就创建完成了。然后我们需要在本地新建一个项目来初始化这个远程仓库。假设我现在在本地有一个项目，项目的名称为TestGit</p>
+<blockquote>
+<p>1.<code>cd DIR_OF_TESTGIT/TestGit</code> :进入项目目录<br>2.<code>git init</code> : 新建一个仓库，这时的仓库为空。这时如果用<code>git branch</code>指令会看到当前目录下不存在任何分支<br>3.<code>git remote add origin YOUR_URL</code> : 将刚才复制的仓库的URL添加到本地并命名为origin<br>4.<code>git add *</code> :将当前项目中的所有文件添加到缓存中<br>5.<code>git commit -m &#39;init&#39;</code>:将项目提交到本地仓库并且备注为init。在第一次提交之后git会自动初始化一个master分支。这是用<code>git branch</code>指令查看会看到master分支<br>6.<code>git push --set-upstream origin master</code>：将master分支提交到远程origin上，这里–set-upstream实际上就是声明当前项目的远程url</p>
+</blockquote>
+<p>至此你的本地项目和远程项目就实现了初始化的同步</p>
+<h3 id="Fork操作"><a href="#Fork操作" class="headerlink" title="Fork操作"></a>Fork操作</h3><p>往往存在这么一种情况，当我在github上看到一个优秀的开源项目，我想将它‘拷贝’到自己的github下，并且在该项目上进行自己的更新，这种操作叫做<code>Fork</code>。网上有许多很优秀的文章讲解了如何进行Fork操作，这里我整理一下指令：</p>
+<blockquote>
+<p>1.<code>git remote -v</code> : 查看当前的远程仓库中是否记录了原作者的仓库，如果没有则进入1.1步进行添加<br>1.1 <code>git remote add upstream origin-author-git-address</code>: 将原作者的git地址添加到本地远程仓库中，该仓库名为upstream，当然也可以取名为别的<br>2 <code>git fetch upstream</code> : 将作者仓库中的代码获取至本地仓库<br>3 <code>git checkout branchname</code> : 切换到想要合并的分支上去<br>4 <code>git merge upstream/master</code> : 将远程仓库的master分支和当前的分支合并，也可以远程的其他分支<br>5 <code>git add filename + git commit -m &#39;comment&#39;</code> : 将本地的修改提交至本地的仓库<br>6 <code>git push</code> : 将本地仓库提交到自己的远程仓库<br>7 如果希望原作者可以查看自己的修改，可以向原作者发出pull request请求，原作者会试情况将你的更新合并到他自己的代码库中</p>
+</blockquote>
+<h3 id="本地更改代码后分支提交和合并操作"><a href="#本地更改代码后分支提交和合并操作" class="headerlink" title="本地更改代码后分支提交和合并操作"></a>本地更改代码后分支提交和合并操作</h3><p>在很多情况下，一旦出现代码需要更改的情况，我们往往会在master分支上独立开一个分支来进行开发，防止因为更改造成master上代码的崩溃。创建分支编写后再合并到master的操作如下：</p>
+<blockquote>
+<p>1 <code>git branch branchname</code> : 新建分支<br>2 <code>git checkout branchname</code> : 切换到新建的分支中去。至此可以进行相应的独立开发，且不会影响master<br>3 <code>git add filename</code> : 将文件添加到缓存中<br>4 <code>git commit -m COMMENT</code> : 将缓存中的文件添加到仓库中<br>5 <code>git push</code> : 将仓库中更新的代码添加到远程仓库上，然后在gitlab上提出merge请求</p>
+</blockquote>
+<p>如果这时候master上代码发生变化，那么你当前所在的分支的master代码就和当前master版本不同，需要你先更新当前分支的master部分的代码，然后再将合并完成以后的代码提交到远程仓库。这里要记住，一定要先保存本地在workspace的修改。不然一旦合并，本地的内容就被抹去了。此时的操作如下：</p>
+<blockquote>
+<p>1 <code>git fetch origin master</code> : 将master代码更新到当前分支的仓库中<br>2 <code>git merge origin master</code> : 将master代码和本地的分支合并，并且修改冲突的部分<br>3 <code>git push</code> : 如果有冲突，则还是需要通过add和commit操作提交到本地长裤，然后本地仓库中的代码push到远程仓库。<br>在和远程仓库达成一致后，再向master发送merge请求</p>
+</blockquote>
+<h3 id="配置gitignore"><a href="#配置gitignore" class="headerlink" title="配置gitignore"></a>配置gitignore</h3><p>当我们想要对代码进行配置管理的时候，我们有时候并不希望一些文件被上传。例如，在IDEA编辑器中开发项目时，往往项目中会有IDEA自己的配置文件，一般存放在.idea文件夹中。当项目上传时，我们可能并不希望将这些文件也上传，因此我们需要配置<code>.gitignore</code>文件来声明不需要提交的文件。</p>
+<blockquote>
+<p><code>cat .gitignore</code> 进入根目录下并且创建.gitignore文件</p>
+</blockquote>
+<p>在其中里面添加希望屏蔽的文件，文件名称可以按照<strong>glob 模式</strong>匹配<br>文件 .gitignore 的格式规范如下：</p>
+<ul>
+<li>所有空行或者以 ＃ 开头的行都会被 Git 忽略。</li>
+<li>可以使用标准的 glob 模式匹配。</li>
+<li>匹配模式可以以（/）开头防止递归。</li>
+<li>匹配模式可以以（/）结尾指定目录。</li>
+<li>要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。</li>
+</ul>
+<p>glob 模式是指 shell 所使用的简化了的正则表达式。<br><strong>星号</strong>（<em>）匹配零个或多个任意字符；<br><strong>[abc]</strong> 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；<br><strong>问号</strong>（?）只匹配一个任意字符；<br>如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9] 表示匹配所有 0 到 9 的数字）。<br>使用<strong>两个星号</strong>（</em>) 表示匹配任意中间目录，比如<code>a/**/z</code> 可以匹配 a/z, a/b/z 或 <code>a/b/c/z</code>等。</p>
+<p>在这里可以参考我的<a href="https://segmentfault.com/a/1190000010012393" target="_blank" rel="noopener">正则表达式的文章</a></p>
+<h3 id="RESET-VS-CHECKOUT"><a href="#RESET-VS-CHECKOUT" class="headerlink" title="RESET VS CHECKOUT"></a>RESET VS CHECKOUT</h3><p>GIT回退是一门大学问，在没有彻底理解GIT的工作区域和工作流程之前，很难透彻的明白如何对GIT仓库进行回退。然而回退在使用GIT的过程中是一个很重要的功能。所以我们必须静下心来，理解这个流程。</p>
+<p><a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E9%87%8D%E7%BD%AE%E6%8F%AD%E5%AF%86" target="_blank" rel="noopener">这个教程</a>对回退讲解的非常透彻，建议笔者先看两遍这篇文章，理解后再使用下文中整理的具体指令。</p>
+<blockquote>
+<p><code>git reset --soft &lt;COMMIT_ID&gt;</code> : 将HEAD指向的分支移动指向COMMIT_ID的提交<br><code>git reset --soft HEAD~</code> : 将HEAD指向的分支指向HEAD的父提交，本质上是撤销了上一次的COMMIT<br><code>git reset --mixed &lt;COMMIT_ID&gt;</code> : 在指向COMMIT_ID提交的基础上更新INDEX区(缓存区)的内容<br><code>git reset --hard &lt;COMMIT_ID&gt;</code> : 在mixed的基础上更新了工作区(workspace)的内容。这个操作很危险，因为它会直接覆盖工作区的内容。<br><code>git reset [--mixed|--hard|--soft] &lt;COMMIT_ID&gt; &lt;FILE_NAME|DIR_NAME&gt;</code>: 如果在reset指令中填写了文件名或者路径名，reset会跳过移动HEAD指向的指针的步骤，直接将FILE_NAME或DIR_NAME更新为COMMIT_ID提交中的样子，至于更新的区域则由mixed或是hard或是soft决定。COMMIT_ID在不填写的情况下默认为HEAD。<br><code>git checkout [COMMIT_ID]</code> : 与运行<code>git reset --hard [branch]</code>很相似,它会更新所有三棵树使其看起来像 [COMMIT_ID]，不过有两点重要的区别。<strong>首先</strong>不同于<code>reset --hard</code>，<code>checkout</code>对工作目录是安全的，它会通过检查来确保不会将已更改的文件弄丢。 其实它还更聪明一些。它会在工作目录中先试着简单合并一下，这样所有还未修改过的文件都会被更新。 而<code>reset --hard</code>则会不做检查就全面地替换所有东西。<strong>第二个重要</strong>的区别是如何更新 HEAD。 reset 会移动 HEAD 分支的指向，而 checkout 只会移动 HEAD 自身来指向另一个分支。所以checkout指令可以用来切换分支<br><code>git checkout [COMMIT_ID] [filename]</code> : 类似于<code>git reset --hard [branch] file</code>，该操作不安全</p>
+</blockquote>
+<p>其它的场景等后续使用的时候继续更新！</p>
+<h2 id="学习资料"><a href="#学习资料" class="headerlink" title="学习资料"></a>学习资料</h2><blockquote>
+<p><a href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%85%B3%E4%BA%8E%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6" target="_blank" rel="noopener">Git Pro</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/原创/" rel="tag"># 原创</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/09/猫头鹰的深夜翻译-redux下action的命名规/" rel="next" title="猫头鹰的深夜翻译:redux下action的命名规范">
+                <i class="fa fa-chevron-left"></i> 猫头鹰的深夜翻译:redux下action的命名规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令整理"><span class="nav-number">2.</span> <span class="nav-text">指令整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景举例"><span class="nav-number">3.</span> <span class="nav-text">场景举例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初次安装GIT后对git进行配置"><span class="nav-number">3.1.</span> <span class="nav-text">初次安装GIT后对git进行配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用github新建一个远程仓库"><span class="nav-number">3.2.</span> <span class="nav-text">利用github新建一个远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork操作"><span class="nav-number">3.3.</span> <span class="nav-text">Fork操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地更改代码后分支提交和合并操作"><span class="nav-number">3.4.</span> <span class="nav-text">本地更改代码后分支提交和合并操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置gitignore"><span class="nav-number">3.5.</span> <span class="nav-text">配置gitignore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RESET-VS-CHECKOUT"><span class="nav-number">3.6.</span> <span class="nav-text">RESET VS CHECKOUT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习资料"><span class="nav-number">4.</span> <span class="nav-text">学习资料</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
