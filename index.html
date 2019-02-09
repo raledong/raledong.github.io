@@ -327,6 +327,206 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/API网关的重要性/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/API网关的重要性/" class="post-title-link" itemprop="url">API网关的重要性</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 20:56:47 / 修改时间：22:42:37" itemprop="dateCreated datePublished" datetime="2019-02-09T20:56:47+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在非技术术语中，“网关或门是进入一个由墙围住的封闭空间的入口点。”同理，API网关是指位于防火墙或互联网后面<br>的服务的入口点。在微服务的世界中，网关坐镇于API前面，直接面向客户并进行反向代理。</p>
+<p>越来越多的应用程序正在从单片架构迁移到微服务架构。API网关已成为微服务架构模式中的关键组件之一。请<br>注意，本文不是关于任何特定网关，而是讨论网关的一般功能。</p>
+<h2 id="作为代理的网关"><a href="#作为代理的网关" class="headerlink" title="作为代理的网关"></a>作为代理的网关</h2><p>在了解网关及其职责之前，让我们先来看看代理是如何工作的。代理服务器充当网桥，使内部网络对互联网不可见。代理服务器有两种类型：转发代理和反向代理。</p>
+<p>转发代理是面向互联网并从互联网检索数据。与此相反的，反向代理位于内部网络中，接受来自Internet的请求，并将它们转发到内部网络中的服务器。<br>网关是一种反向代理模式，可以保护对专用网络上服务器的访问，尽管它们不是互斥的。</p>
+
+<h2 id="API网关模式"><a href="#API网关模式" class="headerlink" title="API网关模式"></a>API网关模式</h2><p>API网关有许多功能，现在让我们深入了解网关的职责。</p>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><p>您可能认为已经为您的体系结构设置了安全层，例如使用HTTPS加密请求。我为我的私人网络设置了防火墙。我已经为我的请求等添加了身份验证等等。<br>但是网关还可以从其他安全方面帮助管理来自客户端的请求。</p>
+<h4 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h4><p>网关可以实现CORS（跨源资源共享）过滤器并具有处理跨域请求的能力。<a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing" target="_blank" rel="noopener">CORS</a>是支持跨域请求，允许访问受限资源的机制。根据浏览器提交的原始URL，<br>大多数网关拦截传入的HTTP请求并识别它们是否是跨域的，并在将请求转发到跨域资源之前使用请求头中所需要的信息。<br></p>
+<h4 id="DDoS和SQL注入"><a href="#DDoS和SQL注入" class="headerlink" title="DDoS和SQL注入"></a>DDoS和SQL注入</h4><p>由于所有流量都通过网关路由，因此有一个额外的优势就是过滤掉了不安全的请求。许多网关都善于清理SQL注入等常见的危险的输入。<br></p>
+<p>网关提供了一种防御机制来识别<a href="https://en.wikipedia.org/wiki/Denial-of-service_attack" target="_blank" rel="noopener">DDoS</a>攻击，例如当请求轰炸服务器时能防止中断核心服务。</p>
+<p>你可以进行多层保护。比如，AWS提供AWS护盾的服务，在请求到达网关或者ELB之前识别使用峰值。网关就类似于这样的一层防护，可以利用其功能来防止攻击。</p>
+<h4 id="授权和认证"><a href="#授权和认证" class="headerlink" title="授权和认证"></a>授权和认证</h4><p>由于网关是请求的入口点，因此它始终是授权和验证终端用户的更好地方。这有助于保持后端服务的完整性，因为无效的请求甚至都无法到达业务层。<br>在API网关进行授权和认证管理最好的方法就在于使用OAuth并建立握手。</p>
+<h4 id="证书管理"><a href="#证书管理" class="headerlink" title="证书管理"></a>证书管理</h4><p>API网关可以使用自己的keyStore和trustStore管理证书。许多商业网关都可以在商店中创建/导入证书，并在客户端和网关之间建立SSL。<br>如果您有API网关作为后端服务的入口点，那么最佳做法之一是在您的网关和后端服务之间使用SSL。由于Gateway和后端服务位于内部网络中，因此除了SSL之外，您不需要额外的安全层。<br></p>
+<p>如果您有一个大规模分布式集群以获得高效性能，您甚至可以在流量到达网关后在负载均衡器上执行终止SSL。</p>
+<h2 id="API控制和管理"><a href="#API控制和管理" class="headerlink" title="API控制和管理"></a>API控制和管理</h2><h3 id="请求限制和配额"><a href="#请求限制和配额" class="headerlink" title="请求限制和配额"></a>请求限制和配额</h3><p>你的API请求可能来自多个渠道，你可能希望根据与渠道或客户的服务协议对请求进行限制。最初，你与渠道或客户签订服务水平协议（SLA），以确保满足他们的期望并确定他们不会遇到任何中断的情况。<br><br>此外，这将有助于隔离渠道，并根据商定的交易或非功能性需求相应收取费用。例如，你可能会收到来自移动端的大量请求，您可以根据传入流量激活TPS，并记下可以收取费用的交易量。<br>这样，API货币化可以专门针对客户端完成。</p>
+<p>还可以通过配额管理，规定指定时间间隔内可以提交的最大请求数。这通常称为配额限制，在上述与客户签订服务协议的情况下非常有用。</p>
+<p>那么，还有那些东西是可以通过API网关限定的呢？由于所有请求都流经网关，因此您可以在入口点异步记录所有事务，并在以后跟踪以进行审计，以满足合同的要求。<br>因此，API网关减轻了从应用程序的功能层管理客户端需求的负担。</p>
+<h4 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h4><p>仅管可以在应用程序中插入许多APM工具，但网关也可以提供实时API监控，以便分析其使用趋势。</p>
+<h4 id="API主机"><a href="#API主机" class="headerlink" title="API主机"></a>API主机</h4><p>那么，网关如何知道它应该接受哪个API以及拒绝哪个API？其实我们可以将API附到网关上，在上面配置请求参数，应用路由策略（如果需要），附加其他请求等。<br>正如我们之前讨论的那样，可能有多个渠道的请求流入应用程序，但并非所有渠道都需要访问所有的API。在这种API治理方案中，您可以配置客户端特定要求，<br>并将流量路由到客户端要访问的那些API。默认情况下，可以在网关上强制拒绝所有策略，并将那些预先加入的API列入白名单。</p>
+<h4 id="编排"><a href="#编排" class="headerlink" title="编排"></a>编排</h4><p>您可能希望与来自不同微服务的不同API进行交互，然后聚合信息。您可以通过卸载组合服务的编排来在网关中编写实现此逻辑。但这不是推荐的方式，因为这会使API网关和应用程序紧密耦合，考虑到你可以随时摆脱网关。</p>
+<h3 id="请求响应的过滤"><a href="#请求响应的过滤" class="headerlink" title="请求响应的过滤"></a>请求响应的过滤</h3><p>什么要在网关中而不是在应用程序，比如Java中的servlet过滤器中过滤响应，？让我们参考一个例子。</p>
+<p>假设您希望维护一个通用的微服务，这些微服务服务于不同的地理位置，API可以从世界不同地区访问并由不同渠道使用。每次向渠道/客户端发送响应时，<br>都会发送该渠道可能根本不不需要的信息。在这里，我们可以使用网关的功能，过滤响应，并仅发送特定渠道所需的内容。注意：通过对渠道到响应映射执行额外的查找，可能会带来一定的延迟。</p>
+
+<h2 id="网关的类型"><a href="#网关的类型" class="headerlink" title="网关的类型"></a>网关的类型</h2><p>API的广泛采用促成了现成的API管理产品，开源项目和SaaS产品的出现。</p>
+<h3 id="为应用选择哪种网关？"><a href="#为应用选择哪种网关？" class="headerlink" title="为应用选择哪种网关？"></a>为应用选择哪种网关？</h3><p>这取决于您是否要使用各种商业工具来设置API管理平台。很多商业的Saas工具都提供管理软件的丰富的功能。这一切都取决于你如何设计系统并使其适合微服务架构。<br>当选择网关时，需要考虑如可扩展性，高可用性和弹性等因素。</p>
+<h3 id="开源网关如何？"><a href="#开源网关如何？" class="headerlink" title="开源网关如何？"></a>开源网关如何？</h3><p>有部分开源网关也提供了API管理的灵活性。这种网关的优势在于它们可以与应用服务器一起水平扩展，提供跨容器的分布式特性。</p>
+<p>最后，每个商业/开源网关都会试图推销自己，如果你找到一个合适的网关，我建议最好不要重新发明轮子，而是利用它的功能并根据你的具体要求进行定制。</p>
+<h2 id="网关的可扩展性"><a href="#网关的可扩展性" class="headerlink" title="网关的可扩展性"></a>网关的可扩展性</h2><p>可以通过在多个主机上部署多个API网关并使用标准负载平衡器对它们进行负载平衡来实现可用性和水平可伸缩性。这还取决于你在应用程序服务器前部署的网关类型。<br>另一种常见做法是将CDN设置为网关前的静态内容缓存层。</p>
+<h2 id="网关反模式"><a href="#网关反模式" class="headerlink" title="网关反模式"></a>网关反模式</h2><p>我们已经讨论了很多关于API网关及其特性的问题，现在让我们来看看一些网关反模式。</p>
+<ul>
+<li>确保API网关不会成为单点故障。</li>
+<li>无论应用程序设计的多好，都有可能与API网关紧密耦合。</li>
+<li>网关会为端到端响应时间带来额外的延迟。</li>
+<li>潜在的性能瓶颈</li>
+<li>如果没有明智地选择网关，将会增加额外的运营开销和成本。</li>
+</ul>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/gateway-pattern" target="_blank" rel="noopener">https://dzone.com/articles/gateway-pattern</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/接收上传图片并且存储至本地目录/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1946,194 +2146,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/" class="post-title-link" itemprop="url">用了那么久现在才来回顾系列一：maven重学习</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-09 14:30:44 / 修改时间：14:35:58" itemprop="dateCreated datePublished" datetime="2019-02-09T14:30:44+08:00">2019-02-09</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/" itemprop="url" rel="index"><span itemprop="name">Tool</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/Maven/" itemprop="url" rel="index"><span itemprop="name">Maven</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本人从事JAVA编程已经有一些年月了（咳咳咳咳咳~喝一口茶），基本上在每次的项目开发过程中都会使用一些集成工具，比如说Maven或是Gradle。最近在写一个项目，但是项目在打包的过程中出现了问题，对把MAVEN一直当作傻瓜工具来使用的我完全不知道如何去解决这些问题。所以现在我想重新来了解一下这个工具，并用一种通俗易懂的方式来解释这个工具的用意。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2183,7 +2195,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">226</span>
+                    <span class="site-state-item-count">227</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2395,7 +2407,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">71</span>
+                      
+                    
+                    <span class="site-state-item-count">72</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
