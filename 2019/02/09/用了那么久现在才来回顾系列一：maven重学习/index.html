@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言本人从事JAVA编程已经有一些年月了（咳咳咳咳咳~喝一口茶），基本上在每次的项目开发过程中都会使用一些集成工具，比如说Maven或是Gradle。最近在写一个项目，但是项目在打包的过程中出现了问题，对把MAVEN一直当作傻瓜工具来使用的我完全不知道如何去解决这些问题。所以现在我想重新来了解一下这个工具，并用一种通俗易懂的方式来解释这个工具的用意。">
+<meta name="keywords" content="java,原创,Maven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用了那么久现在才来回顾系列一：maven重学习">
+<meta property="og:url" content="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言本人从事JAVA编程已经有一些年月了（咳咳咳咳咳~喝一口茶），基本上在每次的项目开发过程中都会使用一些集成工具，比如说Maven或是Gradle。最近在写一个项目，但是项目在打包的过程中出现了问题，对把MAVEN一直当作傻瓜工具来使用的我完全不知道如何去解决这些问题。所以现在我想重新来了解一下这个工具，并用一种通俗易懂的方式来解释这个工具的用意。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片1.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片2.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片3.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片4.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片5.png">
+<meta property="og:updated_time" content="2019-02-09T06:35:58.312Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用了那么久现在才来回顾系列一：maven重学习">
+<meta name="twitter:description" content="前言本人从事JAVA编程已经有一些年月了（咳咳咳咳咳~喝一口茶），基本上在每次的项目开发过程中都会使用一些集成工具，比如说Maven或是Gradle。最近在写一个项目，但是项目在打包的过程中出现了问题，对把MAVEN一直当作傻瓜工具来使用的我完全不知道如何去解决这些问题。所以现在我想重新来了解一下这个工具，并用一种通俗易懂的方式来解释这个工具的用意。">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>用了那么久现在才来回顾系列一：maven重学习 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">用了那么久现在才来回顾系列一：maven重学习
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:30:44 / 修改时间：14:35:58" itemprop="dateCreated datePublished" datetime="2019-02-09T14:30:44+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/" itemprop="url" rel="index"><span itemprop="name">Tool</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/Maven/" itemprop="url" rel="index"><span itemprop="name">Maven</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本人从事JAVA编程已经有一些年月了（咳咳咳咳咳~喝一口茶），基本上在每次的项目开发过程中都会使用一些集成工具，比如说Maven或是Gradle。最近在写一个项目，但是项目在打包的过程中出现了问题，对把MAVEN一直当作傻瓜工具来使用的我完全不知道如何去解决这些问题。所以现在我想重新来了解一下这个工具，并用一种通俗易懂的方式来解释这个工具的用意。</p>
+<a id="more"></a>
+<h2 id="适用人群"><a href="#适用人群" class="headerlink" title="适用人群"></a>适用人群</h2><p>本教程适用于以下两种人：</p>
+<ol>
+<li>初次使用MAVEN但是并没有心情阅读官网上长篇教程的童鞋</li>
+<li>已经使用过MAVEN但对其具体工作方式根本不了解的童鞋（如我）</li>
+<li>资深MAVEN玩家</li>
+</ol>
+<p>这里欢迎所有人对文中的问题提出质疑，大家的意见笔者将非常珍惜！</p>
+<h2 id="在开始之前"><a href="#在开始之前" class="headerlink" title="在开始之前"></a>在开始之前</h2><blockquote>
+<p><a href="http://maven.apache.org/install.html" target="_blank" rel="noopener">安装MAVEN</a></p>
+</blockquote>
+<h2 id="MAVEN是用来作甚的？"><a href="#MAVEN是用来作甚的？" class="headerlink" title="MAVEN是用来作甚的？"></a>MAVEN是用来作甚的？</h2><p>官网上给出了六个单词作为MAVEN的用途，分别是</p>
+<ul>
+<li>Builds 构建</li>
+<li>Documentation 文档化</li>
+<li>Reporting 报告</li>
+<li>Dependencies 依赖管理</li>
+<li>SCMs 配置管理</li>
+<li>Releases 发布管理</li>
+<li>Distribution 分布</li>
+</ul>
+<p>这几个词乍一看来什么都没表述。那么我就用一些具体的例子来说明。</p>
+<p>对于初次接触JAVA的同学来说，在Eclipse中写一个类，其中包含一个main方法，然后点击一下运行键，就可以将代码运行起来。<br>但是，真实世界中的项目往往十分复杂，首先，一个项目会有一个开发过程的生命周期，其中和程序员紧密相关联的步骤包括：开发，测试，集成，打包，部署。而在这些过程中，往往需要众多的程序员齐心协力完成，一个步骤可能有多个程序员并行的进行实现。更麻烦的是，在迭代开发过程中，往往会产生多个版本的产品，这些版本之间既具有共同性，又具有差异性。如何才能将各个版本进行有效的管理呢？不仅如此，在各个不同的开发时期，往往伴随着人员的调动，一个新入组的程序员如何才能更快的对项目进行了解从而投入工作呢？</p>
+<p>这就引来了一个问题，<strong>如何才能保证每个程序员的工作成果对彼此可见，从而使每个人之间的合作更加流畅，而不是产生冲突和冗余</strong>。</p>
+<p>MAVEN就此而生。它更像是达成的某种共识。大家按照这种共识进行程序的开发。MAVEN定义了一系列开发规范，比如包的命名和功能，项目的命名等等。MAVEN中还实现了许多功能，比如自动构建，自动对依赖进行管理，自动生成项目文档等。在MAVEN的帮助下，开发人员可以尽可能的专注于代码的编写，而不是去写冗长的项目说明文档，或是进行重复的项目构建和复杂的配置管理。</p>
+<h2 id="别废话，先创一个MAVEN项目再说！"><a href="#别废话，先创一个MAVEN项目再说！" class="headerlink" title="别废话，先创一个MAVEN项目再说！"></a>别废话，先创一个MAVEN项目再说！</h2><p>MAVEN本质上是一个终端工具，但是很多IDE(集成开发环境)都配有MAVEN插件，因此很多人在初次接触MAVEN使都会使用图形工具操作它。这样并不有利于学习MAVEN。建议大家以后尽量使用命令行来操控MAVEN，在熟练以后再使用图形化工具。</p>
+<p>先打开终端(CMD或TERMINAL)进入项目目录后输出以下指令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> mvn -B archetype:generate \</span><br><span class="line">-DarchetypeGroupId=org.apache.maven.archetypes \</span><br><span class="line">-DgroupId=com.mycompany.app \</span><br><span class="line">-DartifactId=my-app</span><br></pre></td></tr></table></figure></p>
+<p>这个指令声明了项目的名称(artifactId)，项目所属的组织(groupId)，以及项目初始化时使用的maven模板。</p>
+<p>第一次使用MAVEN创建项目会比较慢，因为它会初始化一些内容。</p>
+<img src="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片1.png" title="图片1">
+<p>执行完毕后会产生如下如所示的目录结构，其中根目录名称为artifactId的值（在这里是my-app）。<br><img src="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片2.png" title="图片2"><br>具体情况如下：<br><img src="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片3.png" title="图片3"></p>
+<p><strong>在这里我们简单介绍一下根目录下各个组件的用途。</strong><br><em>注：${basedir}是指项目的根目录，比如在我的电脑上就是/users/rale/my-app</em></p>
+<blockquote>
+<p><code>${basedir}/src/main/java</code>：这个目录下放置了项目的源代码，其中按照初始化时groupId的属性建好了包，每一级域名对应一个文件夹。这是MAVEN默认的建包规范。<br><code>${basedir}/src/main/java</code>：这个目录下放置了项目的测试代码，并且在项目打包的时候不会被装入包中。这个目录底下的文件夹格式和main底下的文件夹格式相同。<br><code>pom.xml</code>：这个文件可以说是MAVEN的核心文件，在下面详细说明。</p>
+</blockquote>
+<p>初始化后的pom文件内容如下。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0</span></span></span><br><span class="line"><span class="tag"><span class="string">                      http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mycompany.app<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>my-app<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>Maven Quick Start Archetype<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>在pom中包含了当前项目管理的全部信息。pom文件采用XML的格式存储项目的配置信息（对于XML文件不熟悉的童鞋可以自行百度，这篇文章就不详细描述其语法了）。先简单介绍一下上图这个简单的pom文件中的内容：</p>
+<blockquote>
+<p><code>project</code>: XML文件中的顶层元素<br><code>modelVersion</code>: POM采用的模型的版本，这个元素很少改动<br><code>groupId</code>: 开发这个项目的组织的唯一的标识号，一般采用域名的倒序<br><code>artifactId</code>: 这个项目产品的名称<br><code>packaging</code>: 打包的格式<br><code>version</code>: 打包出来的版本<br><code>name</code>: 项目的展示名称，通常用于MAVEN生成的文档中<br><code>url</code>: 项目的网址，通常用于MAVEN生成的文档中<br><code>description</code>: 项目的基本描述，通常用于MAVEN生成的文档中</p>
+</blockquote>
+<p>此时maven生成的App.java文件中有一个自动实现好的hello world实例，我们可以直接编译项目并运行。<br>在项目的根目录下执行<code>mvn test</code>，maven会自动生成对应的.class文件位于<code>${basedir}/target/classes</code>目录下并且执行测试。可以看到下图的输出结果中说明一共一个测试用例，并且没有失败的测试用例。</p>
+<img src="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片4.png" title="图片4">
+<p>之后使用指令<code>mvn package</code>打包，打包生成的文件默认路径为<code>${basedir}/target</code>。</p>
+<img src="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/图片5.png" title="图片5">
+<p>至此我们已经完成了MAVEN的最基本操作。</p>
+<h2 id="MAVEN的其他骚操作"><a href="#MAVEN的其他骚操作" class="headerlink" title="MAVEN的其他骚操作"></a>MAVEN的其他骚操作</h2><h3 id="Plugin"><a href="#Plugin" class="headerlink" title="Plugin"></a>Plugin</h3><p>这里给出了添加MAVEN编译器插件的例子。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.5<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.5<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>Maven中的插件可以附着在编译过程的不同的声明周期。一共可以分为两种类型的插件，一种是用于编译的插件，一种是用于生成报告的插件。编译的插件应当声明于<build>模块，而报告的插件应当声明于<reporting>模块</reporting></build></p>
+<p><strong>所有的插件需要至少三个信息，groupId, artifactId和version</strong><br>对于每个插件再在自己的configuration标签下详细定义。<br>关于plugin更多内容请参考<a href="http://maven.apache.org/guides/mini/guide-configuring-plugins.html" target="_blank" rel="noopener">这个网址</a></p>
+<h3 id="Dependency"><a href="#Dependency" class="headerlink" title="Dependency"></a>Dependency</h3><p>这里给出了添加Junit依赖的例子<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>添加一个Dependency至少需要声明四个属性：<strong>groupId, artifactId, version, 和scope</strong>。其中scope是指在编译的哪个阶段使用该依赖，其值可以为<code>compile test和runtime</code>。<br>默认情况下，所有的依赖文件都位于<code>${user.home}/.m2/repository</code>目录下。Maven会将不在本地的依赖下载至这个目录，并且在项目中指向这个依赖。</p>
+<h3 id="Plugin-VS-Dependency"><a href="#Plugin-VS-Dependency" class="headerlink" title="Plugin VS Dependency"></a>Plugin VS Dependency</h3><p>这里可能会对Plugin和Dependency这两个概念之间产生一些困惑，似乎二者都是通过引用外部的工具完成当前项目的开发。但是这两个其实是完全不同的两个概念。<br>插件会绑定到指定的生命周期上，在特定的生命周期上触发。我们不会使用插件协助我们编程。<br>但是依赖是指我们会使用依赖的文件帮助开发，例如鼎鼎有名的<code>JUnit</code>。我们会使用里面的部分功能进行再次编码开发。</p>
+<h3 id="如何同时编译多个项目？"><a href="#如何同时编译多个项目？" class="headerlink" title="如何同时编译多个项目？"></a>如何同时编译多个项目？</h3><p>首先，我们需要知道的是，pom文件是可以继承的。也就是说，我们可以有父pom文件和多个子pom文件。目录格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+- pom.xml</span><br><span class="line">+- my-app</span><br><span class="line">| +- pom.xml</span><br><span class="line">| +- src</span><br><span class="line">|   +- main</span><br><span class="line">|     +- java</span><br><span class="line">+- my-webapp</span><br><span class="line">| +- pom.xml</span><br><span class="line">| +- src</span><br><span class="line">|   +- main</span><br><span class="line">|     +- webapp</span><br></pre></td></tr></table></figure></p>
+<p>在父pom中应当声明如下语句，将各个模块添加进来<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0</span></span></span><br><span class="line"><span class="tag"><span class="string">                      http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mycompany.app<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>app<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">  <span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>my-app<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>my-webapp<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>因为my-webapp需要my-app的依赖，因此在my-webapp/pom.xml文件中添加如下语句<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mycompany.app<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>my-app<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>最后在my-webapp/pom.xml和my-app中都添加如下语句继承父pom文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mycompany.app<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>app<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>最后在项目的总根目录执行<code>mvn verify</code>可以看到项目开始一起编译</p>
+<h2 id="MAVEN指令汇总"><a href="#MAVEN指令汇总" class="headerlink" title="MAVEN指令汇总"></a>MAVEN指令汇总</h2><blockquote>
+<p><code>mvn archetype:create -DgroupId=packageName -DartifactId=projectName</code>：创建一个普通的MAVEN项目<br><code>mvn archetype:create -DgroupId=packageName -DartifactId=webappName -DarchetypeArtifactId=maven-archetype-webapp</code>: 创建一个MAVEN的web应用<br><code>mvn compile</code>:编译源代码<br><code>mvn test</code> : 执行测试<br><code>mvn test-compile</code>: 编译源代码和测试代码<br><code>mvn package</code>: 将项目打包成<code>packaging</code>标签下声明的格式，在这里是JAR格式。默认情况下，生成的JAR包位于<code>${basedir}/target</code>目录下。<br><code>mvn compile</code>:<br><code>mvn clean</code>: 清除之前的编译结果，直观的来看就是删除<code>${basedir}/target</code>文件夹<br><code>mvn site</code>: 自动生成项目简介的网站<br><code>mvn verify</code>:运行任何检查，验证包是否有效且达到质量标准</p>
+</blockquote>
+<p>本文还将持续更新~~~</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/原创/" rel="tag"># 原创</a>
+          
+            <a href="/tags/Maven/" rel="tag"># Maven</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/09/Find算法-java代码实现/" rel="next" title="Find算法--java代码实现">
+                <i class="fa fa-chevron-left"></i> Find算法--java代码实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/09/SSH免密登录-正常流程和异常处理/" rel="prev" title="SSH免密登录--正常流程和异常处理">
+                SSH免密登录--正常流程和异常处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">218</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适用人群"><span class="nav-number">2.</span> <span class="nav-text">适用人群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在开始之前"><span class="nav-number">3.</span> <span class="nav-text">在开始之前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAVEN是用来作甚的？"><span class="nav-number">4.</span> <span class="nav-text">MAVEN是用来作甚的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#别废话，先创一个MAVEN项目再说！"><span class="nav-number">5.</span> <span class="nav-text">别废话，先创一个MAVEN项目再说！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAVEN的其他骚操作"><span class="nav-number">6.</span> <span class="nav-text">MAVEN的其他骚操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugin"><span class="nav-number">6.1.</span> <span class="nav-text">Plugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dependency"><span class="nav-number">6.2.</span> <span class="nav-text">Dependency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugin-VS-Dependency"><span class="nav-number">6.3.</span> <span class="nav-text">Plugin VS Dependency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何同时编译多个项目？"><span class="nav-number">6.4.</span> <span class="nav-text">如何同时编译多个项目？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAVEN指令汇总"><span class="nav-number">7.</span> <span class="nav-text">MAVEN指令汇总</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言上一篇文章请参考猫头鹰的深夜翻译：核心JAVA并发(一) 安全发布发布一个对象是指该对象的引用对当前的域之外也可见（比如，从getter方法中获取一个引用）。要确保一个对象被安全的发布(即在初始化完成之后发布)，可能需要使用同步。可以通过以下方法实现安全的发布：  静态初始化方法。只有一个线程能够初始化静态变量因为该类的初始化是在一个排它锁之下完成的。 12345678910111213141">
+<meta name="keywords" content="java,翻译,Concurrency">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：核心JAVA并发二">
+<meta property="og:url" content="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言上一篇文章请参考猫头鹰的深夜翻译：核心JAVA并发(一) 安全发布发布一个对象是指该对象的引用对当前的域之外也可见（比如，从getter方法中获取一个引用）。要确保一个对象被安全的发布(即在初始化完成之后发布)，可能需要使用同步。可以通过以下方法实现安全的发布：  静态初始化方法。只有一个线程能够初始化静态变量因为该类的初始化是在一个排它锁之下完成的。 12345678910111213141">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/图片1.png">
+<meta property="og:updated_time" content="2019-02-09T06:00:54.551Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：核心JAVA并发二">
+<meta name="twitter:description" content="前言上一篇文章请参考猫头鹰的深夜翻译：核心JAVA并发(一) 安全发布发布一个对象是指该对象的引用对当前的域之外也可见（比如，从getter方法中获取一个引用）。要确保一个对象被安全的发布(即在初始化完成之后发布)，可能需要使用同步。可以通过以下方法实现安全的发布：  静态初始化方法。只有一个线程能够初始化静态变量因为该类的初始化是在一个排它锁之下完成的。 12345678910111213141">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：核心JAVA并发二 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：核心JAVA并发二
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 13:54:16 / 修改时间：14:00:54" itemprop="dateCreated datePublished" datetime="2019-02-09T13:54:16+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇文章请参考<a href="https://segmentfault.com/a/1190000013286239" target="_blank" rel="noopener">猫头鹰的深夜翻译：核心JAVA并发(一)</a></p>
+<h2 id="安全发布"><a href="#安全发布" class="headerlink" title="安全发布"></a>安全发布</h2><p>发布一个对象是指该对象的引用对当前的域之外也可见（比如，从getter方法中获取一个引用）。要确保一个对象被安全的发布(即在初始化完成之后发布)，可能需要使用同步。可以通过以下方法实现安全的发布：</p>
+<ul>
+<li><p>静态初始化方法。只有一个线程能够初始化静态变量因为该类的初始化是在一个排它锁之下完成的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticInitializer</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Publishing an immutable object without additional initialization</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Year year = Year.of(<span class="number">2017</span>); </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;String&gt; keywords;</span><br><span class="line">  <span class="comment">// Using static initializer to construct a complex object</span></span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="comment">// Creating mutable set</span></span><br><span class="line">    Set&lt;String&gt; keywordsSet = <span class="keyword">new</span> HashSet&lt;&gt;(); </span><br><span class="line">    <span class="comment">// Initializing state</span></span><br><span class="line">    keywordsSet.add(<span class="string">"java"</span>);</span><br><span class="line">    keywordsSet.add(<span class="string">"concurrency"</span>);</span><br><span class="line">    <span class="comment">// Making set unmodifiable </span></span><br><span class="line">    keywords = Collections.unmodifiableSet(keywordsSet); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>volatile关键字。读者线程总是能获取最近的值，因为写线程总是在后续的读取之前进行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Volatile</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> String state;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setState</span><span class="params">(String state)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state = state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">String <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Atomics。比如，AtomicInteger将一个值存储为volatile类型，所以这里和volatile变量的规则相同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Atomics</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger state = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">initializeState</span><span class="params">(<span class="keyword">int</span> state)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state.compareAndSet(<span class="number">0</span>, state);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state.get();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Final类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Final</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String state;</span><br><span class="line">  Final(String state) &#123;</span><br><span class="line">    <span class="keyword">this</span>.state = state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">String <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>确保<code>this</code>引用不会再初始化过程中泄漏</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThisEscapes</span> </span>&#123;</span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line"> ThisEscapes(String name) &#123;</span><br><span class="line">   Cache.putIntoCache(<span class="keyword">this</span>);</span><br><span class="line">   <span class="keyword">this</span>.name = name;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function">String <span class="title">getName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;String, ThisEscapes&gt; CACHE = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"> <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">putIntoCache</span><span class="params">(ThisEscapes thisEscapes)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 'this' reference escaped before the object is fully constructed.</span></span><br><span class="line">   CACHE.putIfAbsent(thisEscapes.getName(), thisEscapes);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>正确同步的域<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Synchronization</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String state;</span><br><span class="line">  <span class="function"><span class="keyword">synchronized</span> String <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (state == <span class="keyword">null</span>)</span><br><span class="line">      state = <span class="string">"Initial"</span>;</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="不变的对象"><a href="#不变的对象" class="headerlink" title="不变的对象"></a>不变的对象</h2><p>不变对象的一个非常棒的属性时，他们是现成安全的，所有无需在其上进行同步。是一个对象成为不变对象的要求为：</p>
+<ul>
+<li>所有的字段为<code>final</code>类型</li>
+<li>所有字段可以是可变对象或不可变对象，但不能越过对象的范围，从而对象的状态在构建后不能更改。</li>
+<li><code>this</code>引用在初始化期间不会泄露</li>
+<li>该类为final类型，所以无法在子类中修改其行为</li>
+</ul>
+<p>不变对象的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Marked as final - subclassing is forbidden</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Artist</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Immutable object, field is final</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String name; </span><br><span class="line">  <span class="comment">// Collection of immutable objects, field is final</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> List&lt;Track&gt; tracks; </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Artist</span><span class="params">(String name, List&lt;Track&gt; tracks)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="comment">// Defensive copy</span></span><br><span class="line">    List&lt;Track&gt; copy = <span class="keyword">new</span> ArrayList&lt;&gt;(tracks); </span><br><span class="line">    <span class="comment">// Making mutable collection unmodifiable</span></span><br><span class="line">    <span class="keyword">this</span>.tracks = Collections.unmodifiableList(copy); </span><br><span class="line">    <span class="comment">// 'this' is not passed to anywhere during construction</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Getters, equals, hashCode, toString</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Marked as final - subclassing is forbidden</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Track</span> </span>&#123; </span><br><span class="line">  <span class="comment">// Immutable object, field is final</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String title; </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Track</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.title = title;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Getters, equals, hashCode, toString</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Threads"><a href="#Threads" class="headerlink" title="Threads"></a>Threads</h2><p><code>java.lang.Thread</code>类用来表示一个应用或是一个JVM现场。其代码通常在某个进程类的上下文中执行。（使用<code>Thread#currentThread</code>来获取当前线程本身）</p>
+<p>线程的状态和相应的描述：</p>
+<blockquote>
+<p>NEW: 还未启动<br>RUNNABLE: 启动并运行<br>BLOCKED: 在控制器上等待 - 该线程正视图获取锁并进入关键区域<br>WAITING: 等待另一个线程执行特殊操作(<code>notify/notifyAll</code>,<code>LockSupport#unpark</code>)<br>TIMED_WAITING: 和WAITING类似，但是有超时设置<br>TERMINATED: 停止</p>
+</blockquote>
+<p>Thread的方法和相应的描述：</p>
+<blockquote>
+<p>start: 启动一个<code>Thread</code>实例并且执行<code>run()</code>方法<br>join: 阻塞直到线程完成<br>interrupt: 中断线程。如果该线程在响应终端的方法中阻塞着，则会在另一个线程中抛出<code>InterruptedException</code>，否则将会被设置为中断状态。<br>stop,suspend,resume,destroy: 这些方法都已经失效了。</p>
+</blockquote>
+<h3 id="如何处理InterruptedException"><a href="#如何处理InterruptedException" class="headerlink" title="如何处理InterruptedException"></a>如何处理InterruptedException</h3><ul>
+<li>如果可能的话，清理资源并终止线程的运行</li>
+<li>声明当前的方法会抛出<code>InterruptedException</code></li>
+<li>如果一个方法并没有被声明抛出<code>InterruptedException</code>，应该使用<code>Thread.currentThread().interrupt()</code>将中断标识回复为true，然后在该层抛出异常。将中断标识设为true很重要，它使得异常在可以在更高的层次上进行处。</li>
+</ul>
+<h3 id="意料之外的异常处理"><a href="#意料之外的异常处理" class="headerlink" title="意料之外的异常处理"></a>意料之外的异常处理</h3><p>Threads可以设置<code>UncaughtExceptionHandler</code>，它会在程序突然中断的时候收到通知。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Thread thread = <span class="keyword">new</span> Thread(runnable);</span><br><span class="line">thread.setUncaughtExceptionHandler((failedThread, exception) -&gt; &#123;</span><br><span class="line">  logger.error(<span class="string">"Caught unexpected exception in thread '&#123;&#125;'."</span>,</span><br><span class="line">      failedThread.getName(), exception);</span><br><span class="line">&#125;);</span><br><span class="line">thread.start();</span><br></pre></td></tr></table></figure></p>
+<h3 id="生命力"><a href="#生命力" class="headerlink" title="生命力"></a>生命力</h3><h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>当多个线程在等待彼此释放持有的资源，从而形成了资源占有和等待的循环时，就产生了死锁。可能产生死锁的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">long</span> amount;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">plus</span><span class="params">(<span class="keyword">long</span> amount)</span> </span>&#123; <span class="keyword">this</span>.amount += amount; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">minus</span><span class="params">(<span class="keyword">long</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.amount &lt; amount)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">this</span>.amount -= amount;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">transferWithDeadlock</span><span class="params">(<span class="keyword">long</span> amount, Account first, Account second)</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (first) &#123;</span><br><span class="line">      <span class="keyword">synchronized</span> (second) &#123;</span><br><span class="line">        first.minus(amount);</span><br><span class="line">        second.plus(amount);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>死锁可能会这样产生：</p>
+<ul>
+<li>一个线程正视图从第一个账户向第二个账户转账，并且已经获得了第一个账户的锁</li>
+<li>与此同时，另一个线程正视图从第二个线程像第一个线程转账，并且已经获得了第二个账户的锁</li>
+</ul>
+<p>避免死锁的方法有：</p>
+<ul>
+<li><p>顺序加锁 - 总是按相同的顺序获得锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">long</span> id;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">long</span> amount;</span><br><span class="line">  <span class="comment">// Some methods are omitted</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">transferWithLockOrdering</span><span class="params">(<span class="keyword">long</span> amount, Account first, Account second)</span></span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> lockOnFirstAccountFirst = first.id &lt; second.id;</span><br><span class="line">    Account firstLock = lockOnFirstAccountFirst  ? first  : second;</span><br><span class="line">    Account secondLock = lockOnFirstAccountFirst ? second : first;</span><br><span class="line">    <span class="keyword">synchronized</span> (firstLock) &#123;</span><br><span class="line">      <span class="keyword">synchronized</span> (secondLock) &#123;</span><br><span class="line">        first.minus(amount);</span><br><span class="line">        second.plus(amount);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>会超时的锁 - 不要无限的占有锁，应当释放所有的锁并重新尝试获取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">long</span> amount;</span><br><span class="line">  <span class="comment">// Some methods are omitted</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">transferWithTimeout</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">long</span> amount, Account first, Account second, <span class="keyword">int</span> retries, <span class="keyword">long</span> timeoutMillis</span></span></span><br><span class="line"><span class="function"><span class="params">  )</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> attempt = <span class="number">0</span>; attempt &lt; retries; attempt++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (first.lock.tryLock(timeoutMillis, TimeUnit.MILLISECONDS))</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (second.lock.tryLock(timeoutMillis, TimeUnit.MILLISECONDS))</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              first.minus(amount);</span><br><span class="line">              second.plus(amount);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">finally</span> &#123;</span><br><span class="line">              second.lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">finally</span> &#123;</span><br><span class="line">          first.lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="活锁和线程饥饿"><a href="#活锁和线程饥饿" class="headerlink" title="活锁和线程饥饿"></a>活锁和线程饥饿</h3><p>当所有的线程都在协商对资源的访问，或是预防死锁，从而导致没有一个线程真正在运行时，会产生活锁。当一个线程长时间占据一个锁导致别的线程无法进展时，会产生线程饥饿现象。</p>
+<h2 id="java-util-concurrent"><a href="#java-util-concurrent" class="headerlink" title="java.util.concurrent"></a>java.util.concurrent</h2><h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><p>线程池的核心接口是<code>ExecutorService</code>，<code>java.util.concurrent</code>还提供了一个静态工厂<code>Executors</code>，它包含创建具有最常见配置的线程池的工厂方法。</p>
+<p>工厂方法如下：</p>
+<blockquote>
+<p>newSingleThreadExecutor: 返回一个只有一个线程的<code>ExecutorService</code><br>newFixedThreadPool: 返回一个具有固定数目线程的<code>ExecutorService</code><br>newCachedThreadPool: 返回一个可变大小的线程池<code>ExecutorService</code><br>newSingleThreadScheduledExecutor: 返回只有一个线程的<code>ScheduledExecutorService</code><br>newScheduledThreadPool: 返回包含一组线程的<code>ScheduledExecutorService</code><br>newWorkStealingPool: 返回一个带有并行级别的<code>ExecutorService</code></p>
+</blockquote>
+<blockquote>
+<p>当调整线程池大小时，最好基于机器运行该应用时分配的逻辑内核数。可以通过调用<code>Runtime.getRuntime().availableProcessors()</code>来获得该值。</p>
+</blockquote>
+<p>线程池的实现类</p>
+<img src="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/图片1.png" title="图片1">
+<p>任务通过<code>ExecutorService#submit</code>，<code>ExecutorService#invokeAll</code>或<code>ExecutorService#invokeAny</code>提交，它们对不同类型的任务有多种重载。</p>
+<p>任务的功能性接口：</p>
+<blockquote>
+<p>Runnable: 表示一个没有返回值的任务<br>Callable: 表示一个包含返回值的计算。它还声明可以抛出原始异常，所以不需要对检查异常进行包装</p>
+</blockquote>
+<p>### Future ###</p>
+<p><code>Future</code>是对所有的异步计算的抽象。它表示这些计算的结果，在某些时候可用。大多数的<code>ExecutorService</code>方法都是用<code>Future</code>作为返回值。它包含检查当前future的状态以及阻塞当前读取操作直至结果可以被读取等方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newSingleThreadExecutor();</span><br><span class="line">Future&lt;String&gt; future = executorService.submit(() -&gt; <span class="string">"result"</span>);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  String result = future.get(<span class="number">1L</span>, TimeUnit.SECONDS);</span><br><span class="line">  System.out.println(<span class="string">"Result is '"</span> + result + <span class="string">"'."</span>);</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">  Thread.currentThread().interrupt();</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getCause());</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">catch</span> (TimeoutException e) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">assert</span> future.isDone();</span><br></pre></td></tr></table></figure></p>
+<h3 id="Locks"><a href="#Locks" class="headerlink" title="Locks"></a>Locks</h3><p><strong>Lock</strong><br><code>java.util.concurrent.locks</code>包中有一个标准的<code>Lock</code>接口，<code>ReentrantLock</code>实现复制了<code>synchronized</code>关键字的功能，同时提供了一些额外的功能，比如获取当前锁状态的信息，非阻塞的<code>tryBlock()</code>方法，以及可中断的锁。下面是使用具体的<code>ReentrantLock</code>实例的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> value;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> ++value;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong><em>ReadWriteLock</em></strong><br><code>java.util.concurrent.locks</code>包还包含了<code>ReadWriteLock</code>接口（以及<code>ReentrantReadWriteLock</code>实现），它被定义为一组读写锁，支持多个同步读者和单一写者。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Statistic</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> ReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> value;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    lock.writeLock().lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      value++;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      lock.writeLock().unlock();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">current</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    lock.readLock().lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      lock.readLock().unlock();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>CountDownLatch</strong><br><code>CountDownLatch</code>通过一个数值初始化。线程会调用<code>await()</code>方法阻塞自己，等待计数值为0后再继续运行。其它的线程（或是同一个线程）调用<code>countDown()</code>来减少计数。一旦计数为0后，该倒计时器便不可以重复使用。用来在达到某个条件后，启动一组未知数量的线程</p>
+<p><strong>CompletableFuture</strong><br><code>CompletableFuture</code>是异步计算的一个抽象。不同于<code>Future</code>，只能通过阻塞获取结果，该类鼓励注册回调函数来创建一组任务，从而在得到返回值或是出现异常时执行该任务。</p>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/refcardz/core-java-concurrency?chapter=5" target="_blank" rel="noopener">https://dzone.com/refcardz/core-java-concurrency?chapter=5</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+            <a href="/tags/Concurrency/" rel="tag"># Concurrency</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/08/猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP/" rel="next" title="猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP">
+                <i class="fa fa-chevron-left"></i> 猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/" rel="prev" title="猫头鹰的深夜翻译：核心JAVA并发一">
+                猫头鹰的深夜翻译：核心JAVA并发一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">218</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全发布"><span class="nav-number">2.</span> <span class="nav-text">安全发布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不变的对象"><span class="nav-number">3.</span> <span class="nav-text">不变的对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Threads"><span class="nav-number">4.</span> <span class="nav-text">Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何处理InterruptedException"><span class="nav-number">4.1.</span> <span class="nav-text">如何处理InterruptedException</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#意料之外的异常处理"><span class="nav-number">4.2.</span> <span class="nav-text">意料之外的异常处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命力"><span class="nav-number">4.3.</span> <span class="nav-text">生命力</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁"><span class="nav-number">5.</span> <span class="nav-text">死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#活锁和线程饥饿"><span class="nav-number">5.1.</span> <span class="nav-text">活锁和线程饥饿</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-util-concurrent"><span class="nav-number">6.</span> <span class="nav-text">java.util.concurrent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池"><span class="nav-number">6.1.</span> <span class="nav-text">线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Locks"><span class="nav-number">6.2.</span> <span class="nav-text">Locks</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

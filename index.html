@@ -327,6 +327,1680 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/SSH免密登录-正常流程和异常处理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/SSH免密登录-正常流程和异常处理/" class="post-title-link" itemprop="url">SSH免密登录--正常流程和异常处理</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:36:33 / 修改时间：14:37:30" itemprop="dateCreated datePublished" datetime="2019-02-09T14:36:33+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/" itemprop="url" rel="index"><span itemprop="name">Tool</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/SSH/" itemprop="url" rel="index"><span itemprop="name">SSH</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>最近在搭一个集群环境。为了能让Master节点和Slave节点之间能够快速通讯，所以需要配置Master节点向Slave节点的免密登录。网上的教程非常多，但是我按照正常流程走了一遍之后还是会出现问题。所以这里我试着将我配置时候遇到的问题以及相应的解决方案记录下来。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/SSH免密登录-正常流程和异常处理/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/" class="post-title-link" itemprop="url">用了那么久现在才来回顾系列一：maven重学习</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:30:44 / 修改时间：14:35:58" itemprop="dateCreated datePublished" datetime="2019-02-09T14:30:44+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/" itemprop="url" rel="index"><span itemprop="name">Tool</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Tool/Maven/" itemprop="url" rel="index"><span itemprop="name">Maven</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本人从事JAVA编程已经有一些年月了（咳咳咳咳咳~喝一口茶），基本上在每次的项目开发过程中都会使用一些集成工具，比如说Maven或是Gradle。最近在写一个项目，但是项目在打包的过程中出现了问题，对把MAVEN一直当作傻瓜工具来使用的我完全不知道如何去解决这些问题。所以现在我想重新来了解一下这个工具，并用一种通俗易懂的方式来解释这个工具的用意。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/用了那么久现在才来回顾系列一：maven重学习/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Find算法-java代码实现/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/Find算法-java代码实现/" class="post-title-link" itemprop="url">Find算法--java代码实现</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:28:51 / 修改时间：14:30:14" itemprop="dateCreated datePublished" datetime="2019-02-09T14:28:51+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="什么是Union-Find"><a href="#什么是Union-Find" class="headerlink" title="什么是Union Find"></a>什么是Union Find</h2><p>Union Find是并查集的一种数据结构。 先理解两个对象之间“相连的关系”<br>对象p和对象q<strong>相连</strong>是指：</p>
+<blockquote>
+<p>自反性：p和p相连<br>对称性：如果p和q相连，那么q和p也相连<br>传递性：如果p和q相连而且q和r相连，那么p和r相连</p>
+</blockquote>
+<p>在并查集中，如果想要将连个对象相连，<strong>当且仅当这两个对象不在同一个连通分量中时，才会相连</strong>。这句话什么意思呢？也就是说，如果已经存在一条路径，使得p和q之间相通，那么就不会对后续的连接p和q的请求作出任何操作。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/Find算法-java代码实现/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Springboot周边游1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/Springboot周边游1/" class="post-title-link" itemprop="url">Springboot周边游1-yaml</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:22:32 / 修改时间：14:26:00" itemprop="dateCreated datePublished" datetime="2019-02-09T14:22:32+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在spring漫长的历史中，配置一直是新手入门的头疼问题。往往只能从网上找到一个demo，再将里面的内容修改为自己的数据。但是一旦出现新的需求，往往不知道如何修改配置。spring经历了从<strong>xml</strong>到<strong>properties文件</strong>再到<strong>yml文件</strong>乃至利用<strong>java代码</strong>进行配置，努力将配置文件保持对用户友好。但是在这个可读性增强的过程中其实学习曲线也在一定程度的上升。</p>
+<p>所以这篇文章的目的并<strong>不是教会你去配置spring项目，而是要教会你如何去读懂spring配置文件</strong>。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/Springboot周边游1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Springboot周边游2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/Springboot周边游2/" class="post-title-link" itemprop="url">Springboot周边游2-SpEL</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:19:17 / 修改时间：14:22:24" itemprop="dateCreated datePublished" datetime="2019-02-09T14:19:17+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="写在SpEL之前"><a href="#写在SpEL之前" class="headerlink" title="写在SpEL之前"></a>写在SpEL之前</h2><p>EL表达式是JSP中一个十分重要的概念。它允许我们从model中读取数据以及条件性的渲染JSP页面。Spring在3.0的版本中也引入了Spring Expression Language从而使得spring具有更好的可扩展性和跨平台性。<br>虽然SpEL引擎作为Spring 组合里的表达式解析的基础 ，但它不直接依赖于Spring,可独立使用。这也是SpEL的最大优点。</p>
+<p>这一章内容将包括SpEL的使用，并且会举一个例子从配置文件中读取相应的属性。因为最终的项目是为了实现<code>thymeleaf+springboot+mysql</code>, 而很多地方都无形中使用了SpEL，比如Thymeleaf获取model数据，比如项目从config文件中获取常量配置。让我们赶紧来感受一下这个功能的强大吧。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/Springboot周边游2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Springboot周边游3/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/Springboot周边游3/" class="post-title-link" itemprop="url">spring-boot周边游3-Thymeleaf 一个简单的demo以及初识Standard Dialect</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:07:55 / 修改时间：14:12:54" itemprop="dateCreated datePublished" datetime="2019-02-09T14:07:55+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<h2 id="Thymeleaf简介"><a href="#Thymeleaf简介" class="headerlink" title="Thymeleaf简介"></a>Thymeleaf简介</h2><h2 id="配置Thymeleaf"><a href="#配置Thymeleaf" class="headerlink" title="配置Thymeleaf"></a>配置Thymeleaf</h2><p>这个教程是基于maven环境进行配置的。</p>
+<p>1.在<code>resources</code>文件夹之下新加两个文件夹，分别为templates和static，其中templates用于存放界面HTML文件，而static则用于存储静态文件比如js，css或img。目录格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-project</span><br><span class="line">  -src</span><br><span class="line">    -main</span><br><span class="line">      -java</span><br><span class="line">      -resources</span><br><span class="line">        -templates</span><br><span class="line">        -static</span><br><span class="line">        -config</span><br><span class="line">          -application.yml</span><br><span class="line">          -application-test.yml</span><br><span class="line">          -application-validate.yml</span><br><span class="line">    -test</span><br><span class="line">  -pom.xml</span><br></pre></td></tr></table></figure></p>
+<p>2.pom.xml文件中添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-thymeleaf<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>3.在.properties文件或是.yml文件中添加thymeleaf配置<br><strong>.properties</strong>文件中配置内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">########################################################</span><br><span class="line">###THYMELEAF (ThymeleafAutoConfiguration)</span><br><span class="line">########################################################</span><br><span class="line">#配置项目的HTML路径</span><br><span class="line">spring.thymeleaf.prefix=classpath:/templates/</span><br><span class="line">#后缀</span><br><span class="line">spring.thymeleaf.suffix=.html</span><br><span class="line">#会开启严格的HTML格式检查，因此如果想要关闭它，就将其值设置为LEGACYHTML5</span><br><span class="line">#spring.thymeleaf.mode=HTML5 #LEGACYHTML5 如果想要关闭强制的语法检查</span><br><span class="line">spring.thymeleaf.encoding=UTF-8</span><br><span class="line">spring.thymeleaf.content-type=text/html</span><br><span class="line"># 关闭了换从，从而支持热部署</span><br><span class="line">spring.thymeleaf.cache=false</span><br></pre></td></tr></table></figure></p>
+<p><strong>.yml</strong>文件中配置内容如下：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  thymeleaf:</span></span><br><span class="line"><span class="attr">    prefix:</span> <span class="attr">classpath:/templates/</span></span><br><span class="line"><span class="attr">    suffix:</span> <span class="string">.html</span></span><br><span class="line"><span class="attr">    encoding:</span> <span class="string">UTF-8</span></span><br><span class="line"><span class="attr">    content-type:</span> <span class="string">text/html</span></span><br><span class="line"><span class="attr">    cache:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">    mode:</span> <span class="string">LEGACYHTML5</span></span><br></pre></td></tr></table></figure></p>
+<p>至此环境配置完成。Spring支持多种方式配置Thymeleaf包括代码，XML等等。这里我们采用yml文件的方式。</p>
+<p>4.编写demo<br>在resources/templates目录下新建一个hello.html文件，内容如下：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Welcome Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--从上下文中获取name属性并填写到p标签中--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"'hello, '+$&#123;name&#125;"</span>&gt;</span>hello! my new friend!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这里需要注意的是，要在html标签中加入<code>xmlns:th=&quot;http://www.thymeleaf.org&quot;</code>。</p>
+<p>编写一个controller，内容如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">welcome</span><span class="params">(Model model)</span></span>&#123;</span><br><span class="line">        model.addAttribute(<span class="string">"name"</span>, <span class="string">"小伙伴"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这一部分的内容涉及Spring-mvc，这里暂时不细讲，各位只需copy代码即可。</p>
+<p>完成后运行Application.java启动spring-boot项目，Application.java内容如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.config.EnableJpaAuditing;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.ViewControllerRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="meta">@EnableJpaAuditing</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(Application.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在启动时输出找到的所有的bean</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ctx</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommandLineRunner <span class="title">commandLineRunner</span><span class="params">(ApplicationContext ctx)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> args -&gt; &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">"Let's inspect the beans provided by Spring Boot:"</span>);</span><br><span class="line"></span><br><span class="line">            String[] beanNames = ctx.getBeanDefinitionNames();</span><br><span class="line">            Arrays.sort(beanNames);</span><br><span class="line">            <span class="keyword">for</span> (String beanName : beanNames) &#123;</span><br><span class="line">                System.out.println(beanName);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>启动完毕后在浏览器中输入<code>http://localhost:PORT/hello</code>。这里的PORT是指端口号，可以在配置文件中使用<code>server.port:8080</code>配置。使用yaml配置的话请自行转化。</p>
+<p>这是的界面显示如下：</p>
+<img src="/2019/02/09/Springboot周边游3/图片1.png" title="图片1">
+<h2 id="Thymeleaf-basic"><a href="#Thymeleaf-basic" class="headerlink" title="Thymeleaf basic"></a>Thymeleaf basic</h2><p>1.Thymeleaf支持多种模式(mode)</p>
+<ul>
+<li>HTML（包括HTML5, HTML 4 and XHTML.）不会进行非常严格的语法检查</li>
+<li>XML （严格的语法检查，如果不符合标准会抛出异常）</li>
+<li>TEXT</li>
+<li>JAVASCRIPT （意味着可以像在HTML中的语法一样在JS中使用）</li>
+<li>CSS (同上)</li>
+<li>RAW</li>
+</ul>
+<p>2.Standard Dialect </p>
+<blockquote>
+<p>An object that applies some logic to a markup artifact (a tag, some text, a comment, or a mere placeholder if templates are not markup) is called a processor, and a set of these processors – plus perhaps some extra artifacts – is what a dialect is normally comprised of.</p>
+</blockquote>
+<p>dialect由processors和artifacts构成。processor是指将一些逻辑施加于markup元素之上。dialect将在后面继续介绍，它是thymeleaf的一个重要成分。这里想介绍一下，就是Thymeleaf对SpEL有非常良好的支持，而且之前使用ONGL语法的同志也可以非常快速的过渡。同时这种语法优于jsp的优点在于它支持原生的HTML语法，从而在预览的时候不会因为JSP语法而必须先通过服务器渲染。</p>
+<h2 id="Standard-Dialect"><a href="#Standard-Dialect" class="headerlink" title="Standard Dialect"></a>Standard Dialect</h2><blockquote>
+<p><code>th:text</code>: 更换当前标签之下的text内容，例如<code>&lt;p th:text=&quot;hello&quot;&gt;&lt;/p&gt;</code>转化后成为<code>&lt;p&gt;hello&lt;/p&gt;</code><br><code>th:utext</code>: 非转义语法，也就是当存在如HTML语义中的标签<code>&lt;span&gt;</code>不会将其转义为<code>&amp;lt;span&amp;rt;</code></p>
+</blockquote>
+<h2 id="Standard-Syntax-Expression"><a href="#Standard-Syntax-Expression" class="headerlink" title="Standard Syntax Expression"></a>Standard Syntax Expression</h2><p>在官网上列举了所有的标准的语法，有兴趣的可以戳文末的链接去了解。这里简单介绍一下其中的几种并举例说明。<br>为了便于理解，这里先介绍一下，<code>th:text</code>属性会将所在的标签的内容改变为<code>th:text</code>的值。而且<code>th:text</code>支持动态赋值。</p>
+<h3 id="Message-Expression-…"><a href="#Message-Expression-…" class="headerlink" title="Message Expression #{…}"></a>Message Expression #{…}</h3><p>假设我们现在想要把一些公共用语放在一个配置文件中，并且这个配置文件可以支持多国语言。那么我们就可以通过<code>#{}</code>获取配置文件中的内容。Thymeleaf默认每个HTML的配置文件位于同目录之下的同名的<code>.properties</code>文件中。现在我们来尝试一下，在之前的<strong>hello.html</strong>之中添加一段代码，内容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Welcome Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--从上下文中获取name属性并填写到p标签中--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"'hello, '+$&#123;name&#125;"</span>&gt;</span>hello! my new friend!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!--添加这一段代码--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:utext</span>=<span class="string">"#&#123;welcome.login&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后在同目录下添加一个<strong>hello.properties</strong>文件，内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">welcome.login:welcome to this &lt;b&gt;damn&lt;/b&gt; website</span><br></pre></td></tr></table></figure></p>
+<p>这时开启项目就可以看见第二个</p><p>的text为配置文件中的内容。</p>
+<p>假设这时有一个新需求，比如我们希望在欢迎词中包含用户名体现个性化，那么我们可以使用如下的方式：<br><strong>hello.properties</strong>使用<code>{}</code>占位符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">welcome.login:welcome to this &lt;b&gt;damn&lt;/b&gt; website,&#123;0&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>hello.html</strong> <code>${session.user.name}</code>从session中获取用户名作为参数传递给message，股关于<code>${}</code>会在下一小节详细介绍。<em>如果有多个参数需要传递，可以用逗号隔开</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">th:utext</span>=<span class="string">"#&#123;welcome.login($&#123;session.user.name&#125;)&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>###Variable Expressions ${…}###<br><code>${}</code>属于OGNL语法，而在spring-mvc中会被替代为SpEL，但是二者的语法在大多数场景下基本相同。<br>下面是一些简单范例：</p>
+<blockquote>
+<p><code>${person.father.name}</code>: 相当于person.getFather().getName()<br><code>${personsByName[&#39;Stephen Zucchini&#39;].age}</code>: 获取map对象personByName中名称为Stephen Zucchini的人的年龄<br><code>${personsArray[0].name}</code>: 获取personsArray数组对象中第一个对象的name<br><code>${person.createCompleteName()}</code> : 允许直接调用对象中的方法</p>
+</blockquote>
+<p>Thymeleaf还考虑到你可能需要在界面中调用到很多的上下文属性，或者是使用一些工具，因此内置了一下对象和方法供大家使用。这里直接摘抄了官网，有兴趣的可以直接去官网进行了解。</p>
+<img src="/2019/02/09/Springboot周边游3/图片2.png" title="图片2">
+<img src="/2019/02/09/Springboot周边游3/图片3.png" title="图片3">
+<h3 id="Selection-Variable-…"><a href="#Selection-Variable-…" class="headerlink" title="Selection Variable *{…}"></a>Selection Variable *{…}</h3><p>被标记为<code>*{x}</code>将不会再上下文中寻找x属性，而是会去最近选中的对象中寻找x属性。如果没有最近选中的对象，那么<code>*{...}</code>和<code>#{...}</code>所执行的操作相同。<br>那么我们如何才能知道是否选中对象呢，这是需要使用<code>th:object</code>属性来标记被选中的对象。下面举个栗子：<br>比如现在我们有一本书，并且我们希望在界面中展示这本书的详细信息，包括书的ISBN，名称(name)和价格(price)，那么我们的界面可以是酱的<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:object</span>=<span class="string">"$&#123;book&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"*&#123;ISBN&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"*&#123;name&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"*&#123;price&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>这段代码等价于</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"$&#123;book.ISBN&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"$&#123;book.name&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:text</span>=<span class="string">"$&#123;book.price&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>可见<code>*{...}</code>可以帮我们省去很多冗余的选择代码</p>
+<h3 id="Link-URL-Expressions-…"><a href="#Link-URL-Expressions-…" class="headerlink" title="Link URL Expressions: @{…}"></a>Link URL Expressions: @{…}</h3><p>URL在WEB页面中可谓是错综复杂，有各式各样的URL。而且一旦项目重构，因为上下文的改变很可能造成相对路径甚至绝对路径的失效。Thymeleaf将URL归类为一下几种并分别给出了相应的支持。下面给出一些示例：</p>
+<blockquote>
+<p><code>&lt;a th:href=&quot;@{http://www.thymeleaf.org}&quot;/&gt;</code>: 展示绝对路径 <a href="http://www.thymeleaf.org" target="_blank" rel="noopener">http://www.thymeleaf.org</a><br><code>&lt;a th:href=&quot;@{/order/list}&quot;/&gt;</code> : 和上下文相对路径,如果我们的项目部署在<code>&lt;a th:href=&quot;@{/order/list}&quot;&gt;</code>,那么等价于<code>&lt;a href=&quot;/myapp/order/list&quot;&gt;</code><br><code>&lt;a th:href=&quot;@{~/billing-app/showDetails.htm}&quot;&gt;</code>: 服务器相对路径，可以指向同一个服务器上另一个上下文的资源，如果我们的项目部署在<code>&lt;a th:href=&quot;@{/order/list}&quot;&gt;</code>,那么等价于<code>&lt;a href=&quot;/billing-app/showDetails.htm&quot;&gt;</code><br><code>&lt;script th:src=&quot;@{//scriptserver.example.net/myscript.js}&quot;&gt;...&lt;/script&gt;</code>: 协议相关路径，本质上是绝对路径，会保证协议的一致性，通常用于引入静态资源如js或css等<br><code>&lt;a th:href=&quot;@{/order/details(id=3)}&quot;&gt;</code>:在URL中添加参数，等价于<code>&lt;a href=&quot;/order/details?id=3&quot;&gt;</code>。如果需要传入多个参数，可以用逗号隔开<br><code>&lt;a th:href=&quot;@{/order/{id}/details(id=3,action=&#39;show_all&#39;)}&quot;&gt;</code>:将传入的参数自动转化为路径变量，这里等价于<code>&lt;a href=&quot;/order/3/details?action=show_all&quot;&gt;</code><br><code>&lt;a th:href=&quot;@{/home#all_info(action=&#39;show&#39;)}&quot;&gt;</code>定位到界面中id为all_info的部分，等价于<code>&lt;a href=&quot;/home?action=show#all_info&quot;&gt;</code><br><code>&lt;a th:href=&quot;@{&#39;/details/&#39;+${user.login}(orderId=${o.id})}&quot;&gt;view&lt;/a&gt;</code>URL本身也可以是一个变量定义的，也同样允许传入参数。</p>
+</blockquote>
+<h3 id="Fragment-Expressions-…"><a href="#Fragment-Expressions-…" class="headerlink" title="Fragment Expressions: ~{…}"></a>Fragment Expressions: ~{…}</h3><p>允许将HTML代码块插入到多个地方。比如我们经常会需要将HTML页面分割为HEADER，SIDEBAR，FOOTER等部分，通过Fragment符号可以将他们分割成单独的文件并且插入到需要他们的页面中。提高了代码的复用性。它常常和<code>th:insert</code>以及<code>th:replace</code>一起使用。</p>
+<h3 id="Literals"><a href="#Literals" class="headerlink" title="Literals"></a>Literals</h3><blockquote>
+<p>text: <code>th:text=&quot;&#39;working web application&#39;&quot;</code>用单引号赋值,还支持字符串拼接操作<code>th:text=&quot;&#39;The name of the user is &#39; + ${user.name}&quot;</code><br>numeric: <code>th:text=&quot;2013 + 2&quot;</code><br>boolean: <code>th:if=&quot;${user.isAdmin()} == false&quot;&gt;</code><br>null: <code>th:if=&quot;${variable.something} == null&quot;</code></p>
+</blockquote>
+<h2 id="Literals-Replacement"><a href="#Literals-Replacement" class="headerlink" title="Literals Replacement"></a>Literals Replacement</h2><p>在上一节提到了字符串拼接操作，这是一个很常用的操作。因此Thymeleaf也专门封装了一个字符串替换符来支持这个操作，因此上面的<code>th:text=&quot;&#39;The name of the user is &#39; + ${user.name}&quot;</code>等价于<code>th:text=&quot;|The name of the user is ${user.name}|&quot;</code>从而增强了可读性。<br>需要注意的是，替换符<code>||</code>中只会对<code>${...}, *{...}, #{...}</code>进行转义，其它的都不会进行转义，因此当遇到如boolean常量时我们还是需要使用拼接符将其转化为如下格式<code>th:text=&quot;${user.isAdmin()}==false + &#39; &#39; + |${twovar}, ${threevar}|&quot;</code></p>
+<h3 id="运算符-比较符，条件符"><a href="#运算符-比较符，条件符" class="headerlink" title="运算符,比较符，条件符"></a>运算符,比较符，条件符</h3><p><code>+ - * /(div) %(mod)</code><br><code>gt (&gt;), lt (&lt;), ge (&gt;=), le (&lt;=), not (!) eq (==), neq/ne (!=)</code><br><code>? :</code><br>这些都在Thymeleaf具有良好的支持，这里要强调一个独特的用法就是<br><code>th:text=&quot;*{age}?: &#39;(no age specified)&#39;&quot;</code>等价于<code>th:text=&quot;*{age != null}? *{age} : &#39;(no age specified)&#39;</code>，即<code>?:</code>会自动填入默认值</p>
+<h3 id="不进行任何操作"><a href="#不进行任何操作" class="headerlink" title="不进行任何操作_"></a>不进行任何操作<code>_</code></h3><p><code>&lt;span th:text=&quot;${user.name} ?: _&quot;&gt;no user authenticated&lt;/span&gt;</code><br>等价于<br><code>&lt;span th:text=&quot;${user.name} ?: &#39;no user authenticated&#39;&quot;&gt;...&lt;/span&gt;</code><br>也就是说，当用户名不存在是，则显示span标签中原有的text</p>
+<h3 id="预处理-expression"><a href="#预处理-expression" class="headerlink" title="预处理 __${expression}__"></a>预处理 <code>__${expression}__</code></h3><p>目前举例的场景是可以在预处理阶段根据locale决定如何解读messages。例如现在有两个地区的.properties文件，可以在预处理阶段根据地区决定使用那个.properties文件。<br><code>&lt;p th:text=&quot;${__#{article.text(&#39;textVar&#39;)}__}&quot;&gt;Some text here...&lt;/p&gt;</code><br>如果实在中国地区，就会读取后缀为ch.properties的文件中articale.text的内容</p>
+<h2 id="th标签记录"><a href="#th标签记录" class="headerlink" title="th标签记录"></a>th标签记录</h2><blockquote>
+<p><code>th:attr</code>: 可以更改这个所在的标签的某个的属性的值，例如<code>th:attr=&quot;action=@{/subscribe}&quot;</code>就将action的属性改变为动态生成的@{/subscribe}，还允许对多个属性赋值，每个属性之间用逗号隔开，如<code>&lt;img src=&quot;../../images/gtvglogo.png&quot; th:attr=&quot;src=@{/images/gtvglogo.png},title=#{logo},alt=#{logo}&quot; /&gt;</code></p>
+</blockquote>
+<p><code>th:attr</code>因为其丑陋而导致极少使用。大多数的HTML标签Thymeleaf都为其封装了专门的赋值th标签</p>
+<img src="/2019/02/09/Springboot周边游3/图片4.png" title="图片1">
+<img src="/2019/02/09/Springboot周边游3/图片5.png" title="图片1">
+<img src="/2019/02/09/Springboot周边游3/图片6.png" title="图片1">
+<p>这是官网上给的具体封装的标签例子，基本上HTML已有的标签都被疯转为th标签，并且允许你在其中使用Standard Dialect语法。</p>
+<p>如果你想对多个th标签赋予相同的值，Thymeleaf连这种情况都帮你想好了，你可以使用如下语法简化<br><code>th:alt-title=&quot;#{logo}&quot;</code>等价于<code>th:alt=&quot;#{logo}&quot; th:title=&quot;#{logo}&quot;</code></p>
+<blockquote>
+<p><code>th:attrappend</code>: 添加值至某个attr，引申的有<code>th:classappend</code>,<code>th:styleappend</code><br><code>th:whatever</code>: 这个标签比较神奇，其实它的本质是自定义任何标签都可以。直接看例子<code>&lt;span th:whatever=&quot;${user.name}&quot;&gt;...&lt;/span&gt;</code>等价于<code>&lt;span whatever=&quot;John Apricot&quot;&gt;...&lt;/span&gt;</code></p>
+</blockquote>
+<p>目前刚刚整理完毕了Thymeleaf前误解的内容，会开下一个博客继续介绍(fanyi)后面的内容。内容尊的好多啊QAQ</p>
+<h2 id="Refernces"><a href="#Refernces" class="headerlink" title="Refernces"></a>Refernces</h2><blockquote>
+<p><a href="http://www.thymeleaf.org/" target="_blank" rel="noopener">tymeleaf官网</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：软件设计原则-更健壮的代码/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/猫头鹰的深夜翻译：软件设计原则-更健壮的代码/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：软件设计原则--更健壮的代码</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:04:19 / 修改时间：14:05:17" itemprop="dateCreated datePublished" datetime="2019-02-09T14:04:19+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="软件设计原则"><a href="#软件设计原则" class="headerlink" title="软件设计原则"></a>软件设计原则</h2><p>这篇文章主要讨论如何以健壮的方式应对变化的需求，从而保持良好的编程习惯。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>软件设计是开发周期中最重要的一个环节。在实现弹性和灵活的设计上花的时间越多，未来在面对需求变更时节约的时间就越多。</p>
+<p>需求总是在变化–如果没有定期加入新功能，或是维护现有功能，软件很快就会成为遗弃产物–而这些变化带来的开销是由系统的架构和体系结构决定的。在这篇文章中，我们将会讨论一个关键的设计原则，该设计原则能帮助我们创建易于维护和扩展的软件。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/猫头鹰的深夜翻译：软件设计原则-更健壮的代码/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：核心JAVA并发一</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:00:37 / 修改时间：14:03:12" itemprop="dateCreated datePublished" datetime="2019-02-09T14:00:37+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>从创建以来，JAVA就支持核心的并发概念如线程和锁。这篇文章会帮助从事多线程编程的JAVA开发人员理解核心的并发概念以及如何使用它们。</p>
+<p>（博主将在其中加上自己的理解以及自己想出的例子作为补充）</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：核心JAVA并发二</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 13:54:16 / 修改时间：14:00:54" itemprop="dateCreated datePublished" datetime="2019-02-09T13:54:16+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇文章请参考<a href="https://segmentfault.com/a/1190000013286239" target="_blank" rel="noopener">猫头鹰的深夜翻译：核心JAVA并发(一)</a></p>
+<h2 id="安全发布"><a href="#安全发布" class="headerlink" title="安全发布"></a>安全发布</h2><p>发布一个对象是指该对象的引用对当前的域之外也可见（比如，从getter方法中获取一个引用）。要确保一个对象被安全的发布(即在初始化完成之后发布)，可能需要使用同步。可以通过以下方法实现安全的发布：</p>
+<ul>
+<li><p>静态初始化方法。只有一个线程能够初始化静态变量因为该类的初始化是在一个排它锁之下完成的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticInitializer</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Publishing an immutable object without additional initialization</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Year year = Year.of(<span class="number">2017</span>); </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;String&gt; keywords;</span><br><span class="line">  <span class="comment">// Using static initializer to construct a complex object</span></span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="comment">// Creating mutable set</span></span><br><span class="line">    Set&lt;String&gt; keywordsSet = <span class="keyword">new</span> HashSet&lt;&gt;(); </span><br><span class="line">    <span class="comment">// Initializing state</span></span><br><span class="line">    keywordsSet.add(<span class="string">"java"</span>);</span><br><span class="line">    keywordsSet.add(<span class="string">"concurrency"</span>);</span><br><span class="line">    <span class="comment">// Making set unmodifiable </span></span><br><span class="line">    keywords = Collections.unmodifiableSet(keywordsSet); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>volatile关键字。读者线程总是能获取最近的值，因为写线程总是在后续的读取之前进行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Volatile</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> String state;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setState</span><span class="params">(String state)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state = state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">String <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Atomics。比如，AtomicInteger将一个值存储为volatile类型，所以这里和volatile变量的规则相同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Atomics</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger state = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">initializeState</span><span class="params">(<span class="keyword">int</span> state)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state.compareAndSet(<span class="number">0</span>, state);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state.get();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Final类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Final</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String state;</span><br><span class="line">  Final(String state) &#123;</span><br><span class="line">    <span class="keyword">this</span>.state = state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">String <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -486,1554 +2160,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/API设计准则/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/08/API设计准则/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：JAVA8 API设计准则</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-08 00:45:32 / 修改时间：00:47:49" itemprop="dateCreated datePublished" datetime="2019-02-08T00:45:32+08:00">2019-02-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JDK/" itemprop="url" rel="index"><span itemprop="name">JDK</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>任何一个写JAVA代码的程序员都是一名API设计师！无论是否与他人分享代码，代码都将被自己或是他人使用。因此，所有的JAVA开发者都应该了解一个好的API设计的基本内容。</p>
-<p>一个好的API设计需要严谨的思考和大量的经验。幸运的是，我们可以从其它聪明的人如<strong>Ference Mihaly</strong>那里学习到这些。<strong>Ference Mihaly</strong>的博客启发了我写出这篇JAVA8 API附录。当我们设计Speedment API时，非常依赖他的<a href="https://theamiableapi.com/2012/01/16/java-api-design-checklist/" target="_blank" rel="noopener">清单</a>（我建议所有人都阅读以下他的指南）。</p>
-<p>从一开始就步入正轨是很重要的，因为一旦API发布以后，就等于对使用它的客户发出坚定的承诺。就像Joshua Bloch所说的那样：“公开的API是永恒的，就像钻石一样。你只有一次机会使其成为正确的设计，所以尽己所能”。一个精心设计的API使坚定而准确的承诺以及实现的高度灵活性结合在一起，并最终惠及API的的设计者和使用者。</p>
-<p>为什么要使用清单？设计正确的API（比如，定义一组JAVA类的可见部分）比编写API背后进行真实操作的实现类要困难的多。这是极少数人才能掌握的艺术。使用清单可以使开发人员避免最明显的错误，从而成为一个更好的开发人员，并节约了大量的时间。</p>
-<p>强烈建议API设计师从使用者的视角来优化代码的简洁性，易用性和一致性 - 而不是去考虑API的具体实现。同时，他们应该尽可能隐藏实现的细节。<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/08/API设计准则/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/Boot？/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/08/Boot？/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：为什么要使用Spring Boot？</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-08 00:33:47 / 修改时间：00:36:34" itemprop="dateCreated datePublished" datetime="2019-02-08T00:33:47+08:00">2019-02-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>spring是一个用于创建web和企业应用的一个很流行的框架。和别的只关注于一点的框架不同，Spring框架通过投资并组合项目提供了大量的功能来满足现代的业务需求。</p>
-<p>Spring提供了许多灵活的方式来配置bean，如<strong>XML</strong>，<strong>注解</strong>和<strong>JavaConfig</strong>。随着功能数量的增加，复杂度也提升了，导致Spring应用的配置变得单调乏味且容易出错。</p>
-<p>Spring团队开发出SpringBoot来解决配置复杂的问题。</p>
-<p>但是在深入了解SpringBoot之前，我们会快速了解一下Spring框架，看一看SpringBoot究竟试图解决什么问题。</p>
-<p>在这篇文章中将会涉及：</p>
-<ul>
-<li>Spring框架概览</li>
-<li>使用SpringMVC和JPA(Hibernate)的Web应用</li>
-<li>SpringBoot初体验
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/08/Boot？/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </li></ul></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：使用组合模式来开关灯/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/08/猫头鹰的深夜翻译：使用组合模式来开关灯/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：使用组合模式来开关灯</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-08 00:20:40 / 修改时间：00:22:59" itemprop="dateCreated datePublished" datetime="2019-02-08T00:20:40+08:00">2019-02-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>设计模式可能是博客圈最热门的话题之一。但是，用来说明每个设计模式的例子通常不是很形象。为了挽救这一点，这篇博客将用一个简单有效的例子来解释<a href="https://en.wikipedia.org/wiki/Composite_pattern" target="_blank" rel="noopener">组合模式</a>。</p>
-<p>我们不会再重复解释这个模型的概念。唯一需要记住的是组合模式通常用在一个树结构的递归操作上。<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/08/猫头鹰的深夜翻译：使用组合模式来开关灯/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-08 00:14:38 / 修改时间：00:20:08" itemprop="dateCreated datePublished" datetime="2019-02-08T00:14:38+08:00">2019-02-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先，这篇文章没有进行任何的日志功能的详细介绍，而是对日志提出了几种最佳实践。适合对日志记录有所了解的同学阅读。<br>下面是正文：</p>
-<p>JAVA日志管理既是一门科学，又是一门艺术。科学的部分是指了解写日志的工具以及其API，而选择日志的格式，消息的格式，日志记录的内容，哪种消息对应于哪一种日志级别，则完全是基于经验。从过去的实践证明，JAVA的日志记录会严重的影响性能。我也曾多次亲眼见到在DEBUG模式下运行的在线股票交易程序，比在WARN或是其它更高层次模式下运行时延时要严重的多。延时和速度是任何电子交易平台或是股票交易平台的一个重大关注点，所以我们必须了解并掌握JAVA日志及其最佳实践。这不仅仅只是为了用在金融或是投资银行领域，它适用于所有既追求速度又需要日志功能的应用。</p>
-<h2 id="为何需要日志"><a href="#为何需要日志" class="headerlink" title="为何需要日志"></a>为何需要日志</h2><p>这是一个很基本的争议，人们会争辩说，我们可以使用<code>System.out.println()</code>来打印消息，为何还需要日志呢？每个人刚开始接触JAVA时，都使用<code>System.out.println()</code>在控制台打印消息。但是它的功能远远没有日志记录API如<code>log4j</code>或是<code>java.util.logging</code>强大。如果你正在写一个java服务器应用，那么你只有通过日志文件才能知道你的服务器在做什么。如果你没有记录任何日志，那么没有人知道你的服务器在干啥。而如果你的服务器作为一个中间件连接到应用中时，比如从股票交易系统或是电子交易系统获得输入流，将其转换并标准化后发送到输出流，这时日志就更为重要。没有日志你根本不知道究竟哪里出了问题。因此，日志在JAVA中是必不可少的。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/08/猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：JAVA中异常处理的最佳实践</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-08 00:04:15 / 修改时间：00:13:53" itemprop="dateCreated datePublished" datetime="2019-02-08T00:04:15+08:00">2019-02-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>异常处理的问题之一是知道何时以及如何去使用它。我会讨论一些异常处理的最佳实践，也会总结最近在异常处理上的一些争论。</p>
-<p>作为程序员，我们想要写高质量的能够解决问题的代码。但是，异常经常是伴随着代码产生的副作用。没有人喜欢副作用，因此我们会试图用自己的方式来解决这个问题。我看过不少的程序用下面的方法应对异常：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">consumeAndForgetAllExceptions</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ...some code that <span class="keyword">throws</span> exceptions</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">        ex.printStacktrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面这段代码的问题在哪里？</p>
-<p>一旦一个异常被抛出之后，正常的执行流程会停止并且将控制交给捕捉块。捕捉块捕获异常，然后只是把它的信息打印了一下。之后程序正常运行，就像没有任何事情发生一样。<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/CompletableFuture的20例子/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/07/CompletableFuture的20例子/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：使用JAVA CompletableFuture的20例子</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-07 23:54:02 / 修改时间：23:57:42" itemprop="dateCreated datePublished" datetime="2019-02-07T23:54:02+08:00">2019-02-07</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇博客回顾JAVA8的<code>CompletionStage</code>API以及其在JAVA库中的标准实现<code>CompletableFuture</code>。将会通过几个例子来展示API的各种行为。</p>
-<p>因为<code>CompletableFuture</code>是<code>CompletionInterface</code>接口的实现，所以我们首先要了解该接口的契约。它代表某个同步或异步计算的一个阶段。你可以把它理解为是一个为了产生有价值最终结果的计算的流水线上的一个单元。这意味着多个<code>ComletionStage</code>指令可以链接起来从而一个阶段的完成可以触发下一个阶段的执行。</p>
-<p>除了实现了<code>CompletionStage</code>接口，<code>Completion</code>还继承了<code>Future</code>，这个接口用于实现一个未开始的异步事件。因为能够显式的完成<code>Future</code>，所以取名为<code>CompletableFuture</code>。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/07/CompletableFuture的20例子/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/猫头鹰的深夜翻译：请不要把它叫做Restful！/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/07/猫头鹰的深夜翻译：请不要把它叫做Restful！/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：请不要把它叫做Restful！</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-07 23:49:29 / 修改时间：23:51:25" itemprop="dateCreated datePublished" datetime="2019-02-07T23:49:29+08:00">2019-02-07</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>2000年的时候，<em>Douglas Crockford</em>声明<strong>JavaScript</strong>是最被误解的编程语言。这种误解来源于不良的命名规范，错误设计，非标准模式等等。因此，误解几乎是与之俱来的。</p>
-<p>我也在关于<code>Restful</code>架构上发表了一个相似的意见：<code>REST</code>是世界上被误解最严重的架构模式。</p>
-<p>事实上，大多人认为，创建一个RESTful API只需要基于URL和HTTP动词。这是完全错误的。</p>
-<p>这个误解存在太久了。但是和JavaScript不同，<code>REST</code>规范讲述的非常清晰。它的命名本身就强调了状态的转化，但是这个概念却是所谓的<code>RESTful API</code>设计者们所最为忽视的。</p>
-<p>如果你随便问十个开发者，他们的API是否支持<a href="https://en.wikipedia.org/wiki/HATEOAS" target="_blank" rel="noopener">HATEOAS</a>，至少九个人会睁大双眼回答：你到底在说啥？</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/07/猫头鹰的深夜翻译：请不要把它叫做Restful！/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/猫头鹰的深夜翻译：理解CAP定理/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/07/猫头鹰的深夜翻译：理解CAP定理/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：理解CAP定理</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-07 23:41:42 / 修改时间：23:43:36" itemprop="dateCreated datePublished" datetime="2019-02-07T23:41:42+08:00">2019-02-07</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>CAP定理是用来提醒设计师在设计联网的共享数据系统时需要作出的权衡。CAP理论影响了很多分布式数据系统的设计。这几年来，CAP一直被广泛的误解为是用于对数据库进行分类的工具。也流传着许多关于CAP的错误的信息。很多关于CAP博客的观点极有可能是错误的。</p>
-<p>你需要进一步的了解CAP从而去分辨出关于CAP的错误的信息。</p>
-<p>CAP定理适用于存储状态的分布式系统。在2000年的PODC上，Eric Brewer推测在任何联网的数据共享系统中，一致性、可用性和分区容忍性之间本质上存在折中。在2002年，MIT的Seth Gilbert和Nancy Lynch发表了对Eric Brewer推论的证明。这个理论说明网络数据共享系统只能确保或是强有力的支持一下三个属性中的两个：</p>
-<ul>
-<li><strong>一致性</strong>：确保分布式集群中的每一个节点都返回相同的，最近成功写入的数据。一致性意味着客户对数据的视图是一样的。有各种各样的一致性模型。而CAP中的一致性是指线性化或是顺序一致性，这是一种强一致性。</li>
-<li><strong>可用性</strong>：每一个非故障节点能够在一定时间内对客户端的请求作出相应。这里的重点在于每一个。为了实现可用性，在任意一个网络分区的节点都必须能够在一定时间内作出响应。</li>
-<li><strong>分区容忍性</strong>：尽管存在网络分区，但是系统依然能够继续运行并且保证一致性。网络分区已经成了生活中的常态。实现分区容忍性的分布式系统能够保证分区能够正常的从故障中恢复。</li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/07/猫头鹰的深夜翻译：理解CAP定理/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/07/猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-07 23:21:59 / 修改时间：23:38:52" itemprop="dateCreated datePublished" datetime="2019-02-07T23:21:59+08:00">2019-02-07</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章探索了现有的各种JAVA缓存基数，它们对各种场景下提高应用的性能起着重要的作用。</p>
-<p>近十年来，信息技术极高的提升了业务流程，它已经成为了全球企业的战略性方案。它从“可有可无”演变到现在的“不可或缺”。因此，响应时间变得越发的重要。数据获取时间对用户体验影响极大，它在所有的商业应用中几乎都是关键性需求。影响响应时间的因素很多，包括网络管道，协议，硬件，软件以及网速。庞大的IT基础设施和苛刻的系统性能要求严重影响了任何组织的战略目标。</p>
-<p>本文旨在强调通过Java缓存机制提升应用的性能。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/07/猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2078,7 +2209,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">209</span>
+                    <span class="site-state-item-count">218</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2123,7 +2254,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">16</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2272,7 +2411,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">68</span>
+                      
+                    
+                    <span class="site-state-item-count">69</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

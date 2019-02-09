@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="简介从创建以来，JAVA就支持核心的并发概念如线程和锁。这篇文章会帮助从事多线程编程的JAVA开发人员理解核心的并发概念以及如何使用它们。 （博主将在其中加上自己的理解以及自己想出的例子作为补充）">
+<meta name="keywords" content="java,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：核心JAVA并发一">
+<meta property="og:url" content="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="简介从创建以来，JAVA就支持核心的并发概念如线程和锁。这篇文章会帮助从事多线程编程的JAVA开发人员理解核心的并发概念以及如何使用它们。 （博主将在其中加上自己的理解以及自己想出的例子作为补充）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/图片1.png">
+<meta property="og:updated_time" content="2019-02-09T06:03:12.143Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="猫头鹰的深夜翻译：核心JAVA并发一">
+<meta name="twitter:description" content="简介从创建以来，JAVA就支持核心的并发概念如线程和锁。这篇文章会帮助从事多线程编程的JAVA开发人员理解核心的并发概念以及如何使用它们。 （博主将在其中加上自己的理解以及自己想出的例子作为补充）">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>猫头鹰的深夜翻译：核心JAVA并发一 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">猫头鹰的深夜翻译：核心JAVA并发一
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 14:00:37 / 修改时间：14:03:12" itemprop="dateCreated datePublished" datetime="2019-02-09T14:00:37+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>从创建以来，JAVA就支持核心的并发概念如线程和锁。这篇文章会帮助从事多线程编程的JAVA开发人员理解核心的并发概念以及如何使用它们。</p>
+<p>（博主将在其中加上自己的理解以及自己想出的例子作为补充）</p>
+<a id="more"></a>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><blockquote>
+<p>原子性：原子操作是指该系列操作要么全部执行，要么全部不执行，因此不存在部分执行的状态。<br>可见性：一个线程能够看见另一个线程所带来的改变。</p>
+</blockquote>
+<h3 id="竞争情况"><a href="#竞争情况" class="headerlink" title="竞争情况"></a>竞争情况</h3><p>当多个线程在一个共享的资源上执行一组操作时，会产生竞争。根据各个线程执行操作的顺序可能产生多个不同结果。下面的代码不是线程安全的，<code>value</code>可能会被初始化多次，因为<code>check-then-act</code>型（先判断是否为<code>null</code>，然后初始化）的惰性初始化并非<strong>原子性操作</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Lazy</span> &lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> T value;</span><br><span class="line">  <span class="function">T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value == <span class="keyword">null</span>)</span><br><span class="line">      value = initialize();</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="数据冲突"><a href="#数据冲突" class="headerlink" title="数据冲突"></a>数据冲突</h2><p>当两个或多个线程在没有同步的情况下试图访问同一个非<code>final</code>变量时，会产生数据冲突。不使用同步可能使数据的改变对别的线程不可见，从而可能读取过期的数据，并导致如无限循环，数据结构损坏和不准确的计算等后果。下面这段代码可能会导致无限循环，因为读者线程可能永远都没有看到写入者线程做出的更改：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Waiter</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span> shouldFinish;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">finish</span><span class="params">()</span> </span>&#123; shouldFinish = <span class="keyword">true</span>; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> iteration = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (!shouldFinish) &#123;</span><br><span class="line">      iteration++;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">"Finished after: "</span> + iteration);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataRace</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Waiter waiter = <span class="keyword">new</span> Waiter();</span><br><span class="line">    Thread waiterThread = <span class="keyword">new</span> Thread(waiter);</span><br><span class="line">    waiterThread.start();</span><br><span class="line">    waiter.finish();</span><br><span class="line">    waiterThread.join();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="JAVA内存模型：happens-before关系"><a href="#JAVA内存模型：happens-before关系" class="headerlink" title="JAVA内存模型：happens-before关系"></a>JAVA内存模型：happens-before关系</h2><p>JAVA内存模型是根据读写字段等操作来定义的，并在控制器上进行同步。操作根据<code>happens-before关联</code>排序，这解释了一个线程何时能够看到另一个线程操作的结果，以及是什么构成了一个同步良好的程序。</p>
+<p><code>happens-before关联</code>有以下属性：</p>
+<ul>
+<li><code>Thread#start</code>的方法在线程的所有操作之前执行</li>
+<li>在释放当前控制器之后，后序的请求才可以获取控制器。(Releasing a monitor happens before any subsequent acquisition of the same monitor.)</li>
+<li>写入<code>volatile</code>变量的操作在所有后序读取该变量的操作之前执行。</li>
+<li>写入<code>final</code>型变量的操作在发布该对象的引用之前执行</li>
+<li>线程的所有操作在从<code>Thread#join</code>方法返回之前执行</li>
+</ul>
+<img src="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发一/图片1.png" title="图片1">
+<p>上图中，<code>Action X</code>在<code>Action Y</code>之前执行，因此<code>线程1</code>在<code>Action X</code>以前执行的所有操作对<code>线程2</code>在<code>Action Y</code>之后的所有操作可见。</p>
+<h2 id="标注的同步功能"><a href="#标注的同步功能" class="headerlink" title="标注的同步功能"></a>标注的同步功能</h2><h3 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a>synchronized关键字</h3><p><code>synchronized</code>关键字用来防止不同的线程同时进入一段代码。它确保了你的操作的原子性，因为你只有获得了这段代码的锁才能进入这段代码，使得该锁所保护的数据可以在独占模式下操作。除此以外，它还确保了别的线程在获得了同样的锁之后，能够观察到之前线程的操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtomicOperation</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> counter0;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> counter1;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">      counter0++;</span><br><span class="line">      counter1++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>synchronized</code>关键字也可以在方法层上声明。</p>
+<blockquote>
+<p>静态方法：将持有该方法的类作为加锁对象<br>非静态方法：加锁<code>this</code>指针</p>
+</blockquote>
+<p>锁是可重入的。所以如果一个线程已经持有了该锁，它可以一直访问该锁下的任何内容：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reentrantcy</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">doAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    doFirst();</span><br><span class="line">    doSecond();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">doFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"First operation is successful."</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">doSecond</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Second operation is successful."</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>争用程度影响如何获得控制器：</p>
+<blockquote>
+<p>初始化：刚刚创建，没有被获取<br>biased：锁下的代码只被一个线程执行，不会产生冲突<br>thin：控制器被几个线程无冲突的获取。使用<code>CAS（compare and swap）</code>来管理这个锁<br>fat：产生冲突。JVM请求操作系统互斥，并让操作系统调度程序处理线程停放和唤醒。</p>
+</blockquote>
+<h3 id="wait-notify"><a href="#wait-notify" class="headerlink" title="wait/notify"></a>wait/notify</h3><p><code>wait/notify/notifyAll</code>方法在<code>Object</code>类中声明。<code>wait</code>方法用来将线程状态改变为<code>WAITING</code>或是<code>TIMED_WAITING</code>(如果传入了超时时间值)。要想唤醒一个线程，下列的操作都可以实现：</p>
+<ul>
+<li>另一个线程调用<code>notify</code>方法，唤醒在控制器上等待的任意的一个线程</li>
+<li>另一个线程调用<code>notifyAll</code>方法，唤醒在该控制器上等待的所有线程</li>
+<li><code>Thread#interrupt</code>方法被调用，在这种情况下，会抛出<code>InterruptedException</code></li>
+</ul>
+<p>最常用的一个模式是一个条件性循环：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConditionLoop</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span> condition;</span><br><span class="line">  <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">waitForCondition</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (!condition) &#123;</span><br><span class="line">      wait();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">satisfyCondition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    condition = <span class="keyword">true</span>;</span><br><span class="line">    notifyAll();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>记住，要想使用对象上的<code>wait/notify/notifyAll</code>方法，你首先需要获取对象的锁</li>
+<li>总是在一个条件性循环中等待，从而解决如果另一个线程在wait开始之前满足条件并且调用了<code>notifyAll</code>而导致的顺序问题。而且它还防止线程由于伪唤起继续执行。</li>
+<li>时刻确保你在调用<code>notify/notifyAll</code>之前已经满足了等待条件。如果不这样的话，将只会发出一个唤醒通知，但是在该等待条件上的线程永远无法跳出其等待循环。</li>
+</ul>
+<hr>
+<p><strong>博主备注</strong>：这里解释一下为何建议将<code>wait</code>放在条件性循环中、假设现在有一个线程，并没有将wait放入条件性循环中，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnconditionLoop</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> condition;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">waitForCondition</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">        <span class="comment">//....</span></span><br><span class="line">        wait();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">satisfyCondition</span><span class="params">()</span></span>&#123;</span><br><span class="line">        condition = <span class="keyword">true</span>;</span><br><span class="line">        notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>假设现在有两个线程分别同时调用<code>waitForCondition</code>和<code>satisfyCondition()</code>，而调用satisfyCondition的方法先调用完成，并且发出了<code>notifyAll</code>通知。鉴于<code>waitForCondition</code>方法根本没有进入<code>wait</code>方法，因此它就错过了这个解挂信号，从而永远无法被唤醒。</p>
+<p>这时你可能会想，那就使用<code>if</code>判断一下条件呗，如果条件还没满足，就进入挂起状态，一旦接收到信号，就可以直接执行后序程序。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnconditionLoop</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> condition;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> condition2;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">waitForCondition</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">        <span class="comment">//....</span></span><br><span class="line">        <span class="keyword">if</span>(!condition)&#123;</span><br><span class="line">            wait();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">waitForCondition2</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">        <span class="comment">//....</span></span><br><span class="line">        <span class="keyword">if</span>(!condition2)&#123;</span><br><span class="line">            wait();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">satisfyCondition</span><span class="params">()</span></span>&#123;</span><br><span class="line">        condition = <span class="keyword">true</span>;</span><br><span class="line">        notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">satisfyCondition2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        condition2 = <span class="keyword">true</span>;</span><br><span class="line">        notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那让我们再假设这个 方法中还存在另一个condition，并且也有其对应的等待和唤醒方法。假设这时<code>satisfyConsition2</code>被满足并发出<code>nofityAll</code>唤醒所有等待的线程，那么<code>waitForCondition</code>和<code>waitForCondition2</code>都将会被唤醒继续执行。而<code>waitForCondition</code>的条件并没有被满足！</p>
+<p>因此在条件中循环等待信号是有必要的。</p>
+<hr>
+<h3 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h3><p><code>volatile</code>关键字解决了可见性问题，并且使值的更改原子化，因为这里存在一个<code>happens-before</code>关联：对<code>volatile</code>值的更改会在所有后续读取该值的操作之前执行。因此，它确保了后序所有的读取操作能够看到之前的更改。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VolatileFlag</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> shouldStop;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (!shouldStop) &#123;</span><br><span class="line">      <span class="comment">//do smth</span></span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">"Stopped."</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    shouldStop = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    VolatileFlag flag = <span class="keyword">new</span> VolatileFlag();</span><br><span class="line">    Thread thread = <span class="keyword">new</span> Thread(flag);</span><br><span class="line">    thread.start();</span><br><span class="line">    flag.stop();</span><br><span class="line">    thread.join();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Atomics"><a href="#Atomics" class="headerlink" title="Atomics"></a>Atomics</h3><p><code>java.util.concurrent.atomic</code>包中包含了一组支持在单一值上进行多种原子性操作的类，从而从加锁中解脱出来。</p>
+<p>使用<code>AtomicXXX</code>类，可以实现原子性的<code>check-then-act</code>操作：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CheckThenAct</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> AtomicReference&lt;String&gt; value = <span class="keyword">new</span> AtomicReference&lt;&gt;();</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value.compareAndSet(<span class="keyword">null</span>, <span class="string">"Initialized value"</span>)) &#123;</span><br><span class="line">      System.out.println(<span class="string">"Initialized only once."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>AtomicInteger</code>和<code>AtomicLong</code>都用<code>increment/decrement</code>操作：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Increment</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger state = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">advance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldState = state.getAndIncrement();</span><br><span class="line">    System.out.println(<span class="string">"Advanced: '"</span> + oldState + <span class="string">"' -&gt; '"</span> + (oldState + <span class="number">1</span>) + <span class="string">"'."</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>如果你想要创建一个计数器，但是并不需要原子性的读操作，可以使用<code>LongAdder</code>替代<code>AtomicLong/AtomicInteger</code>，<code>LongAdder</code>在多个单元格中维护该值，并在需要时对这些值同时递增，从而在高并发的情况下性能更好。</p>
+</blockquote>
+<h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h3><p>在线程中包含数据并且不需要锁定的一种方法是使用ThreadLocal存储。从概念上将，ThreadLocal就好像是在每个线程中都有自己版本的变量。ThreadLocal常用来存储只属于线程自己的值，比如<strong>当前的事务</strong>以及其它资源。而且，它还能用来维护单个线程专有的计数器，统计或是ID生成器。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TransactionManager</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> ThreadLocal&lt;Transaction&gt; currentTransaction </span><br><span class="line">      = ThreadLocal.withInitial(NullTransaction::<span class="keyword">new</span>);</span><br><span class="line">  <span class="function">Transaction <span class="title">currentTransaction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Transaction current = currentTransaction.get();</span><br><span class="line">    <span class="keyword">if</span> (current.isNull()) &#123;</span><br><span class="line">      current = <span class="keyword">new</span> TransactionImpl();</span><br><span class="line">      currentTransaction.set(current);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> current;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/refcardz/core-java-concurrency?chapter=1" target="_blank" rel="noopener">https://dzone.com/refcardz/core-java-concurrency?chapter=1</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/" rel="next" title="猫头鹰的深夜翻译：核心JAVA并发二">
+                <i class="fa fa-chevron-left"></i> 猫头鹰的深夜翻译：核心JAVA并发二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/09/猫头鹰的深夜翻译：软件设计原则-更健壮的代码/" rel="prev" title="猫头鹰的深夜翻译：软件设计原则--更健壮的代码">
+                猫头鹰的深夜翻译：软件设计原则--更健壮的代码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">218</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">2.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#竞争情况"><span class="nav-number">2.1.</span> <span class="nav-text">竞争情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据冲突"><span class="nav-number">3.</span> <span class="nav-text">数据冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA内存模型：happens-before关系"><span class="nav-number">4.</span> <span class="nav-text">JAVA内存模型：happens-before关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标注的同步功能"><span class="nav-number">5.</span> <span class="nav-text">标注的同步功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized关键字"><span class="nav-number">5.1.</span> <span class="nav-text">synchronized关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wait-notify"><span class="nav-number">5.2.</span> <span class="nav-text">wait/notify</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile关键字"><span class="nav-number">5.3.</span> <span class="nav-text">volatile关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Atomics"><span class="nav-number">5.4.</span> <span class="nav-text">Atomics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">5.5.</span> <span class="nav-text">ThreadLocal</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
