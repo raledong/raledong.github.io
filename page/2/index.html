@@ -327,6 +327,194 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/接收上传图片并且存储至本地目录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/接收上传图片并且存储至本地目录/" class="post-title-link" itemprop="url">springmvc接收上传图片并且存储至本地目录</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 20:27:26 / 修改时间：20:31:35" itemprop="dateCreated datePublished" datetime="2019-02-09T20:27:26+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="序言：项目环境"><a href="#序言：项目环境" class="headerlink" title="序言：项目环境"></a>序言：项目环境</h2><p>本次简单的demo是建立在<strong>springmvc框架</strong>上的，部署环境为<strong>tomcat</strong>，前段使用的<a href="http://www.bootcss.com/" target="_blank" rel="noopener">bootstrap</a>+<a href="https://blueimp.github.io/jQuery-File-Upload/" target="_blank" rel="noopener">jquery_file_upload</a>组件。图片存储的方式为存储在虚拟目录下并返回虚拟目录的路径。建议先搭配好springmvc环境再继续参考本博客。没有搭配好环境的可以参考<a href="http://o7planning.org/en/10129/spring-mvc-tutorial-for-beginners" target="_blank" rel="noopener">这篇博客</a> </p>
+<h2 id="图片存储方式"><a href="#图片存储方式" class="headerlink" title="图片存储方式"></a>图片存储方式</h2><p>在给出上传图片的代码之前，先讲解一下服务器接收图片上传的思路。服务器端保存图片一般有两种思路。</p>
+<ol>
+<li>将图片以blob的格式存储在数据库中，仅适用于图片较小的场景</li>
+<li>将图片存储在服务器的目录下，并在数据库中存储图片路径和访问URL，缺点是可能会造成服务器性能的下降</li>
+<li>将图片存储在非服务器目录的任意路径下，在服务器中配置虚拟目录，通过虚拟目录访问图片目录下的图片</li>
+</ol>
+<p>在这里我将主要讲一下如何实现第三种图片存储。<br>在开发环境中，可以直接使用Intellij来配置tomcat虚拟目录。因为Intellij管理下的tomcat实际上是一个tomcat虚拟映像，所以Intellij中的配置将不会影响实际tomcat中的配置。所以如果是在开发测试的过程中直接使用Intellij部署项目，请参考Intellij中配置虚拟目录。如果是将开发的war包直接部署在服务器中，则参考tomcat配置虚拟目录。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/接收上传图片并且存储至本地目录/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/springmvc-ajax传递对象至controller的方法/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1946,191 +2134,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Find算法-java代码实现/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/09/Find算法-java代码实现/" class="post-title-link" itemprop="url">Find算法--java代码实现</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-09 14:28:51 / 修改时间：14:30:14" itemprop="dateCreated datePublished" datetime="2019-02-09T14:28:51+08:00">2019-02-09</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="什么是Union-Find"><a href="#什么是Union-Find" class="headerlink" title="什么是Union Find"></a>什么是Union Find</h2><p>Union Find是并查集的一种数据结构。 先理解两个对象之间“相连的关系”<br>对象p和对象q<strong>相连</strong>是指：</p>
-<blockquote>
-<p>自反性：p和p相连<br>对称性：如果p和q相连，那么q和p也相连<br>传递性：如果p和q相连而且q和r相连，那么p和r相连</p>
-</blockquote>
-<p>在并查集中，如果想要将连个对象相连，<strong>当且仅当这两个对象不在同一个连通分量中时，才会相连</strong>。这句话什么意思呢？也就是说，如果已经存在一条路径，使得p和q之间相通，那么就不会对后续的连接p和q的请求作出任何操作。<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/09/Find算法-java代码实现/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2180,7 +2183,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">235</span>
+                    <span class="site-state-item-count">236</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
