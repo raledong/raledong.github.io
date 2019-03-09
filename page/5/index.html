@@ -327,6 +327,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：JAVA中异常处理的最佳实践</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-08 00:04:15 / 修改时间：00:13:53" itemprop="dateCreated datePublished" datetime="2019-02-08T00:04:15+08:00">2019-02-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>异常处理的问题之一是知道何时以及如何去使用它。我会讨论一些异常处理的最佳实践，也会总结最近在异常处理上的一些争论。</p>
+<p>作为程序员，我们想要写高质量的能够解决问题的代码。但是，异常经常是伴随着代码产生的副作用。没有人喜欢副作用，因此我们会试图用自己的方式来解决这个问题。我看过不少的程序用下面的方法应对异常：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">consumeAndForgetAllExceptions</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ...some code that <span class="keyword">throws</span> exceptions</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">        ex.printStacktrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面这段代码的问题在哪里？</p>
+<p>一旦一个异常被抛出之后，正常的执行流程会停止并且将控制交给捕捉块。捕捉块捕获异常，然后只是把它的信息打印了一下。之后程序正常运行，就像没有任何事情发生一样。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/08/猫头鹰的深夜翻译：JAVA中异常处理的最佳实践/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/CompletableFuture的20例子/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1854,183 +2024,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/可见性和有序性/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/05/可见性和有序性/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：Volatile的原子性, 可见性和有序性</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-05 22:48:18 / 修改时间：22:52:17" itemprop="dateCreated datePublished" datetime="2019-02-05T22:48:18+08:00">2019-02-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Concurrency/" itemprop="url" rel="index"><span itemprop="name">Concurrency</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>为什么要额外写一篇文章来研究<code>volatile</code>呢？是因为这可能是并发中最令人困惑以及最被误解的结构。我看过不少解释<code>volatile</code>的博客，但是大多数要么不完整，要么难以理解。我会从并发中最重要的一些因素开始说起：</p>
-<p><strong>原子性</strong><br>原子性是不可分割的操作。它们要么全部实现，要么全部不实现。Java中原子操作的最佳例子是将一个值赋给变量。</p>
-<p><strong>可见性</strong><br>可见性是指：无论是哪个线程对一个共享的变量作出的修改或是带来的影响，读其他的线程都是可见的。</p>
-<p><strong>有序性</strong><br>有序性是指源码中指令是否会被编译器出于优化而改变执行顺序。有可能一个线程中的动作相对于另一个线程出现乱序。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/可见性和有序性/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2080,7 +2073,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">243</span>
+                    <span class="site-state-item-count">244</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

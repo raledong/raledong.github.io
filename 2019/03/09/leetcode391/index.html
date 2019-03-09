@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目要求123456789101112131415Given N axis-aligned rectangles where N &amp;gt; 0, determine if they all together form an exact cover of a rectangular region.Each rectangle is represented as a bottom-left point">
+<meta name="keywords" content="java,刷题,leetcode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode391. Perfect Rectangle">
+<meta property="og:url" content="http://yoursite.com/2019/03/09/leetcode391/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="题目要求123456789101112131415Given N axis-aligned rectangles where N &amp;gt; 0, determine if they all together form an exact cover of a rectangular region.Each rectangle is represented as a bottom-left point">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/03/09/leetcode391/图片1.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/09/leetcode391/图片3.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/09/leetcode391/图片3.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/09/leetcode391/图片4.png">
+<meta property="og:updated_time" content="2019-03-09T10:40:15.546Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="leetcode391. Perfect Rectangle">
+<meta name="twitter:description" content="题目要求123456789101112131415Given N axis-aligned rectangles where N &amp;gt; 0, determine if they all together form an exact cover of a rectangular region.Each rectangle is represented as a bottom-left point">
+<meta name="twitter:image" content="http://yoursite.com/2019/03/09/leetcode391/图片1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/09/leetcode391/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>leetcode391. Perfect Rectangle | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/09/leetcode391/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">leetcode391. Perfect Rectangle
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-09 18:36:01 / 修改时间：18:40:15" itemprop="dateCreated datePublished" datetime="2019-03-09T18:36:01+08:00">2019-03-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Given N axis-aligned rectangles where N &gt; 0, determine if they all together form an exact cover of a rectangular region.</span><br><span class="line"></span><br><span class="line">Each rectangle is represented as a bottom-left point and a top-right point. For example, a unit square is represented as [1,1,2,2]. (coordinate of bottom-left point is (1, 1) and top-right point is (2, 2)).</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,3,3],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [3,2,4,4],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [2,3,3,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return true. All 5 rectangles together form an exact cover of a rectangular region.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片1.png" title="图片1">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,2,3],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [3,2,4,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return false. Because there is a gap between the two rectangular regions.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片3.png" title="图片3">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Example 3:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,3,3],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [3,2,4,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return false. Because there is a gap in the top center.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片3.png" title="图片3">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Example 4:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,3,3],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [2,2,4,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return false. Because two of the rectangles overlap with each other.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片4.png" title="图片4">
+<p>用一个二维数组来表示一堆矩形，二维数组中的每一行分别记录矩形左下角和右上角的坐标。试判断这些矩形拼接成的新的图形是否还是一个矩形。如果矩形存在重合，则不构成矩形，见图例4.<br><a id="more"></a></p>
+<h2 id="思路和代码"><a href="#思路和代码" class="headerlink" title="思路和代码"></a>思路和代码</h2><p>这是一道纯粹的考验思维的一道题目。<br>首先我们知道，这些矩形如果能够拼接成一个大的矩形，那么大的矩形的左下角坐标一定是所有矩形中最小的x1和y1值构成的，同理，右上角坐标一定是由最大的x2和y2的值构成的。该理想情况下矩形的面积应当等于所有矩形的面积之和。一旦不相等，则一定无法构成大的矩形。</p>
+<p>其次，光判断面积并不足够，可以这样三个矩形构成的图形<code>[1,1,2,2],[2,2,3,3],[2,1,3,3]</code>。可以看到该图形的理想矩形就是一个<code>2*2</code>的正方形，它的面积与所有的小矩形的和相等，但是这些小矩形并没有构成该理想的矩形。那么我们能用什么方式来过滤掉这种矩形呢。只能从矩形的顶点入手了。<br>我们知道，任何一个能够构成理想矩形的小矩形，一定会有顶点的重合，直到只剩下四个重合度为1的点，即大矩形的四个顶点。其它的所有顶点都应当有另一个矩形与其重合。因此我们只需要留下所有度为1的顶点，判断其是否都是大矩形的四个顶点即可。</p>
+<p>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRectangleCover</span><span class="params">(<span class="keyword">int</span>[][] rectangles)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(rectangles==<span class="keyword">null</span> || rectangles.length == <span class="number">0</span> || rectangles[<span class="number">0</span>].length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">int</span> areaSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> x1 = Integer.MAX_VALUE;</span><br><span class="line">    <span class="keyword">int</span> x2 = Integer.MIN_VALUE;</span><br><span class="line">    <span class="keyword">int</span> y1 = Integer.MAX_VALUE;</span><br><span class="line">    <span class="keyword">int</span> y2 = Integer.MIN_VALUE;</span><br><span class="line">    </span><br><span class="line">    Set&lt;String&gt; points = <span class="keyword">new</span> HashSet&lt;&gt;(rectangles.length * <span class="number">4</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span>[] rectangle : rectangles) &#123;</span><br><span class="line">        x1 = Math.min(rectangle[<span class="number">0</span>], x1);</span><br><span class="line">        x2 = Math.max(rectangle[<span class="number">2</span>], x2);</span><br><span class="line">        y1 = Math.min(rectangle[<span class="number">1</span>], y1);</span><br><span class="line">        y2 = Math.max(rectangle[<span class="number">3</span>], y2);</span><br><span class="line">        </span><br><span class="line">        areaSum += (rectangle[<span class="number">0</span>] - rectangle[<span class="number">2</span>]) * (rectangle[<span class="number">1</span>] - rectangle[<span class="number">3</span>]);</span><br><span class="line">        String s1 = rectangle[<span class="number">0</span>] + <span class="string">" "</span> + rectangle[<span class="number">1</span>];</span><br><span class="line">        String s2 = rectangle[<span class="number">0</span>] + <span class="string">" "</span> + rectangle[<span class="number">3</span>];</span><br><span class="line">        String s3 = rectangle[<span class="number">2</span>] + <span class="string">" "</span> + rectangle[<span class="number">1</span>];</span><br><span class="line">        String s4 = rectangle[<span class="number">2</span>] + <span class="string">" "</span> + rectangle[<span class="number">3</span>];</span><br><span class="line">        <span class="keyword">if</span> (!points.add(s1)) &#123;</span><br><span class="line">            points.remove(s1);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!points.add(s2)) &#123;</span><br><span class="line">            points.remove(s2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!points.add(s3)) &#123;</span><br><span class="line">            points.remove(s3);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!points.add(s4)) &#123;</span><br><span class="line">            points.remove(s4);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!points.contains(x1 + <span class="string">" "</span> + y1) || </span><br><span class="line">            !points.contains(x1 + <span class="string">" "</span> + y2) ||</span><br><span class="line">            !points.contains(x2 + <span class="string">" "</span> + y1) ||</span><br><span class="line">            !points.contains(x2 + <span class="string">" "</span> + y2) ||</span><br><span class="line">            points.size() != <span class="number">4</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">return</span> areaSum == (x2 - x1) * (y2 - y1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/刷题/" rel="tag"># 刷题</a>
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/08/leetcode402/" rel="next" title="leetcode402">
+                <i class="fa fa-chevron-left"></i> leetcode402
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">244</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目要求"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路和代码"><span class="nav-number">2.</span> <span class="nav-text">思路和代码</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
