@@ -327,6 +327,198 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/bash指令学习与整理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/05/bash指令学习与整理/" class="post-title-link" itemprop="url">bash指令学习与整理</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 22:09:39 / 修改时间：22:11:27" itemprop="dateCreated datePublished" datetime="2019-02-05T22:09:39+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><blockquote>
+<ol>
+<li>指令的历史记录位于<code>~/.bash_history</code>文件中，可以使用<code>cat</code>指令查看。需要注意的是，它存储的是上一次登录时执行过的命令，而这一次登录中执行的命令将先暂存在内存中</li>
+<li>Tab键可以用来补全命令或是提示可选的操作</li>
+<li><code>\</code>可以用来换行增强指令的可读性</li>
+<li>将根据环境变量PATH来寻找指令，可以使用<code>echo $PATH</code>来查看环境变量</li>
+<li>在命令执行的过程中，反引号中的指令会先执行，执行的结果会作为外部的输入信息，<code>$()</code>具有同样的效果</li>
+<li>命令执行顺序：以相对/绝对路径执行命令，以alias找到该命令来执行，由bash内置的命令来执行，通过$PATH的顺序找到第一个命令并执行</li>
+<li>数据流重定向是指将某个指令执行后应该要出现在屏幕上的数据传输到其它地方。</li>
+<li>直接执行和bash或sh执行脚本会在子进程中执行，而使用source执行脚本则会在父进程中执行</li>
+</ol>
+</blockquote>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/05/bash指令学习与整理/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/在Centos上搭建Maven中央仓库/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1982,176 +2174,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：持久化容器存储</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-05 03:44:49 / 修改时间：03:45:25" itemprop="dateCreated datePublished" datetime="2019-02-05T03:44:49+08:00">2019-02-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>临时性存储是容器的一个很大的买点。“根据一个镜像启动容器，随意变更，然后停止变更重启一个容器。你看，一个全新的文件系统又诞生了。”</p>
-<p>在docker的语境下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># docker run -it centos</span><br><span class="line">[root@d42876f95c6a /]# echo &quot;Hello world&quot; &gt; /hello-file</span><br><span class="line">[root@d42876f95c6a /]# exit</span><br><span class="line">exit</span><br><span class="line"># docker run -it centos</span><br><span class="line">[root@a0a93816fcfe /]# cat /hello-file</span><br><span class="line">cat: /hello-file: No such file or directory</span><br></pre></td></tr></table></figure></p>
-<p>当我们围绕容器构建应用程序时，这个临时性存储非常有用。它便于水平扩展：我们只是从同一个镜像创建多个容器实例，每个实例都有自己独立的文件系统。它也易于升级：我们只是创建了一个新版本的映像，我们不必担心从现有容器实例中保留任何内容。它可以轻松地从单个系统移动到群集，或从内部部署移动到云：我们只需要确保集群或云可以访问registry中的镜像。而且它易于恢复：无论我们的程序崩溃对文件系统造成了什么损坏，我们只需要从镜像重新启动一个容器实例，之后就像从未发生过故障一样。</p>
-<p>因此，我们希望容器引擎依然提供临时存储。但是从教程示例转换到实际应用程序时，我们确实会遇到问题。真实的应用必修在某个地方存储数据。通常，我们将状态保存到某个数据存储中（SQL或是NOSQL）。这也引来了同样的问题。数据存储也是位于容器中吗？理想情况下，答案是肯定的，这样我们可以利用和应用层相同的滚动升级，冗余和故障转移机制。但是，要在容器中运行我们的数据存储，我们再也不能满足于临时存储。容器实例需要能够访问持久存储。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2201,7 +2223,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">246</span>
+                    <span class="site-state-item-count">247</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

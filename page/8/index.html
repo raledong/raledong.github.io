@@ -327,6 +327,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：持久化容器存储</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 03:44:49 / 修改时间：03:45:25" itemprop="dateCreated datePublished" datetime="2019-02-05T03:44:49+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>临时性存储是容器的一个很大的买点。“根据一个镜像启动容器，随意变更，然后停止变更重启一个容器。你看，一个全新的文件系统又诞生了。”</p>
+<p>在docker的语境下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># docker run -it centos</span><br><span class="line">[root@d42876f95c6a /]# echo &quot;Hello world&quot; &gt; /hello-file</span><br><span class="line">[root@d42876f95c6a /]# exit</span><br><span class="line">exit</span><br><span class="line"># docker run -it centos</span><br><span class="line">[root@a0a93816fcfe /]# cat /hello-file</span><br><span class="line">cat: /hello-file: No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>当我们围绕容器构建应用程序时，这个临时性存储非常有用。它便于水平扩展：我们只是从同一个镜像创建多个容器实例，每个实例都有自己独立的文件系统。它也易于升级：我们只是创建了一个新版本的映像，我们不必担心从现有容器实例中保留任何内容。它可以轻松地从单个系统移动到群集，或从内部部署移动到云：我们只需要确保集群或云可以访问registry中的镜像。而且它易于恢复：无论我们的程序崩溃对文件系统造成了什么损坏，我们只需要从镜像重新启动一个容器实例，之后就像从未发生过故障一样。</p>
+<p>因此，我们希望容器引擎依然提供临时存储。但是从教程示例转换到实际应用程序时，我们确实会遇到问题。真实的应用必修在某个地方存储数据。通常，我们将状态保存到某个数据存储中（SQL或是NOSQL）。这也引来了同样的问题。数据存储也是位于容器中吗？理想情况下，答案是肯定的，这样我们可以利用和应用层相同的滚动升级，冗余和故障转移机制。但是，要在容器中运行我们的数据存储，我们再也不能满足于临时存储。容器实例需要能够访问持久存储。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/05/猫头鹰的深夜翻译：持久化容器存储/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/猫头鹰的深夜翻译：如何优化MYSQL查询/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1895,179 +2065,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/WeakHashMap/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/05/WeakHashMap/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：WeakHashMap</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-05 03:01:37 / 修改时间：03:04:04" itemprop="dateCreated datePublished" datetime="2019-02-05T03:01:37+08:00">2019-02-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="本文简介"><a href="#本文简介" class="headerlink" title="本文简介"></a>本文简介</h2><ol>
-<li><code>WeakHashMap</code>类概览</li>
-<li><code>WeakHashMap</code>类构造器总结</li>
-<li><code>WeakHashMap</code>类构造方法</li>
-<li><code>WeakHasjMap</code>类使用举例</li>
-</ol>
-<h2 id="1-WeakHashMap类概览"><a href="#1-WeakHashMap类概览" class="headerlink" title="1. WeakHashMap类概览"></a>1. WeakHashMap类概览</h2><p><code>WeakHashMap</code>是一个实现了<code>Map</code>接口，并且键为weak型的哈希表。<code>WeakHashMap</code>中的条目不再被正常使用时，会被自动删除。它的键值均支持null。这个类类似于<code>HashMap</code>类，也具有初始容量和负载因子这样的效率参数。和绝大多数的集合类一样，这个类不是同步的。需要使用<code>Collections.synchronizedMap</code>方法来进行同步控制。弱引用–如果一个对象只有一个弱引用，那么垃圾回收期可以随时收回该对象的内存。它不需要等到系统内存不足时才回收。通常，它的内存会在下一次垃圾收集器运行时释放。<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/05/WeakHashMap/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2117,7 +2114,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">246</span>
+                    <span class="site-state-item-count">247</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
