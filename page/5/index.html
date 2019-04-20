@@ -327,6 +327,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：核心JAVA并发二</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-09 13:54:16 / 修改时间：14:00:54" itemprop="dateCreated datePublished" datetime="2019-02-09T13:54:16+08:00">2019-02-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇文章请参考<a href="https://segmentfault.com/a/1190000013286239" target="_blank" rel="noopener">猫头鹰的深夜翻译：核心JAVA并发(一)</a></p>
+<h2 id="安全发布"><a href="#安全发布" class="headerlink" title="安全发布"></a>安全发布</h2><p>发布一个对象是指该对象的引用对当前的域之外也可见（比如，从getter方法中获取一个引用）。要确保一个对象被安全的发布(即在初始化完成之后发布)，可能需要使用同步。可以通过以下方法实现安全的发布：</p>
+<ul>
+<li><p>静态初始化方法。只有一个线程能够初始化静态变量因为该类的初始化是在一个排它锁之下完成的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticInitializer</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Publishing an immutable object without additional initialization</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Year year = Year.of(<span class="number">2017</span>); </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;String&gt; keywords;</span><br><span class="line">  <span class="comment">// Using static initializer to construct a complex object</span></span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="comment">// Creating mutable set</span></span><br><span class="line">    Set&lt;String&gt; keywordsSet = <span class="keyword">new</span> HashSet&lt;&gt;(); </span><br><span class="line">    <span class="comment">// Initializing state</span></span><br><span class="line">    keywordsSet.add(<span class="string">"java"</span>);</span><br><span class="line">    keywordsSet.add(<span class="string">"concurrency"</span>);</span><br><span class="line">    <span class="comment">// Making set unmodifiable </span></span><br><span class="line">    keywords = Collections.unmodifiableSet(keywordsSet); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>volatile关键字。读者线程总是能获取最近的值，因为写线程总是在后续的读取之前进行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Volatile</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> String state;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setState</span><span class="params">(String state)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state = state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">String <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Atomics。比如，AtomicInteger将一个值存储为volatile类型，所以这里和volatile变量的规则相同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Atomics</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger state = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">initializeState</span><span class="params">(<span class="keyword">int</span> state)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.state.compareAndSet(<span class="number">0</span>, state);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state.get();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Final类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Final</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String state;</span><br><span class="line">  Final(String state) &#123;</span><br><span class="line">    <span class="keyword">this</span>.state = state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">String <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/09/猫头鹰的深夜翻译：核心JAVA并发二/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1860,175 +2042,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/07/猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存/" class="post-title-link" itemprop="url">猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-07 23:21:59 / 修改时间：23:38:52" itemprop="dateCreated datePublished" datetime="2019-02-07T23:21:59+08:00">2019-02-07</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/猫头鹰的深夜翻译/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章探索了现有的各种JAVA缓存基数，它们对各种场景下提高应用的性能起着重要的作用。</p>
-<p>近十年来，信息技术极高的提升了业务流程，它已经成为了全球企业的战略性方案。它从“可有可无”演变到现在的“不可或缺”。因此，响应时间变得越发的重要。数据获取时间对用户体验影响极大，它在所有的商业应用中几乎都是关键性需求。影响响应时间的因素很多，包括网络管道，协议，硬件，软件以及网速。庞大的IT基础设施和苛刻的系统性能要求严重影响了任何组织的战略目标。</p>
-<p>本文旨在强调通过Java缓存机制提升应用的性能。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/07/猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2078,7 +2091,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">249</span>
+                    <span class="site-state-item-count">250</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
