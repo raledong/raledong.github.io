@@ -327,6 +327,725 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/16/leetcode443/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/16/leetcode443/" class="post-title-link" itemprop="url">leetcode443</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-16 22:47:50" itemprop="dateCreated datePublished" datetime="2019-04-16T22:47:50+08:00">2019-04-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-18 01:14:11" itemprop="dateModified" datetime="2019-04-18T01:14:11+08:00">2019-04-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Given an array of characters, compress it in-place.</span><br><span class="line"></span><br><span class="line">The length after compression must always be smaller than or equal to the original array.</span><br><span class="line"></span><br><span class="line">Every element of the array should be a character (not int) of length 1.</span><br><span class="line"></span><br><span class="line">After you are done modifying the input array in-place, return the new length of the array.</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">Follow up:</span><br><span class="line">Could you solve it using only O(1) extra space?</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">Example 1:</span><br><span class="line"></span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;,&quot;c&quot;,&quot;c&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 6, and the first 6 characters of the input array should be: [&quot;a&quot;,&quot;2&quot;,&quot;b&quot;,&quot;2&quot;,&quot;c&quot;,&quot;3&quot;]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">&quot;aa&quot; is replaced by &quot;a2&quot;. &quot;bb&quot; is replaced by &quot;b2&quot;. &quot;ccc&quot; is replaced by &quot;c3&quot;.</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 1, and the first 1 characters of the input array should be: [&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Nothing is replaced.</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">Example 3:</span><br><span class="line"></span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 4, and the first 4 characters of the input array should be: [&quot;a&quot;,&quot;b&quot;,&quot;1&quot;,&quot;2&quot;].</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Since the character &quot;a&quot; does not repeat, it is not compressed. &quot;bbbbbbbbbbbb&quot; is replaced by &quot;b12&quot;.</span><br><span class="line">Notice each digit has it&apos;s own entry in the array.</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line"></span><br><span class="line">All characters have an ASCII value in [35, 126].</span><br><span class="line">1 &lt;= len(chars) &lt;= 1000.</span><br></pre></td></tr></table></figure>
+<p>对字符串进行简单的压缩操作，压缩的规则是，如果出现多个重复的字母，则用字母加上字母出现的字数进行表示。如果字母只出现一次，则不记录次数。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/04/16/leetcode443/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/leetcode406/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/11/leetcode406/" class="post-title-link" itemprop="url">leetcode406</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-11 20:59:49 / 修改时间：21:00:55" itemprop="dateCreated datePublished" datetime="2019-03-11T20:59:49+08:00">2019-03-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k), where h is the height of the person and k is the number of people in front of this person who have a height greater than or equal to h. Write an algorithm to reconstruct the queue.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">The number of people is less than 1,100.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Example</span><br><span class="line"></span><br><span class="line">Input:</span><br><span class="line">[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]</span><br></pre></td></tr></table></figure>
+<p>假设有一组人站成一堆，每个人都记录下了自己的高度，以及在自己前面有多少个不比自己矮的人。现在请按照这个信息将这组人放在队列中正确的位置上并返回。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/11/leetcode406/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/leetcode419/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/11/leetcode419/" class="post-title-link" itemprop="url">leetcode419</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-11 16:57:38 / 修改时间：16:58:31" itemprop="dateCreated datePublished" datetime="2019-03-11T16:57:38+08:00">2019-03-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Given an 2D board, count how many battleships are in it. The battleships are represented with &apos;X&apos;s, empty slots are represented with &apos;.&apos;s. You may assume the following rules:</span><br><span class="line">You receive a valid board, made of only battleships or empty slots.</span><br><span class="line">Battleships can only be placed horizontally or vertically. In other words, they can only be made of the shape 1xN (1 row, N columns) or Nx1 (N rows, 1 column), where N can be of any size.</span><br><span class="line">At least one horizontal or vertical cell separates between two battleships - there are no adjacent battleships.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line">X..X</span><br><span class="line">...X</span><br><span class="line">...X</span><br><span class="line"></span><br><span class="line">In the above board there are 2 battleships.</span><br><span class="line"></span><br><span class="line">Invalid Example:</span><br><span class="line">...X</span><br><span class="line">XXXX</span><br><span class="line">...X</span><br><span class="line"></span><br><span class="line">This is an invalid board that you will not receive - as battleships will always have a cell separating between them.</span><br><span class="line">Follow up:</span><br><span class="line">Could you do it in one-pass, using only O(1) extra memory and without modifying the value of the board?</span><br></pre></td></tr></table></figure>
+<p>假设有一个2D板，在板上用<code>X</code>表示战舰，已知板上任意两个战舰体之间一定会用<code>.</code>隔开，因此不会出现两个X相邻的情况。现在要求用O(N)的时间复杂度和O(1)的空间复杂度来完成。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/11/leetcode419/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/09/leetcode391/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/09/leetcode391/" class="post-title-link" itemprop="url">leetcode391. Perfect Rectangle</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-09 18:36:01 / 修改时间：18:40:15" itemprop="dateCreated datePublished" datetime="2019-03-09T18:36:01+08:00">2019-03-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Given N axis-aligned rectangles where N &gt; 0, determine if they all together form an exact cover of a rectangular region.</span><br><span class="line"></span><br><span class="line">Each rectangle is represented as a bottom-left point and a top-right point. For example, a unit square is represented as [1,1,2,2]. (coordinate of bottom-left point is (1, 1) and top-right point is (2, 2)).</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,3,3],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [3,2,4,4],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [2,3,3,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return true. All 5 rectangles together form an exact cover of a rectangular region.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片1.png" title="图片1">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,2,3],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [3,2,4,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return false. Because there is a gap between the two rectangular regions.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片3.png" title="图片3">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Example 3:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,3,3],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [3,2,4,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return false. Because there is a gap in the top center.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片3.png" title="图片3">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Example 4:</span><br><span class="line"></span><br><span class="line">rectangles = [</span><br><span class="line">  [1,1,3,3],</span><br><span class="line">  [3,1,4,2],</span><br><span class="line">  [1,3,2,4],</span><br><span class="line">  [2,2,4,4]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Return false. Because two of the rectangles overlap with each other.</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/09/leetcode391/图片4.png" title="图片4">
+<p>用一个二维数组来表示一堆矩形，二维数组中的每一行分别记录矩形左下角和右上角的坐标。试判断这些矩形拼接成的新的图形是否还是一个矩形。如果矩形存在重合，则不构成矩形，见图例4.<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/09/leetcode391/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/08/leetcode402/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1360,724 +2079,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/17/leetcode393/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/17/leetcode393/" class="post-title-link" itemprop="url">leetcode393</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-17 16:25:49 / 修改时间：16:27:12" itemprop="dateCreated datePublished" datetime="2019-02-17T16:25:49+08:00">2019-02-17</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">A character in UTF8 can be from 1 to 4 bytes long, subjected to the following rules:</span><br><span class="line"></span><br><span class="line">For 1-byte character, the first bit is a 0, followed by its unicode code.</span><br><span class="line">For n-bytes character, the first n-bits are all one&apos;s, the n+1 bit is 0, followed by n-1 bytes with most significant 2 bits being 10.</span><br><span class="line">This is how the UTF-8 encoding would work:</span><br><span class="line"></span><br><span class="line">   Char. number range  |        UTF-8 octet sequence</span><br><span class="line">      (hexadecimal)    |              (binary)</span><br><span class="line">   --------------------+---------------------------------------------</span><br><span class="line">   0000 0000-0000 007F | 0xxxxxxx</span><br><span class="line">   0000 0080-0000 07FF | 110xxxxx 10xxxxxx</span><br><span class="line">   0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx</span><br><span class="line">   0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</span><br><span class="line">Given an array of integers representing the data, return whether it is a valid utf-8 encoding.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">The input is an array of integers. Only the least significant 8 bits of each integer is used to store the data. This means each integer represents only 1 byte of data.</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line"></span><br><span class="line">data = [197, 130, 1], which represents the octet sequence: 11000101 10000010 00000001.</span><br><span class="line"></span><br><span class="line">Return true.</span><br><span class="line">It is a valid utf-8 encoding for a 2-bytes character followed by a 1-byte character.</span><br><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">data = [235, 140, 4], which represented the octet sequence: 11101011 10001100 00000100.</span><br><span class="line"></span><br><span class="line">Return false.</span><br><span class="line">The first 3 bits are all one&apos;s and the 4th bit is 0 means it is a 3-bytes character.</span><br><span class="line">The next byte is a continuation byte which starts with 10 and that&apos;s correct.</span><br><span class="line">But the second continuation byte does not start with 10, so it is invalid.</span><br></pre></td></tr></table></figure>
-<p>检验整数数组能否构成合法的UTF8编码的序列。UTF8的字节编码规则如下：</p>
-<ol>
-<li>每个UTF8字符包含1~4个字节</li>
-<li>如果只包含1个字节，则该字节以0作为开头，剩下的位随意</li>
-<li>如果包含两个或两个以上字节，则起始字节以n个1和1个0开头，例如，如果该UTF8字符包含两个字节，则第一个字节以110开头，同理，三个字符的第一个字节以1110开头。剩余的字节必须以10开头。</li>
-</ol>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/17/leetcode393/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/17/leetcode398/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/17/leetcode398/" class="post-title-link" itemprop="url">leetcode398.Random Pick Index</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-17 00:12:11 / 修改时间：00:21:37" itemprop="dateCreated datePublished" datetime="2019-02-17T00:12:11+08:00">2019-02-17</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Given an array of integers with possible duplicates, randomly output the index of a given target number. You can assume that the given target number must exist in the array.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">The array size can be very large. Solution that uses too much extra space will not pass the judge.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">int[] nums = new int[] &#123;1,2,3,3,3&#125;;</span><br><span class="line">Solution solution = new Solution(nums);</span><br><span class="line"></span><br><span class="line">// pick(3) should return either index 2, 3, or 4 randomly. Each index should have equal probability of returning.</span><br><span class="line">solution.pick(3);</span><br><span class="line"></span><br><span class="line">// pick(1) should return 0. Since in the array only nums[0] is equal to 1.</span><br><span class="line">solution.pick(1);</span><br></pre></td></tr></table></figure>
-<p>设计一个数据结构，使得从该数据结构中查询一个数字时，能够以等概率返回该数字所在的任何下标。额外的要求是只要占用O(1)的额外的空间复杂度。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/17/leetcode398/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/leetcode380/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/16/leetcode380/" class="post-title-link" itemprop="url">leetcode380</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-16 00:50:52" itemprop="dateCreated datePublished" datetime="2019-02-16T00:50:52+08:00">2019-02-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-02-17 00:11:47" itemprop="dateModified" datetime="2019-02-17T00:11:47+08:00">2019-02-17</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Design a data structure that supports all following operations in average O(1) time.</span><br><span class="line"></span><br><span class="line">insert(val): Inserts an item val to the set if not already present.</span><br><span class="line">remove(val): Removes an item val from the set if present.</span><br><span class="line">getRandom: Returns a random element from current set of elements. Each element must have the same probability of being returned.</span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">// Init an empty set.</span><br><span class="line">RandomizedSet randomSet = new RandomizedSet();</span><br><span class="line"></span><br><span class="line">// Inserts 1 to the set. Returns true as 1 was inserted successfully.</span><br><span class="line">randomSet.insert(1);</span><br><span class="line"></span><br><span class="line">// Returns false as 2 does not exist in the set.</span><br><span class="line">randomSet.remove(2);</span><br><span class="line"></span><br><span class="line">// Inserts 2 to the set, returns true. Set now contains [1,2].</span><br><span class="line">randomSet.insert(2);</span><br><span class="line"></span><br><span class="line">// getRandom should return either 1 or 2 randomly.</span><br><span class="line">randomSet.getRandom();</span><br><span class="line"></span><br><span class="line">// Removes 1 from the set, returns true. Set now contains [2].</span><br><span class="line">randomSet.remove(1);</span><br><span class="line"></span><br><span class="line">// 2 was already in the set, so return false.</span><br><span class="line">randomSet.insert(2);</span><br><span class="line"></span><br><span class="line">// Since 2 is the only number in the set, getRandom always return 2.</span><br><span class="line">randomSet.getRandom();</span><br></pre></td></tr></table></figure>
-<p>设计一个数据结构，使得能够在O(1)的时间复杂度中插入数字，删除数字，以及随机获取一个数字。要求所有的数字都能够被等概率的随机出来。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/leetcode380/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/leetcode381/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/16/leetcode381/" class="post-title-link" itemprop="url">leetcode381</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-16 00:43:20 / 修改时间：00:49:00" itemprop="dateCreated datePublished" datetime="2019-02-16T00:43:20+08:00">2019-02-16</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Design a data structure that supports all following operations in average O(1) time.</span><br><span class="line"></span><br><span class="line">Note: Duplicate elements are allowed.</span><br><span class="line">insert(val): Inserts an item val to the collection.</span><br><span class="line">remove(val): Removes an item val from the collection if present.</span><br><span class="line">getRandom: Returns a random element from current collection of elements. The probability of each element being returned is linearly related to the number of same value the collection contains.</span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">// Init an empty collection.</span><br><span class="line">RandomizedCollection collection = new RandomizedCollection();</span><br><span class="line"></span><br><span class="line">// Inserts 1 to the collection. Returns true as the collection did not contain 1.</span><br><span class="line">collection.insert(1);</span><br><span class="line"></span><br><span class="line">// Inserts another 1 to the collection. Returns false as the collection contained 1. Collection now contains [1,1].</span><br><span class="line">collection.insert(1);</span><br><span class="line"></span><br><span class="line">// Inserts 2 to the collection, returns true. Collection now contains [1,1,2].</span><br><span class="line">collection.insert(2);</span><br><span class="line"></span><br><span class="line">// getRandom should return 1 with the probability 2/3, and returns 2 with the probability 1/3.</span><br><span class="line">collection.getRandom();</span><br><span class="line"></span><br><span class="line">// Removes 1 from the collection, returns true. Collection now contains [1,2].</span><br><span class="line">collection.remove(1);</span><br><span class="line"></span><br><span class="line">// getRandom should return 1 and 2 both equally likely.</span><br><span class="line">collection.getRandom();</span><br></pre></td></tr></table></figure>
-<p>设计一个数据结构，支持能够在O(1)的时间内完成对数字的插入，删除和获取随机数的操作，允许插入重复的数字，同时要求每个数字被随机获取的概率和该数字当前在数据结构中的个数成正比。</p>
-<p>强烈建议先看一下这个问题的基础版本，<a href="https://segmentfault.com/a/1190000018170245" target="_blank" rel="noopener">传送门在这里</a>。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/leetcode381/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2127,7 +2128,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">263</span>
+                    <span class="site-state-item-count">267</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

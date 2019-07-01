@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目要求12345678910111213Given a non-empty 2D matrix matrix and an integer k, find the max sum of a rectangle in the matrix such that its sum is no larger than k.Example:Input: matrix = [[1,0,1],[0,-2,3]]">
+<meta name="keywords" content="java,刷题,leetcode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode363">
+<meta property="og:url" content="http://yoursite.com/2019/06/07/leetcode363/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="题目要求12345678910111213Given a non-empty 2D matrix matrix and an integer k, find the max sum of a rectangle in the matrix such that its sum is no larger than k.Example:Input: matrix = [[1,0,1],[0,-2,3]]">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-07T12:57:57.370Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="leetcode363">
+<meta name="twitter:description" content="题目要求12345678910111213Given a non-empty 2D matrix matrix and an integer k, find the max sum of a rectangle in the matrix such that its sum is no larger than k.Example:Input: matrix = [[1,0,1],[0,-2,3]]">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/07/leetcode363/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>leetcode363 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/07/leetcode363/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">leetcode363
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-07 20:56:38 / 修改时间：20:57:57" itemprop="dateCreated datePublished" datetime="2019-06-07T20:56:38+08:00">2019-06-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Given a non-empty 2D matrix matrix and an integer k, find the max sum of a rectangle in the matrix such that its sum is no larger than k.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">Input: matrix = [[1,0,1],[0,-2,3]], k = 2</span><br><span class="line">Output: 2 </span><br><span class="line">Explanation: Because the sum of rectangle [[0, 1], [-2, 3]] is 2,</span><br><span class="line">             and 2 is the max number no larger than k (k = 2).</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line"></span><br><span class="line">1. The rectangle inside the matrix must have an area &gt; 0.</span><br><span class="line">2. What if the number of rows is much larger than the number of columns?</span><br></pre></td></tr></table></figure>
+<p>现有一个由整数构成的矩阵，问从中找到一个子矩阵，要求该子矩阵中各个元素的和为不超过k的最大值，问子矩阵中元素的和为多少?<br>注：后面的文章中将使用<code>[左上角顶点坐标，右下角顶点坐标]</code>来表示一个矩阵，如<code>[(1,2),(3,4)]</code>表示左上角顶掉坐标为(1,2)，右下角顶点坐标为(3,4)的矩阵。用<code>S[(1,2),(3,4)]</code>表示该矩阵的面积。顶点的坐标系以数组的起始点作为起点，向下为x轴正方向，向右为y轴正方向。</p>
+<a id="more"></a>
+<h2 id="思路一：暴力循环"><a href="#思路一：暴力循环" class="headerlink" title="思路一：暴力循环"></a>思路一：暴力循环</h2><p>如果我们将矩阵中的每个子矩阵都枚举出来，并计算其元素和，从而得出小于K的最大值即可。<br>这里通过一个额外的二维数组S缓存了<code>[(0,0), (i,j)]</code>的矩形的面积，可以通过O(n^2)的时间复杂度完成计算，即<code>S[i][j] = matrix[i][j] + S[i-1][j] + S[i][j-1] - S[i-1][j-1]</code>， 则矩形<code>[(r1,c1),(r2,c2)]</code>的面积为<code>S[r2][c2] -S[r1-1][c2] - S[r2][c1-1] + S[r1-1][c1-1]</code>。这种算法的时间复杂度为O(N^4)，因为需要定位矩形的四个顶点，一共需要四圈循环，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSumSubmatrix</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> row = matrix.length;</span><br><span class="line">    <span class="keyword">if</span>(row == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> col = matrix[<span class="number">0</span>].length;</span><br><span class="line">    <span class="keyword">if</span>(col == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//rectangle[i][j]记录顶点为[0,0],[i,j]的矩形的面积</span></span><br><span class="line">    <span class="keyword">int</span>[][] rectangle = <span class="keyword">new</span> <span class="keyword">int</span>[row][col];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i&lt;row ;  i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span> ; j&lt;col ; j++) &#123;</span><br><span class="line">            <span class="keyword">int</span> area = matrix[i][j];</span><br><span class="line">            <span class="keyword">if</span>(i&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                area += rectangle[i-<span class="number">1</span>][j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(j&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                area += rectangle[i][j-<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//减去重复计算的面积</span></span><br><span class="line">            <span class="keyword">if</span>(i&gt;<span class="number">0</span> &amp;&amp; j&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                area -= rectangle[i-<span class="number">1</span>][j-<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            rectangle[i][j] = area;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> result = Integer.MIN_VALUE;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> startRow = <span class="number">0</span> ; startRow&lt;row; startRow++) &#123;<span class="comment">//矩形的起点行</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> endRow = startRow ; endRow&lt;row ; endRow++) &#123;<span class="comment">//矩形的结束行</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> startCol = <span class="number">0</span> ; startCol&lt;col ; startCol++) &#123;<span class="comment">//矩形的起始列</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> endCol = startCol ; endCol&lt;col ; endCol++) &#123;<span class="comment">//矩形的结束列</span></span><br><span class="line">                    <span class="keyword">int</span> area = rectangle[endRow][endCol];</span><br><span class="line">                    <span class="keyword">if</span>(startRow &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                        area -= rectangle[startRow-<span class="number">1</span>][endCol];</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span>(startCol &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                        area -= rectangle[endRow][startCol-<span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span>(startRow &gt; <span class="number">0</span> &amp;&amp; startCol &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                        area += rectangle[startRow-<span class="number">1</span>][startCol-<span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (area &lt;= k)</span><br><span class="line">                        result = Math.max(result, area);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="思路二：利用二分法思路进行优化"><a href="#思路二：利用二分法思路进行优化" class="headerlink" title="思路二：利用二分法思路进行优化"></a>思路二：利用二分法思路进行优化</h2><p>对算法从时间上优化的核心思路就是尽可能的减少比较或是计算的次数。上面一个思路的我们可以理解为以row1和row2分别作为子矩阵的上边界和下边界，以col2作为右边界，要求找到一个左边界col1，使得其划分出来的子矩阵中元素的和为小于等于k的最大值，即<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">max(S[(row1,0),(row2, col2)] - S[(row1,0),(row2, col1)]) </span><br><span class="line">&amp;&amp; col1 &lt; col2 </span><br><span class="line">&amp;&amp; S[(row1,0),(row2, col2)] - S[(row1,0),(row2, col1)]&lt;k`。</span><br></pre></td></tr></table></figure></p>
+<p>换句话说，假如将col2左侧的所有以最左侧边为起点的子矩阵按照元素和从小到大排队，即将子矩阵<code>(row1, 0), (row2, colx) 其中colx &lt; col2</code>按照元素和从小到大排序，此时只需要在该结果中找到一个矩阵，其值为大于等于<code>S[(row1,0),(row2, col2)] - k</code>的最小值。此时得出的矩阵元素和差最大。这里采用TreeSet来实现O(logN)的元素查找时间复杂度。</p>
+<p>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSumSubmatrix2</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> row = matrix.length;</span><br><span class="line">    <span class="keyword">if</span>(row == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> col = matrix[<span class="number">0</span>].length;</span><br><span class="line">    <span class="keyword">if</span>(col == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//rectangle[i][j]记录顶点为[0,0],[i,j]的矩形的面积</span></span><br><span class="line">    <span class="keyword">int</span>[][] rectangle = <span class="keyword">new</span> <span class="keyword">int</span>[row][col];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i&lt;row ;  i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span> ; j&lt;col ; j++) &#123;</span><br><span class="line">            <span class="keyword">int</span> area = matrix[i][j];</span><br><span class="line">            <span class="keyword">if</span>(i&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                area += rectangle[i-<span class="number">1</span>][j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(j&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                area += rectangle[i][j-<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//减去重复计算的面积</span></span><br><span class="line">            <span class="keyword">if</span>(i&gt;<span class="number">0</span> &amp;&amp; j&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                area -= rectangle[i-<span class="number">1</span>][j-<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            rectangle[i][j] = area;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> result = Integer.MIN_VALUE;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> startRow = <span class="number">0</span> ; startRow &lt; row ; startRow++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> endRow = startRow ; endRow &lt; row ; endRow++) &#123;</span><br><span class="line">            <span class="comment">//记录从startRow到endRow之间所有以最左侧边为起点的矩形的面积</span></span><br><span class="line">            TreeSet&lt;Integer&gt; treeSet = <span class="keyword">new</span> TreeSet&lt;Integer&gt;();</span><br><span class="line">            treeSet.add(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> endCol = <span class="number">0</span> ; endCol &lt; col ; endCol++) &#123;</span><br><span class="line">                <span class="keyword">int</span> area = rectangle[endRow][endCol];</span><br><span class="line">                <span class="keyword">if</span>(startRow &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    area -= rectangle[startRow-<span class="number">1</span>][endCol];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//可以减去的左侧矩形的最小面积，即大于S[(row1,0),(row2, col2)] - k的最小值</span></span><br><span class="line">                Integer remain = treeSet.ceiling(area - k);</span><br><span class="line">                <span class="keyword">if</span>(remain != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    result = Math.max(result, area - remain);</span><br><span class="line">                &#125;</span><br><span class="line">                treeSet.add(area);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="思路三：分治法"><a href="#思路三：分治法" class="headerlink" title="思路三：分治法"></a>思路三：分治法</h2><p>从上面两种思路，我们可以将题目演化成另一种思路，即对于任意以row1和row2作为上下边界的子矩阵，将其中每一列的元素的和记为<code>sum[colx](0&lt;=colx&lt;col)</code>，则生成一个长度为col的整数数组sum。需要从该整数数组中找到一个连续的子数组，使得该子数组的和最大且不超过k。</p>
+<p>连续子数组的和是一道非常经典的动态规划的问题，它可以在nlogn的时间复杂度内解决。这里采用归并排序的思路来进行解决。本质上将数组以中间位置分割为左子数组和右子数组，分别求左子数组内和右子数组内最大的连续子数组和，并且在递归的过程中将左右子数组中的元素分别从小到大排序。接着判断是否有横跨中间节点的子数组满足题目要求，因为左右子数组分别有序，因此一旦遇到一个右边界，其和左边界构成的矩阵的元素的和超过k，就可以停止右指针的移动。因此每次中间结果的遍历只需要O(N)的时间复杂度。</p>
+<p>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSumSubmatrix3</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> row = matrix.length;</span><br><span class="line">    <span class="keyword">if</span>(row == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> col = matrix[<span class="number">0</span>].length;</span><br><span class="line">    <span class="keyword">if</span>(col == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> result = Integer.MIN_VALUE;</span><br><span class="line">    <span class="keyword">int</span>[] sums = <span class="keyword">new</span> <span class="keyword">int</span>[row+<span class="number">1</span>];<span class="comment">//sums[i]记录startCol到endCol列之间，0行到i行构成的矩阵的面积</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> startCol = <span class="number">0</span> ; startCol&lt;col ; startCol++) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] sumInRow = <span class="keyword">new</span> <span class="keyword">int</span>[row];<span class="comment">//sumInRow[i]记录startCol到endCol列之间第i行所有元素的和</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> endCol = startCol; endCol&lt;col ; endCol++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> endRow = <span class="number">0</span> ; endRow&lt;row ; endRow++) &#123;</span><br><span class="line">                sumInRow[endRow] += matrix[endRow][endCol];</span><br><span class="line">                sums[endRow+<span class="number">1</span>] = sums[endRow] + sumInRow[endRow];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//对startCol到endCol列之间所有的矩阵元素和构成的数组通过分治法找到最大的连续子数组</span></span><br><span class="line">            result = Math.max(result, mergeSort(sums, k, <span class="number">0</span>, sums.length));</span><br><span class="line">            <span class="keyword">if</span>(result == k) <span class="keyword">return</span> k;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span>[] sums, <span class="keyword">int</span> k, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//矩阵数组至少包含一个元素</span></span><br><span class="line">    <span class="keyword">if</span>(end &lt;= start + <span class="number">1</span>) <span class="keyword">return</span> Integer.MIN_VALUE;</span><br><span class="line">    <span class="keyword">int</span> mid = start + (end - start)/<span class="number">2</span>, cacheIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//对左侧递归计算，此时sums数组[start,mid)之间的元素已经有序</span></span><br><span class="line">    <span class="keyword">int</span> ans = mergeSort(sums, k,  start, mid);</span><br><span class="line">    <span class="keyword">if</span>(ans == k) <span class="keyword">return</span> k;</span><br><span class="line">    <span class="comment">//对右侧递归计算，此时sums数组[mid,end)之间的元素已经有序</span></span><br><span class="line">    ans = Math.max(ans, mergeSort(sums, k, mid, end));</span><br><span class="line">    <span class="comment">//缓存sums数组[start,end)之间排序的结果</span></span><br><span class="line">    <span class="keyword">int</span>[] sortedSubSums = <span class="keyword">new</span> <span class="keyword">int</span>[end - start];</span><br><span class="line">    <span class="keyword">if</span>(ans == k) <span class="keyword">return</span> k;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = start, j = mid, m = mid ; i&lt;mid ;  i++) &#123;</span><br><span class="line">        <span class="keyword">while</span>(j&lt;end &amp;&amp; sums[j] - sums[i] &lt;= k) j++;<span class="comment">//找到第一个满足[i,j)之间的元素和大于k，[i,j-1)之间的元素和小于等于k的连续子数组</span></span><br><span class="line">        <span class="keyword">if</span>(j &gt; mid) &#123;</span><br><span class="line">            ans = Math.max(sums[j-<span class="number">1</span>] - sums[i], ans);</span><br><span class="line">            <span class="keyword">if</span> (ans == k) <span class="keyword">return</span> k;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(m&lt;end &amp;&amp; sums[m] &lt; sums[i]) sortedSubSums[cacheIndex++] = sums[m++];<span class="comment">//排序，通过每次将中间位置右侧比左侧当前位置小的元素全部复制有序数组缓存中</span></span><br><span class="line">        sortedSubSums[cacheIndex++] = sums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    System.arraycopy(sortedSubSums, <span class="number">0</span>, sums, start, cacheIndex);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/刷题/" rel="tag"># 刷题</a>
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/07/leetcode382/" rel="next" title="leetcode382">
+                <i class="fa fa-chevron-left"></i> leetcode382
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/01/leetcode453/" rel="prev" title="leetcode453">
+                leetcode453 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">267</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目要求"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路一：暴力循环"><span class="nav-number">2.</span> <span class="nav-text">思路一：暴力循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路二：利用二分法思路进行优化"><span class="nav-number">3.</span> <span class="nav-text">思路二：利用二分法思路进行优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路三：分治法"><span class="nav-number">4.</span> <span class="nav-text">思路三：分治法</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
