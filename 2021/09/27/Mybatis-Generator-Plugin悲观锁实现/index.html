@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言Mybatis Generator插件可以快速的实现基础的数据库CRUD操作，它同时支持JAVA语言和Kotlin语言，将程序员从重复的Mapper和Dao层代码编写中释放出来。Mybatis Generator可以自动生成大部分的SQL代码，如update，updateSelectively，insert，insertSelectively，select语句等。但是，当程序中需要SQL不在自">
+<meta name="keywords" content="java,原创,mybatis generator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis Generator Plugin悲观锁实现">
+<meta property="og:url" content="http://yoursite.com/2021/09/27/Mybatis-Generator-Plugin悲观锁实现/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言Mybatis Generator插件可以快速的实现基础的数据库CRUD操作，它同时支持JAVA语言和Kotlin语言，将程序员从重复的Mapper和Dao层代码编写中释放出来。Mybatis Generator可以自动生成大部分的SQL代码，如update，updateSelectively，insert，insertSelectively，select语句等。但是，当程序中需要SQL不在自">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-27T14:26:14.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mybatis Generator Plugin悲观锁实现">
+<meta name="twitter:description" content="前言Mybatis Generator插件可以快速的实现基础的数据库CRUD操作，它同时支持JAVA语言和Kotlin语言，将程序员从重复的Mapper和Dao层代码编写中释放出来。Mybatis Generator可以自动生成大部分的SQL代码，如update，updateSelectively，insert，insertSelectively，select语句等。但是，当程序中需要SQL不在自">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/09/27/Mybatis-Generator-Plugin悲观锁实现/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Mybatis Generator Plugin悲观锁实现 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">眯眯眼猫头鹰的小树杈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Owned By Deer&Owl</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/27/Mybatis-Generator-Plugin悲观锁实现/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mybatis Generator Plugin悲观锁实现
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-09-27 22:25:26 / 修改时间：22:26:14" itemprop="dateCreated datePublished" datetime="2021-09-27T22:25:26+08:00">2021-09-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/原创/" itemprop="url" rel="index"><span itemprop="name">原创</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Mybatis Generator插件可以快速的实现基础的数据库CRUD操作，它同时支持JAVA语言和Kotlin语言，将程序员从重复的Mapper和Dao层代码编写中释放出来。Mybatis Generator可以自动生成大部分的SQL代码，如update，updateSelectively，insert，insertSelectively，select语句等。但是，当程序中需要SQL不在自动生成的SQL范围内时，就需要使用自定义Mapper来实现，即手动编写DAO层和Mapper文件（这里有一个小坑，当数据库实体增加字段时，对应的自定义Mapper也要及时手动更新）。抛开复杂的定制化SQL如join，group by等，其实还是有一些比较常用的SQL在基础的Mybatis Generator工具中没有自动生成，比如分页能力，悲观锁，乐观锁等，而Mybatis Generator也为这些诉求提供了Plugin的能力。通过自定义实现Plugin可以改变Mybatis Generator在生成Mapper和Dao文件时的行为。本文将从悲观锁为例，让你快速了解如何实现Mybatis Generator Plugin。</p>
+<p>实现背景：<br>数据库：MYSQL<br>mybatis generator runtime：MyBatis3</p>
+<a id="more"></a>
+<h2 id="实现Mybatis悲观锁"><a href="#实现Mybatis悲观锁" class="headerlink" title="实现Mybatis悲观锁"></a>实现Mybatis悲观锁</h2><p>当业务出现需要保证强一致的场景时，可以通过在事务中对数据行上悲观锁后再进行操作来实现，这就是经典的”一锁二判三更新“。在交易或是支付系统中，这种诉求非常普遍。Mysql提供了Select…For Update语句来实现对数据行上悲观锁。本文将不对Select…For Update进行详细的介绍，有兴趣的同学可以查看其它文章深入了解。</p>
+<p>Mybatis Generator Plugin为这种具有通用性的SQL提供了很好的支持。通过继承<code>org.mybatis.generator.api.PluginAdapter</code>类即可自定义SQL生成逻辑并在在配置文件中使用。<code>PluginAdapter</code>是<code>Plugin</code>接口的实现类，提供了Plugin的默认实现，本文将介绍其中比较重要的几个方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Plugin</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* 将Mybatis Generator配置文件中的上下文信息传递到Plugin实现类中</span></span><br><span class="line"><span class="comment">	* 这些信息包括数据库链接，类型映射配置等</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setContext</span><span class="params">(Context context)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* 配置文件中的所有properties标签</span></span><br><span class="line"><span class="comment">	**/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Properties properties)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* 校验该Plugin是否执行，如果返回false，则该插件不会执行</span></span><br><span class="line"><span class="comment">	**/</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">validate</span><span class="params">(List&lt;String&gt; warnings)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* 当DAO文件完成生成后会触发该方法，可以通过实现该方法在DAO文件中新增方法或属性</span></span><br><span class="line"><span class="comment">	**/</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">clientGenerated</span><span class="params">(Interface interfaze, TopLevelClass topLevelClass,</span></span></span><br><span class="line"><span class="function"><span class="params">            IntrospectedTable introspectedTable)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 当SQL XML 文件生成后会调用该方法，可以通过实现该方法在MAPPER XML文件中新增XML定义</span></span><br><span class="line"><span class="comment">    **/</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">sqlMapDocumentGenerated</span><span class="params">(Document document, IntrospectedTable introspectedTable)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里结合Mybatis Generator的配置文件和生成的DAO（也称为Client文件）和Mapper XML文件可以更好的理解。Mybatis Generator配置文件样例如下，其中包含了主要的一些配置信息，如用于描述数据库链接的<jdbcconnection>标签，用于定义数据库和Java类型转换的<javatyperesolver>标签等。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE generatorConfiguration</span></span><br><span class="line"><span class="meta">  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"</span></span><br><span class="line"><span class="meta">  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">classPathEntry</span> <span class="attr">location</span>=<span class="string">"/Program Files/IBM/SQLLIB/java/db2java.zip"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">"DB2Tables"</span> <span class="attr">targetRuntime</span>=<span class="string">"MyBatis3"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">"COM.ibm.db2.jdbc.app.DB2Driver"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">connectionURL</span>=<span class="string">"jdbc:db2:TEST"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">userId</span>=<span class="string">"db2admin"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">password</span>=<span class="string">"db2admin"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaTypeResolver</span> &gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"forceBigDecimals"</span> <span class="attr">value</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaTypeResolver</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"test.model"</span> <span class="attr">targetProject</span>=<span class="string">"\MBGTestProject\src"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"trimStrings"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaModelGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"test.xml"</span>  <span class="attr">targetProject</span>=<span class="string">"\MBGTestProject\src"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sqlMapGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">type</span>=<span class="string">"XMLMAPPER"</span> <span class="attr">targetPackage</span>=<span class="string">"test.dao"</span>  <span class="attr">targetProject</span>=<span class="string">"\MBGTestProject\src"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"enableSubPackages"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">javaClientGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"printLog"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span> <span class="attr">schema</span>=<span class="string">"DB2ADMIN"</span> <span class="attr">tableName</span>=<span class="string">"ALLTYPES"</span> <span class="attr">domainObjectName</span>=<span class="string">"Customer"</span> &gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"useActualColumnNames"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">generatedKey</span> <span class="attr">column</span>=<span class="string">"ID"</span> <span class="attr">sqlStatement</span>=<span class="string">"DB2"</span> <span class="attr">identity</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"DATE_FIELD"</span> <span class="attr">property</span>=<span class="string">"startDate"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ignoreColumn</span> <span class="attr">column</span>=<span class="string">"FRED"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">columnOverride</span> <span class="attr">column</span>=<span class="string">"LONG_VARCHAR_FIELD"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure></javatyperesolver></jdbcconnection></p>
+<p>这些都被映射成Context对象，并通过<code>setContext(Context context)</code>方法传递到具体的Plugin实现中：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Context</span> <span class="keyword">extends</span> <span class="title">PropertyHolder</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* &lt;context&gt;标签的id属性</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* jdbc链接信息，对应&lt;jdbcConnection&gt;标签中的信息</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="keyword">private</span> JDBCConnectionConfiguration jdbcConnectionConfiguration;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* 类型映射配置，对应&lt;javaTypeResolver&gt;</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="keyword">private</span> JavaTypeResolverConfiguration javaTypeResolverConfiguration;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* ...其它标签对应的配置信息</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>setProperties</code>则将context下的<properties>标签收集起来并映射成Properties类，它实际上是一个Map容器，正如Properties类本身就继承了Hashtable。以上文中的配置文件为例，可以通过properties.get(“printLog”)获得值”true”。</properties></p>
+<p><code>validate</code>方法则代表了这个Plugin是否执行，它通常进行一些非常基础的校验，比如是否兼容对应的数据库驱动或者是Mybatis版本：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validate</span><span class="params">(List&lt;String&gt; warnings)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (StringUtility.stringHasValue(<span class="keyword">this</span>.getContext().getTargetRuntime()) &amp;&amp; !<span class="string">"MyBatis3"</span>.equalsIgnoreCase(<span class="keyword">this</span>.getContext().getTargetRuntime())) &#123;</span><br><span class="line">           logger.warn(<span class="string">"itfsw:插件"</span> + <span class="keyword">this</span>.getClass().getTypeName() + <span class="string">"要求运行targetRuntime必须为MyBatis3！"</span>);</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果validate方法返回false，则无论什么场景下都不会运行这个Plugin。</p>
+<p>接着是最重要的两个方法，分别是用于在DAO中生成新的方法clientGenerated和在XML文件中生成新的SQL sqlMapDocumentGenerated。</p>
+<p>先说clientGenerated，这个方法共有三个参数，interfaze是当前已经生成的客户端Dao接口，topLevelClass是指生成的实现类，这个类可能为空，introspectedTable是指当前处理的数据表，这里包含了从数据库中获取的关于表的各种信息，包括列名称，列类型等。这里可以看一下introspectedTable中几个比较重要的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">IntrospectedTable</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* 该方法可以获得配置文件中该表对应&lt;table&gt;标签下的配置信息，包括映射成的Mapper名称，PO名称等</span></span><br><span class="line"><span class="comment">	* 也可以在table标签下自定义&lt;property&gt;标签并通过getProperty方法获得值</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> TableConfiguration <span class="title">getTableConfiguration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> tableConfiguration;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 这个方法中定义了默认的生成规则，可以通过calculateAllFieldsClass获得返回类型</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Rules <span class="title">getRules</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rules;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>悲观锁的clientGenerated方法如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Plugin配置，是否要生成selectForUpdate语句</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String CONFIG_XML_KEY = <span class="string">"implementSelectForUpdate"</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">clientGenerated</span><span class="params">(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable)</span> </span>&#123;</span><br><span class="line">       String implementUpdate = introspectedTable.getTableConfiguration().getProperty(CONFIG_XML_KEY);</span><br><span class="line">       <span class="keyword">if</span> (StringUtility.isTrue(implementUpdate)) &#123;</span><br><span class="line">           Method method = <span class="keyword">new</span> Method(METHOD_NAME);</span><br><span class="line">           FullyQualifiedJavaType returnType = introspectedTable.getRules().calculateAllFieldsClass();</span><br><span class="line">           method.setReturnType(returnType);</span><br><span class="line">           method.addParameter(<span class="keyword">new</span> Parameter(<span class="keyword">new</span> FullyQualifiedJavaType(<span class="string">"java.lang.Long"</span>), <span class="string">"id"</span>));</span><br><span class="line">           String docComment = <span class="string">"/**\n"</span> +</span><br><span class="line">                   <span class="string">"      * 使用id对数据行上悲观锁\n"</span> +</span><br><span class="line">                   <span class="string">"      */"</span>;</span><br><span class="line">           method.addJavaDocLine(docComment);</span><br><span class="line">           interfaze.addMethod(method);</span><br><span class="line">           log.debug(<span class="string">"(悲观锁插件):"</span> + interfaze.getType().getShortName() + <span class="string">"增加"</span> + METHOD_NAME + <span class="string">"方法。"</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">super</span>.clientGenerated(interfaze, topLevelClass, introspectedTable);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里可以通过在对应table下新增property标签来决定是否要为这张表生成对应的悲观锁方法，配置样例如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">"demo"</span> <span class="attr">domainObjectName</span>=<span class="string">"DemoPO"</span> <span class="attr">mapperName</span>=<span class="string">"DemoMapper"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">enableCountByExample</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">enableUpdateByExample</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">enableDeleteByExample</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">enableSelectByExample</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">enableInsert</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">selectByExampleQueryId</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"implementUpdateWithCAS"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>代码中通过mybatis提供的Method方法，定义了方法的名称，参数，返回类型等，并使用interfaze.addMethod方法将方法添加到客户端的接口中。</p>
+<p>再到sqlMapDocumentGenerated这个方法，这个方法中传入了Document对象，它对应生成的XML文件，并通过XmlElement来映射XML文件中的元素。通过<code>document.getRootElement().addElement</code>可以将自定义的XML元素插入到Mapper文件中。自定义XML元素就是指拼接XmlElement，XmlElement的addAttribute方法可以为XML元素设置属性，addElement则可以为XML标签添加子元素。有两种类型的子元素，分别是TextElement和XmlElement本身，TextElement则直接填充标签中的内容，而XmlElement则对应新的标签，如<where> <include>等。悲观锁的SQL生成逻辑如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Plugin配置，是否要生成selectForUpdate语句</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String CONFIG_XML_KEY = <span class="string">"implementSelectForUpdate"</span>;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">sqlMapDocumentGenerated</span><span class="params">(Document document, IntrospectedTable introspectedTable)</span> </span>&#123;</span><br><span class="line">       String implementUpdate = introspectedTable.getTableConfiguration().getProperty(CONFIG_XML_KEY);</span><br><span class="line">       <span class="keyword">if</span> (!StringUtility.isTrue(implementUpdate)) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">super</span>.sqlMapDocumentGenerated(document, introspectedTable);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       XmlElement selectForUpdate = <span class="keyword">new</span> XmlElement(<span class="string">"select"</span>);</span><br><span class="line">       selectForUpdate.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"id"</span>, METHOD_NAME));</span><br><span class="line">       StringBuilder sb;</span><br><span class="line"></span><br><span class="line">       String resultMapId = introspectedTable.hasBLOBColumns() ? introspectedTable.getResultMapWithBLOBsId() : introspectedTable.getBaseResultMapId();</span><br><span class="line">       selectForUpdate.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"resultMap"</span>, resultMapId));</span><br><span class="line">       selectForUpdate.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"parameterType"</span>, introspectedTable.getExampleType()));</span><br><span class="line">       selectForUpdate.addElement(<span class="keyword">new</span> TextElement(<span class="string">"select"</span>));</span><br><span class="line"></span><br><span class="line">       sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">       <span class="keyword">if</span> (StringUtility.stringHasValue(introspectedTable.getSelectByExampleQueryId())) &#123;</span><br><span class="line">           sb.append(<span class="string">'\''</span>);</span><br><span class="line">           sb.append(introspectedTable.getSelectByExampleQueryId());</span><br><span class="line">           sb.append(<span class="string">"' as QUERYID,"</span>);</span><br><span class="line">           selectForUpdate.addElement(<span class="keyword">new</span> TextElement(sb.toString()));</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       XmlElement baseColumn = <span class="keyword">new</span> XmlElement(<span class="string">"include"</span>);</span><br><span class="line">       baseColumn.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"refid"</span>, introspectedTable.getBaseColumnListId()));</span><br><span class="line">       selectForUpdate.addElement(baseColumn);</span><br><span class="line">       <span class="keyword">if</span> (introspectedTable.hasBLOBColumns()) &#123;</span><br><span class="line">           selectForUpdate.addElement(<span class="keyword">new</span> TextElement(<span class="string">","</span>));</span><br><span class="line">           XmlElement blobColumns = <span class="keyword">new</span> XmlElement(<span class="string">"include"</span>);</span><br><span class="line">           blobColumns.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"refid"</span>, introspectedTable.getBaseColumnListId()));</span><br><span class="line">           selectForUpdate.addElement(blobColumns);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       sb.setLength(<span class="number">0</span>);</span><br><span class="line">       sb.append(<span class="string">"from "</span>);</span><br><span class="line">       sb.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());</span><br><span class="line">       selectForUpdate.addElement(<span class="keyword">new</span> TextElement(sb.toString()));</span><br><span class="line">       TextElement whereXml = <span class="keyword">new</span> TextElement(<span class="string">"where id = #&#123;id&#125; for update"</span>);</span><br><span class="line">       selectForUpdate.addElement(whereXml);</span><br><span class="line"></span><br><span class="line">       document.getRootElement().addElement(selectForUpdate);</span><br><span class="line">       log.debug(<span class="string">"(悲观锁插件):"</span> + introspectedTable.getMyBatis3XmlMapperFileName() + <span class="string">"增加"</span> + METHOD_NAME + <span class="string">"方法("</span> + (introspectedTable.hasBLOBColumns() ? <span class="string">"有"</span> : <span class="string">"无"</span>) + <span class="string">"Blob类型))。"</span>);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">super</span>.sqlMapDocumentGenerated(document, introspectedTable);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></include></where></p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectForUpdatePlugin</span> <span class="keyword">extends</span> <span class="title">PluginAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String CONFIG_XML_KEY = <span class="string">"implementSelectForUpdate"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String METHOD_NAME = <span class="string">"selectByIdForUpdate"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validate</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">clientGenerated</span><span class="params">(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable)</span> </span>&#123;</span><br><span class="line">        String implementUpdate = introspectedTable.getTableConfiguration().getProperty(CONFIG_XML_KEY);</span><br><span class="line">        <span class="keyword">if</span> (StringUtility.isTrue(implementUpdate)) &#123;</span><br><span class="line">            Method method = <span class="keyword">new</span> Method(METHOD_NAME);</span><br><span class="line">            FullyQualifiedJavaType returnType = introspectedTable.getRules().calculateAllFieldsClass();</span><br><span class="line">            method.setReturnType(returnType);</span><br><span class="line">            method.addParameter(<span class="keyword">new</span> Parameter(<span class="keyword">new</span> FullyQualifiedJavaType(<span class="string">"java.lang.Long"</span>), <span class="string">"id"</span>));</span><br><span class="line">            String docComment = <span class="string">"/**\n"</span> +</span><br><span class="line">                    <span class="string">"      * 使用id对数据行上悲观锁\n"</span> +</span><br><span class="line">                    <span class="string">"      */"</span>;</span><br><span class="line">            method.addJavaDocLine(docComment);</span><br><span class="line">            interfaze.addMethod(method);</span><br><span class="line">            log.debug(<span class="string">"(悲观锁插件):"</span> + interfaze.getType().getShortName() + <span class="string">"增加"</span> + METHOD_NAME + <span class="string">"方法。"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.clientGenerated(interfaze, topLevelClass, introspectedTable);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">sqlMapDocumentGenerated</span><span class="params">(Document document, IntrospectedTable introspectedTable)</span> </span>&#123;</span><br><span class="line">        String implementUpdate = introspectedTable.getTableConfiguration().getProperty(CONFIG_XML_KEY);</span><br><span class="line">        <span class="keyword">if</span> (!StringUtility.isTrue(implementUpdate)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.sqlMapDocumentGenerated(document, introspectedTable);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        XmlElement selectForUpdate = <span class="keyword">new</span> XmlElement(<span class="string">"select"</span>);</span><br><span class="line">        selectForUpdate.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"id"</span>, METHOD_NAME));</span><br><span class="line">        StringBuilder sb;</span><br><span class="line"></span><br><span class="line">        String resultMapId = introspectedTable.hasBLOBColumns() ? introspectedTable.getResultMapWithBLOBsId() : introspectedTable.getBaseResultMapId();</span><br><span class="line">        selectForUpdate.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"resultMap"</span>, resultMapId));</span><br><span class="line">        selectForUpdate.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"parameterType"</span>, introspectedTable.getExampleType()));</span><br><span class="line">        selectForUpdate.addElement(<span class="keyword">new</span> TextElement(<span class="string">"select"</span>));</span><br><span class="line"></span><br><span class="line">        sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">if</span> (StringUtility.stringHasValue(introspectedTable.getSelectByExampleQueryId())) &#123;</span><br><span class="line">            sb.append(<span class="string">'\''</span>);</span><br><span class="line">            sb.append(introspectedTable.getSelectByExampleQueryId());</span><br><span class="line">            sb.append(<span class="string">"' as QUERYID,"</span>);</span><br><span class="line">            selectForUpdate.addElement(<span class="keyword">new</span> TextElement(sb.toString()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        XmlElement baseColumn = <span class="keyword">new</span> XmlElement(<span class="string">"include"</span>);</span><br><span class="line">        baseColumn.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"refid"</span>, introspectedTable.getBaseColumnListId()));</span><br><span class="line">        selectForUpdate.addElement(baseColumn);</span><br><span class="line">        <span class="keyword">if</span> (introspectedTable.hasBLOBColumns()) &#123;</span><br><span class="line">            selectForUpdate.addElement(<span class="keyword">new</span> TextElement(<span class="string">","</span>));</span><br><span class="line">            XmlElement blobColumns = <span class="keyword">new</span> XmlElement(<span class="string">"include"</span>);</span><br><span class="line">            blobColumns.addAttribute(<span class="keyword">new</span> Attribute(<span class="string">"refid"</span>, introspectedTable.getBaseColumnListId()));</span><br><span class="line">            selectForUpdate.addElement(blobColumns);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        sb.setLength(<span class="number">0</span>);</span><br><span class="line">        sb.append(<span class="string">"from "</span>);</span><br><span class="line">        sb.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());</span><br><span class="line">        selectForUpdate.addElement(<span class="keyword">new</span> TextElement(sb.toString()));</span><br><span class="line">        TextElement whereXml = <span class="keyword">new</span> TextElement(<span class="string">"where id = #&#123;id&#125; for update"</span>);</span><br><span class="line">        selectForUpdate.addElement(whereXml);</span><br><span class="line"></span><br><span class="line">        document.getRootElement().addElement(selectForUpdate);</span><br><span class="line">        log.debug(<span class="string">"(悲观锁插件):"</span> + introspectedTable.getMyBatis3XmlMapperFileName() + <span class="string">"增加"</span> + METHOD_NAME + <span class="string">"方法("</span> + (introspectedTable.hasBLOBColumns() ? <span class="string">"有"</span> : <span class="string">"无"</span>) + <span class="string">"Blob类型))。"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.sqlMapDocumentGenerated(document, introspectedTable);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+  <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_bf3904513ac6_258.jpg" alt="Rale Dong wechat" style="width: 200px; max-width: 100%;">
+  <div>若想了解更多的技术资讯、面试教程以及内推信息，欢迎扫码关注我的公众号！</div>
+</div>
+
+      </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/原创/" rel="tag"># 原创</a>
+          
+            <a href="/tags/mybatis-generator/" rel="tag"># mybatis generator</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/08/29/记一次logback配置文件未生效问题排查/" rel="next" title="记一次logback配置文件未生效问题排查">
+                <i class="fa fa-chevron-left"></i> 记一次logback配置文件未生效问题排查
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Rale Dong">
+            
+              <p class="site-author-name" itemprop="name">Rale Dong</p>
+              <p class="site-description motion-element" itemprop="description">总是打盹，时而清醒</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">288</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/raledong" title="GitHub &rarr; https://github.com/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://segmentfault.com/u/raledong" title="SegmentFault &rarr; https://segmentfault.com/u/raledong" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>SegmentFault</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现Mybatis悲观锁"><span class="nav-number">2.</span> <span class="nav-text">实现Mybatis悲观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">3.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
