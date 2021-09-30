@@ -327,6 +327,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/18/leetcode388/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rale Dong">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/18/leetcode388/" class="post-title-link" itemprop="url">leetcode388</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-18 17:15:25 / 修改时间：17:16:03" itemprop="dateCreated datePublished" datetime="2019-02-18T17:15:25+08:00">2019-02-18</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Suppose we abstract our file system by a string in the following manner:</span><br><span class="line"></span><br><span class="line">The string &quot;dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext&quot; represents:</span><br><span class="line"></span><br><span class="line">dir</span><br><span class="line">    subdir1</span><br><span class="line">    subdir2</span><br><span class="line">        file.ext</span><br><span class="line">The directory dir contains an empty sub-directory subdir1 and a sub-directory subdir2 containing a file file.ext.</span><br><span class="line"></span><br><span class="line">The string &quot;dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext&quot; represents:</span><br><span class="line"></span><br><span class="line">dir</span><br><span class="line">    subdir1</span><br><span class="line">        file1.ext</span><br><span class="line">        subsubdir1</span><br><span class="line">    subdir2</span><br><span class="line">        subsubdir2</span><br><span class="line">            file2.ext</span><br><span class="line">The directory dir contains two sub-directories subdir1 and subdir2. subdir1 contains a file file1.ext and an empty second-level sub-directory subsubdir1. subdir2 contains a second-level sub-directory subsubdir2 containing a file file2.ext.</span><br><span class="line"></span><br><span class="line">We are interested in finding the longest (number of characters) absolute path to a file within our file system. For example, in the second example above, the longest absolute path is &quot;dir/subdir2/subsubdir2/file2.ext&quot;, and its length is 32 (not including the double quotes).</span><br><span class="line"></span><br><span class="line">Given a string representing the file system in the above format, return the length of the longest absolute path to file in the abstracted file system. If there is no file in the system, return 0.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">The name of a file contains at least a . and an extension.</span><br><span class="line">The name of a directory or sub-directory will not contain a ..</span><br><span class="line">Time complexity required: O(n) where n is the size of the input string.</span><br><span class="line"></span><br><span class="line">Notice that a/aa/aaa/file1.txt is not the longest file path, if there is another path aaaaaaaaaaaaaaaaaaaaa/sth.png.</span><br></pre></td></tr></table></figure>
+<p>要求从String字符串中找到最长的文件路径。这里要注意，要求的是文件路径，文件夹路径不予考虑。文件和文件夹的区别在于文件中一定包含<code>.</code>。</p>
+<p>这里<code>\n</code>代表根目录平级，每多一个<code>\t</code>就多一层路径，这一层路径都是相对于当前的上层路径的。<br>以<code>dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext</code>为例<br>dir为第0层目录<br><code>\n\tsubdir1</code>代表subdir1是第一层目录，且其是当前父目录dir的子目录<br><code>\n\t\n\tsubdir2</code>代表subdir2为第一层目录，且其是当前父目录dir的子目录，此时的一级父目录从subdir1更新为subdir2<br><code>\n\t\tfile.ext</code>代表tfile.ext为二级目录，位于当前一级目录subdir2之下</p>
+<h2 id="思路和代码"><a href="#思路和代码" class="headerlink" title="思路和代码"></a>思路和代码</h2><p>综上分析，我们可以记录一个信息，即当前每一级的目录究竟是谁，每次只需要保留当前一级目录已有的路径长度即可。还是拿上面的例子<code>dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">遍历完dir: 0级目录长度为3</span><br><span class="line">遍历完\n\tsubdir: 0级目录长度为3, 1级目录长度为11（dir/subdir1）</span><br><span class="line">遍历完\n\tsubdir2: 0级目录长度为3, 1级目录长度为11（dir/subdir2）</span><br><span class="line">遍历完\n\t\tfile.ext: 0级目录长度为3, 1级目录长度为11（dir/subdir2）, 2级目录长度为20</span><br><span class="line"></span><br><span class="line">综上，最长的文件路径长为20</span><br></pre></td></tr></table></figure></p>
+<p>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthLongestPath</span><span class="params">(String input)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(input==<span class="keyword">null</span> || input.isEmpty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">     <span class="comment">//记录当前每一级路径对应的路径长度</span></span><br><span class="line">     List&lt;Integer&gt; stack = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">     <span class="keyword">int</span> left = <span class="number">0</span>, right = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> curDepth = <span class="number">0</span>;</span><br><span class="line">     <span class="comment">//当前遍历的是文件还是文件夹</span></span><br><span class="line">     <span class="keyword">boolean</span> isFile = <span class="keyword">false</span>;</span><br><span class="line">     <span class="keyword">while</span>(right &lt; input.length()) &#123;</span><br><span class="line">         <span class="keyword">char</span> c = input.charAt(right);</span><br><span class="line">         <span class="keyword">if</span>(c == <span class="string">'\n'</span> || c == <span class="string">'\t'</span>) &#123;</span><br><span class="line">             <span class="comment">//如果是文件分割符的起点，则处理前面的字符串</span></span><br><span class="line">             <span class="keyword">if</span>(right-<span class="number">1</span>&gt;=<span class="number">0</span> &amp;&amp; input.charAt(right-<span class="number">1</span>)!=<span class="string">'\n'</span> &amp;&amp; input.charAt(right-<span class="number">1</span>)!=<span class="string">'\t'</span>) &#123;</span><br><span class="line">                 <span class="keyword">int</span> length = right - left;</span><br><span class="line">                 <span class="keyword">if</span>(stack.isEmpty()) &#123;</span><br><span class="line">                     stack.add(length+<span class="number">1</span>);</span><br><span class="line">                 &#125;<span class="keyword">else</span> <span class="keyword">if</span>(curDepth == <span class="number">0</span>)&#123;</span><br><span class="line">                     stack.set(<span class="number">0</span>, length+<span class="number">1</span>);</span><br><span class="line">                 &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                     <span class="keyword">int</span> prev = stack.get(curDepth-<span class="number">1</span>);</span><br><span class="line">                     <span class="keyword">int</span> now = prev + length + <span class="number">1</span>;</span><br><span class="line">                     <span class="keyword">if</span>(stack.size() &lt;= curDepth) &#123;</span><br><span class="line">                         stack.add(now);</span><br><span class="line">                     &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                         stack.set(curDepth, now);</span><br><span class="line">                     &#125;</span><br><span class="line">                 &#125;</span><br><span class="line">                 <span class="keyword">if</span>(isFile) &#123;</span><br><span class="line">                     max = Math.max(max, stack.get(curDepth)-<span class="number">1</span>);</span><br><span class="line">                 &#125;</span><br><span class="line">                 left = right;</span><br><span class="line">                 isFile = <span class="keyword">false</span>;</span><br><span class="line">             &#125;</span><br><span class="line">             </span><br><span class="line">             <span class="comment">//如果是文件分隔符的末尾，则处理文件分隔符，判断是几级路径</span></span><br><span class="line">             <span class="keyword">if</span>(right+<span class="number">1</span>&lt;input.length() &amp;&amp; input.charAt(right+<span class="number">1</span>)!=<span class="string">'\n'</span> &amp;&amp; input.charAt(right+<span class="number">1</span>) !=<span class="string">'\t'</span>)&#123;</span><br><span class="line">                 curDepth = right - left;</span><br><span class="line">                 left = right+<span class="number">1</span>;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;<span class="keyword">else</span> <span class="keyword">if</span>(c == <span class="string">'.'</span>) &#123;</span><br><span class="line">             isFile = <span class="keyword">true</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         right++;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//处理最后的字符串</span></span><br><span class="line">     <span class="keyword">if</span>(left != right &amp;&amp; isFile) &#123;</span><br><span class="line">         <span class="keyword">if</span>(curDepth == <span class="number">0</span>) &#123;</span><br><span class="line">             max = Math.max(max, right - left);</span><br><span class="line">         &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">             max = Math.max(max, stack.get(curDepth-<span class="number">1</span>) + right - left);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> max;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/17/leetcode395/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1906,181 +2079,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/12/leetcode389/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rale Dong">
-      <meta itemprop="description" content="总是打盹，时而清醒">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/12/leetcode389/" class="post-title-link" itemprop="url">leetcode389</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-02-12 20:12:36 / 修改时间：20:15:09" itemprop="dateCreated datePublished" datetime="2019-02-12T20:12:36+08:00">2019-02-12</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/面试/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Given two strings s and t which consist of only lowercase letters.</span><br><span class="line"></span><br><span class="line">String t is generated by random shuffling string s and then add one more letter at a random position.</span><br><span class="line"></span><br><span class="line">Find the letter that was added in t.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">Input:</span><br><span class="line">s = &quot;abcd&quot;</span><br><span class="line">t = &quot;abcde&quot;</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">e</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">&apos;e&apos; is the letter that was added.</span><br></pre></td></tr></table></figure>
-<p>假设两个只包含小写字母的字符串s和t，其中t是s中字母的乱序，并在某个位置上添加了一个新的字母。问添加的这个新的字母是什么？</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/12/leetcode389/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2130,7 +2128,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">288</span>
+                    <span class="site-state-item-count">289</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
