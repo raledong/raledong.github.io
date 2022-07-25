@@ -463,7 +463,7 @@
 <li>指向静态的方法的引用。如Integer中的静态方法parseInt，可以通过Integer::parseInt来引用</li>
 <li>指向任意类型实例方法的方法引用。如<code>list.sort((s1, s2)-&gt;s1.compareToIgnoreCase(s2));</code>, 可以修改为<code>list.sort(String::compareToIgnorecase)</code>，即满足<code>arg0.someMethod(restArgs)</code>语法</li>
 <li>指向现有对象实例的方法引用，如类ClassA有一个实例classA，并且有一个方法someMethod，则可以通过<code>classA::someMethod</code>进行方法引用。</li>
-<li>构造函数引用<code>ClassName::new</code>。对于有参数的构造函数，则需要结合已有的函数式接口进行引用。</li>
+<li>构造函数引用<code>ClassName::new</code>。对于有参数的构造函数，则需要结合已有的函数式接口进行引用。阅读有关方法参考的更多信息 <a href="https://www.scaler.com/topics/method-reference-in-java/" target="_blank" rel="noopener">这里</a></li>
 </ol>
 <h2 id="下期预告"><a href="#下期预告" class="headerlink" title="下期预告"></a>下期预告</h2><p>下一篇文章将会结合JAVA8中预定义的一些FunctionalInterface的源码来介绍如何使用这些函数式接口帮助我们编程。</p>
 <ol>
