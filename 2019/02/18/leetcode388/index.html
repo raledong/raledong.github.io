@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="题目要求12345678910111213141516171819202122232425262728293031Suppose we abstract our file system by a string in the following manner:The string &quot;dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext&quot; represe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode388">
+<meta property="og:url" content="http://yoursite.com/2019/02/18/leetcode388/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="题目要求12345678910111213141516171819202122232425262728293031Suppose we abstract our file system by a string in the following manner:The string &quot;dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext&quot; represe">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-18T09:15:25.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.426Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="leetcode">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/18/leetcode388/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/18/leetcode388/","path":"2019/02/18/leetcode388/","title":"leetcode388"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>leetcode388 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E8%A6%81%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E5%92%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">思路和代码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/18/leetcode388/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="leetcode388 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode388
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-18 17:15:25" itemprop="dateCreated datePublished" datetime="2019-02-18T17:15:25+08:00">2019-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><span id="more"></span>
+<h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Suppose we abstract our file system by a string in the following manner:</span><br><span class="line"></span><br><span class="line">The string &quot;dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext&quot; represents:</span><br><span class="line"></span><br><span class="line">dir</span><br><span class="line">    subdir1</span><br><span class="line">    subdir2</span><br><span class="line">        file.ext</span><br><span class="line">The directory dir contains an empty sub-directory subdir1 and a sub-directory subdir2 containing a file file.ext.</span><br><span class="line"></span><br><span class="line">The string &quot;dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext&quot; represents:</span><br><span class="line"></span><br><span class="line">dir</span><br><span class="line">    subdir1</span><br><span class="line">        file1.ext</span><br><span class="line">        subsubdir1</span><br><span class="line">    subdir2</span><br><span class="line">        subsubdir2</span><br><span class="line">            file2.ext</span><br><span class="line">The directory dir contains two sub-directories subdir1 and subdir2. subdir1 contains a file file1.ext and an empty second-level sub-directory subsubdir1. subdir2 contains a second-level sub-directory subsubdir2 containing a file file2.ext.</span><br><span class="line"></span><br><span class="line">We are interested in finding the longest (number of characters) absolute path to a file within our file system. For example, in the second example above, the longest absolute path is &quot;dir/subdir2/subsubdir2/file2.ext&quot;, and its length is 32 (not including the double quotes).</span><br><span class="line"></span><br><span class="line">Given a string representing the file system in the above format, return the length of the longest absolute path to file in the abstracted file system. If there is no file in the system, return 0.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">The name of a file contains at least a . and an extension.</span><br><span class="line">The name of a directory or sub-directory will not contain a ..</span><br><span class="line">Time complexity required: O(n) where n is the size of the input string.</span><br><span class="line"></span><br><span class="line">Notice that a/aa/aaa/file1.txt is not the longest file path, if there is another path aaaaaaaaaaaaaaaaaaaaa/sth.png.</span><br></pre></td></tr></table></figure>
+<p>要求从String字符串中找到最长的文件路径。这里要注意，要求的是文件路径，文件夹路径不予考虑。文件和文件夹的区别在于文件中一定包含<code>.</code>。</p>
+<p>这里<code>\n</code>代表根目录平级，每多一个<code>\t</code>就多一层路径，这一层路径都是相对于当前的上层路径的。<br>以<code>dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext</code>为例<br>dir为第0层目录<br><code>\n\tsubdir1</code>代表subdir1是第一层目录，且其是当前父目录dir的子目录<br><code>\n\t\n\tsubdir2</code>代表subdir2为第一层目录，且其是当前父目录dir的子目录，此时的一级父目录从subdir1更新为subdir2<br><code>\n\t\tfile.ext</code>代表tfile.ext为二级目录，位于当前一级目录subdir2之下</p>
+<h2 id="思路和代码"><a href="#思路和代码" class="headerlink" title="思路和代码"></a>思路和代码</h2><p>综上分析，我们可以记录一个信息，即当前每一级的目录究竟是谁，每次只需要保留当前一级目录已有的路径长度即可。还是拿上面的例子<code>dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">遍历完dir: 0级目录长度为3</span><br><span class="line">遍历完\n\tsubdir: 0级目录长度为3, 1级目录长度为11（dir/subdir1）</span><br><span class="line">遍历完\n\tsubdir2: 0级目录长度为3, 1级目录长度为11（dir/subdir2）</span><br><span class="line">遍历完\n\t\tfile.ext: 0级目录长度为3, 1级目录长度为11（dir/subdir2）, 2级目录长度为20</span><br><span class="line"></span><br><span class="line">综上，最长的文件路径长为20</span><br></pre></td></tr></table></figure>
+
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lengthLongestPath</span><span class="params">(String input)</span> &#123;</span><br><span class="line">     <span class="keyword">if</span>(input==<span class="literal">null</span> || input.isEmpty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">     <span class="comment">//记录当前每一级路径对应的路径长度</span></span><br><span class="line">     List&lt;Integer&gt; stack = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">     <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>, right = <span class="number">0</span>;</span><br><span class="line">     <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">     <span class="type">int</span> <span class="variable">curDepth</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">     <span class="comment">//当前遍历的是文件还是文件夹</span></span><br><span class="line">     <span class="type">boolean</span> <span class="variable">isFile</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">     <span class="keyword">while</span>(right &lt; input.length()) &#123;</span><br><span class="line">         <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> input.charAt(right);</span><br><span class="line">         <span class="keyword">if</span>(c == <span class="string">&#x27;\n&#x27;</span> || c == <span class="string">&#x27;\t&#x27;</span>) &#123;</span><br><span class="line">             <span class="comment">//如果是文件分割符的起点，则处理前面的字符串</span></span><br><span class="line">             <span class="keyword">if</span>(right-<span class="number">1</span>&gt;=<span class="number">0</span> &amp;&amp; input.charAt(right-<span class="number">1</span>)!=<span class="string">&#x27;\n&#x27;</span> &amp;&amp; input.charAt(right-<span class="number">1</span>)!=<span class="string">&#x27;\t&#x27;</span>) &#123;</span><br><span class="line">                 <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> right - left;</span><br><span class="line">                 <span class="keyword">if</span>(stack.isEmpty()) &#123;</span><br><span class="line">                     stack.add(length+<span class="number">1</span>);</span><br><span class="line">                 &#125;<span class="keyword">else</span> <span class="keyword">if</span>(curDepth == <span class="number">0</span>)&#123;</span><br><span class="line">                     stack.set(<span class="number">0</span>, length+<span class="number">1</span>);</span><br><span class="line">                 &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                     <span class="type">int</span> <span class="variable">prev</span> <span class="operator">=</span> stack.get(curDepth-<span class="number">1</span>);</span><br><span class="line">                     <span class="type">int</span> <span class="variable">now</span> <span class="operator">=</span> prev + length + <span class="number">1</span>;</span><br><span class="line">                     <span class="keyword">if</span>(stack.size() &lt;= curDepth) &#123;</span><br><span class="line">                         stack.add(now);</span><br><span class="line">                     &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                         stack.set(curDepth, now);</span><br><span class="line">                     &#125;</span><br><span class="line">                 &#125;</span><br><span class="line">                 <span class="keyword">if</span>(isFile) &#123;</span><br><span class="line">                     max = Math.max(max, stack.get(curDepth)-<span class="number">1</span>);</span><br><span class="line">                 &#125;</span><br><span class="line">                 left = right;</span><br><span class="line">                 isFile = <span class="literal">false</span>;</span><br><span class="line">             &#125;</span><br><span class="line">             </span><br><span class="line">             <span class="comment">//如果是文件分隔符的末尾，则处理文件分隔符，判断是几级路径</span></span><br><span class="line">             <span class="keyword">if</span>(right+<span class="number">1</span>&lt;input.length() &amp;&amp; input.charAt(right+<span class="number">1</span>)!=<span class="string">&#x27;\n&#x27;</span> &amp;&amp; input.charAt(right+<span class="number">1</span>) !=<span class="string">&#x27;\t&#x27;</span>)&#123;</span><br><span class="line">                 curDepth = right - left;</span><br><span class="line">                 left = right+<span class="number">1</span>;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;<span class="keyword">else</span> <span class="keyword">if</span>(c == <span class="string">&#x27;.&#x27;</span>) &#123;</span><br><span class="line">             isFile = <span class="literal">true</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         right++;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//处理最后的字符串</span></span><br><span class="line">     <span class="keyword">if</span>(left != right &amp;&amp; isFile) &#123;</span><br><span class="line">         <span class="keyword">if</span>(curDepth == <span class="number">0</span>) &#123;</span><br><span class="line">             max = Math.max(max, right - left);</span><br><span class="line">         &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">             max = Math.max(max, stack.get(curDepth-<span class="number">1</span>) + right - left);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> max;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"># 刷题</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/17/leetcode395/" rel="prev" title="leetcode395">
+                  <i class="fa fa-angle-left"></i> leetcode395
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/19/leetcode416/" rel="next" title="leetcode416">
+                  leetcode416 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言临时性存储是容器的一个很大的买点。“根据一个镜像启动容器，随意变更，然后停止变更重启一个容器。你看，一个全新的文件系统又诞生了。” 在docker的语境下： 1234567# docker run -it centos[root@d42876f95c6a &#x2F;]# echo &quot;Hello world&quot; &gt; &#x2F;hello-file[root@d42876f95c6a &#x2F;]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：持久化容器存储">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%B9%E5%99%A8%E5%AD%98%E5%82%A8/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言临时性存储是容器的一个很大的买点。“根据一个镜像启动容器，随意变更，然后停止变更重启一个容器。你看，一个全新的文件系统又诞生了。” 在docker的语境下： 1234567# docker run -it centos[root@d42876f95c6a &#x2F;]# echo &quot;Hello world&quot; &gt; &#x2F;hello-file[root@d42876f95c6a &#x2F;]">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-04T19:44:49.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.478Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%B9%E5%99%A8%E5%AD%98%E5%82%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%B9%E5%99%A8%E5%AD%98%E5%82%A8/","path":"2019/02/05/猫头鹰的深夜翻译：持久化容器存储/","title":"猫头鹰的深夜翻译：持久化容器存储"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：持久化容器存储 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E6%8C%81%E4%B9%85%E5%8C%96%E7%9A%84%E9%9C%80%E6%B1%82"><span class="nav-number">2.</span> <span class="nav-text">容器持久化的需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%97%E4%BD%99"><span class="nav-number">2.1.</span> <span class="nav-text">冗余</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">分布式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%9A%84"><span class="nav-number">2.3.</span> <span class="nav-text">动态的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%81%B5%E6%B4%BB%E6%80%A7"><span class="nav-number">2.4.</span> <span class="nav-text">灵活性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E6%80%A7"><span class="nav-number">2.5.</span> <span class="nav-text">透明性###</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AD%98%E5%82%A8"><span class="nav-number">3.</span> <span class="nav-text">云原生存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BE%9B%E5%AE%B9%E5%99%A8%E5%AD%98%E5%82%A8"><span class="nav-number">4.</span> <span class="nav-text">提供容器存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kubernetes"><span class="nav-number">4.1.</span> <span class="nav-text">Kubernetes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-Swarm"><span class="nav-number">4.2.</span> <span class="nav-text">Docker Swarm</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%B9%E5%99%A8%E5%AD%98%E5%82%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：持久化容器存储 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：持久化容器存储
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 03:44:49" itemprop="dateCreated datePublished" datetime="2019-02-05T03:44:49+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>临时性存储是容器的一个很大的买点。“根据一个镜像启动容器，随意变更，然后停止变更重启一个容器。你看，一个全新的文件系统又诞生了。”</p>
+<p>在docker的语境下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># docker run -it centos</span><br><span class="line">[root@d42876f95c6a /]# echo &quot;Hello world&quot; &gt; /hello-file</span><br><span class="line">[root@d42876f95c6a /]# exit</span><br><span class="line">exit</span><br><span class="line"># docker run -it centos</span><br><span class="line">[root@a0a93816fcfe /]# cat /hello-file</span><br><span class="line">cat: /hello-file: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>当我们围绕容器构建应用程序时，这个临时性存储非常有用。它便于水平扩展：我们只是从同一个镜像创建多个容器实例，每个实例都有自己独立的文件系统。它也易于升级：我们只是创建了一个新版本的映像，我们不必担心从现有容器实例中保留任何内容。它可以轻松地从单个系统移动到群集，或从内部部署移动到云：我们只需要确保集群或云可以访问registry中的镜像。而且它易于恢复：无论我们的程序崩溃对文件系统造成了什么损坏，我们只需要从镜像重新启动一个容器实例，之后就像从未发生过故障一样。</p>
+<p>因此，我们希望容器引擎依然提供临时存储。但是从教程示例转换到实际应用程序时，我们确实会遇到问题。真实的应用必修在某个地方存储数据。通常，我们将状态保存到某个数据存储中（SQL或是NOSQL）。这也引来了同样的问题。数据存储也是位于容器中吗？理想情况下，答案是肯定的，这样我们可以利用和应用层相同的滚动升级，冗余和故障转移机制。但是，要在容器中运行我们的数据存储，我们再也不能满足于临时存储。容器实例需要能够访问持久存储。</p>
+<span id="more"></span>
+
+<p>如果使用docker管理持久性存储，有两种主流方案：我们可以在宿主机文件系统上指定一个目录，或者是由Docker管理存储：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># docker volume create data</span><br><span class="line">data</span><br><span class="line"># docker run -it -v data:/data centos</span><br><span class="line">[root@5238393087ae /]# echo &quot;Hello world&quot; &gt; /data/hello-file</span><br><span class="line">[root@5238393087ae /]# exit</span><br><span class="line">exit</span><br><span class="line"># docker run -it -v data:/data centos</span><br><span class="line">[root@e62608823cd0 /]# cat /data/hello-file</span><br><span class="line">Hello world</span><br></pre></td></tr></table></figure>
+<p>Docker并不会保留第一个容器的根目录，但是它会保留“data”卷。而该卷会被再次挂载到第二个容器上。所以该卷是持久存储。</p>
+<p>在单节点系统上这样的方法是ok的。但是在一个容器集群环境下如Kubernetes或是Docker Swarm，情况会变得复杂。如果我们的数据存储容器可能在上百个节点中的任意一个上启动，而且可能从一个节点随时迁移到另一个节点，我们无法依赖于单一的文件系统来存储数据，我们需要一个能够感知到容器的分部署存储的方案，从而无缝集成。</p>
+<h2 id="容器持久化的需求"><a href="#容器持久化的需求" class="headerlink" title="容器持久化的需求"></a>容器持久化的需求</h2><p>在深入容器持久化的方案之前，我们应该先了解一下这个方案应该满足什么特性，从而更好的理解各种容器持久化方案的设计思路。</p>
+<h3 id="冗余"><a href="#冗余" class="headerlink" title="冗余"></a>冗余</h3><p>将应用移动到容器中并且将容器部署到一个编排环境的原因在于我们可以有更多的物理节点，从而可以支持部分节点当掉。同理，我们也希望持久化存储能够容忍磁盘和节点的崩溃并且继续支持应用运行。在持久化的场景下，冗余的需求更加重要了，因为我们无法忍受任何数据的丢失。</p>
+<h3 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h3><p>冗余的持久化驱动我们使用某种分布式策略，至少在磁盘层面上。但是我们还希望通过分布式存储来提高性能。当我们将容器水平扩展到成百上千个节点上是，我们不希望这些节点竞争位于同一个磁盘上的数据。所以当我们将服务部署到各个区域的环境上来减少用户延时时，我们还希望将存储也同时分布式部署。</p>
+<h3 id="动态的"><a href="#动态的" class="headerlink" title="动态的"></a>动态的</h3><p>容器架构持续变更。新版本不断的被构建，更新，应用被添加或是移除。测试用例被创建并启动，然后被删除。在这个架构下，需要能够动态的配置和释放存储。事实上，配置存储应当和我们声明容器实例，服务和网络连通性一样通过声明来实现。</p>
+<h3 id="灵活性"><a href="#灵活性" class="headerlink" title="灵活性"></a>灵活性</h3><p>容器技术在飞速发展，我们需要能够引入新的存储策略，并且将应用移植到新的存储架构上。我们的存储策略需要能够支持任何底层架构，从开发人员用于测试的单节点到一个开放的云环境。</p>
+<h3 id="透明性"><a href="#透明性" class="headerlink" title="透明性###"></a>透明性###</h3><p>我们需要为各种类型的应用提供村塾，而且我们需要持续更新存储方案。这意味着我们不应该将应用强关联与一个存储方案。因此，存储需要看上去像是原生的，也就是对上层用户来说仿佛是一个文件系统，或者是某种现有的，易于理解的API。</p>
+<h2 id="云原生存储"><a href="#云原生存储" class="headerlink" title="云原生存储"></a>云原生存储</h2><p>另一种说法是我们希望容器存储解决方案是“Cloud Native”（云原生的）。云原生计算组织（CNCF）定义了云原生系统的三个属性。这些属性也适用于存储：</p>
+<ul>
+<li><strong>容器打包</strong>： 我们的物理或虚拟存储位于容器之外，但是我们希望它仅对特定容器课件（这样的话，容器就不会共享存储，除非特殊需求）。除此以外，我们可能希望容器化存储管理软件本身，从而利用容器化来管理和升级存储管理软件。</li>
+<li><strong>动态管理</strong>：对于有状态容器的持久部署，我们需要在无需管理员认为干预的情况下，分配存储给新的容器，并清理失效的存储。</li>
+<li><strong>面向微服务</strong>：当我们定义一个容器的时候，他应当明确的制定对存储的依赖。除此以外，存储管理软件本身应当基于微服务部署，从而更好的实现扩容和异地部署。</li>
+</ul>
+<h2 id="提供容器存储"><a href="#提供容器存储" class="headerlink" title="提供容器存储"></a>提供容器存储</h2><p>为了满足容器持久化存储的需求，Kubernetes和Docker Swarm提供了一组声明式资源来声明并绑定持久化存储至容器。这些持久化存储的功能构建与一些存储架构之上。我们首先来看一下这两种环境下是如何支持容器来声明对持久化存储的以来的。</p>
+<h3 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h3><p>在Kubernetes中，容器存活于Pods中。每个pod包含一个或多个容器，它们共享网络栈和持久存储。持久化存储的定义位于pod定义的<code>volumn</code>字段下。该卷可以被挂在到pod的任意一个容器下。比如，一下有一个Kubernetes的Pod定义，它使用了一个<code>emptyDir</code>卷在容器间共享信息。<code>emptyDir</code>卷初始为空，即使pod被迁移到另一个节点上仍将保存下来（这意味着容器的崩溃不会使其消失，但是node崩溃会将其删除）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: hello-storage</span><br><span class="line">spec:</span><br><span class="line">  restartPolicy: Never</span><br><span class="line">  volumes:</span><br><span class="line">  - name: shared-data</span><br><span class="line">    emptyDir: &#123;&#125;</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx-container</span><br><span class="line">    image: nginx</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - name: shared-data</span><br><span class="line">      mountPath: /usr/share/nginx/html</span><br><span class="line">  - name: debian-container</span><br><span class="line">    image: debian</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - name: shared-data</span><br><span class="line">      mountPath: /pod-data</span><br><span class="line">    command: [&quot;/bin/sh&quot;]</span><br><span class="line">    args: [&quot;-c&quot;, &quot;echo Hello from the debian container &gt; /pod-data/index.html&quot;]</span><br></pre></td></tr></table></figure>
+<p>如果你将以上内容保存到名为<code>two-containers.yaml</code>并使用<code>kubectl create -f two-containers.yaml</code>将其部署到kubernetes上，我们可以使用pod的IP地址来访问NGINX服务器，并获取新建的index.html文件。</p>
+<p>这个例子说明了Kubernetes是如何支持在pod中使用volumn字段声明一个存储依赖的。但是，这不是真正的持久化存储。如果我们的Kubernetes容器使用AWS EC2，yaml文件如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: webserver</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: nginx</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - mountPath: /usr/share/nginx/html</span><br><span class="line">      name: web-files</span><br><span class="line">  volumes:</span><br><span class="line">  - name: web-files</span><br><span class="line">    awsElasticBlockStore:</span><br><span class="line">      volumeID: &lt;volume-id&gt;</span><br><span class="line">      fsType: ext4</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，我们可以重复创建和销毁pod，同一个持久存储会被提供给新的pod，无论容器位于哪个节点上。但是，这个例子还是无法提供动态存储，因为我们在创建pod之前必须先创建好EBS卷。为了从Kubernetes获得动态存储的支持，我们需要另外两个重要的概念。第一个是<code>storageClass</code>，Kubernetes允许我们创建一个storageClass资源来收集一个持久化存储供应者的信息。然后将其和<code>persistentVolumeClaim</code>，一个允许我们从storageClass动态请求持久化存储的资源结合起来。Kubernetes会帮我们向选择的storageClass发起请求。这里还是以AWS EBS为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">kind: StorageClass</span><br><span class="line">apiVersion: storage.k8s.io/v1</span><br><span class="line">metadata:</span><br><span class="line">  name: file-store</span><br><span class="line">provisioner: kubernetes.io/aws-ebs</span><br><span class="line">parameters:</span><br><span class="line">  type: io1</span><br><span class="line">  zones: us-east-1d, us-east-1c</span><br><span class="line">  iopsPerGB: &quot;10&quot;</span><br><span class="line">---</span><br><span class="line">kind: PersistentVolumeClaim</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  name: web-static-files</span><br><span class="line">spec:</span><br><span class="line">  resources:</span><br><span class="line">    requests:</span><br><span class="line">      storage: 8Gi</span><br><span class="line">  storageClassName: file-store</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: webserver</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: nginx</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - mountPath: /usr/share/nginx/html</span><br><span class="line">      name: web-files</span><br><span class="line">  volumes:</span><br><span class="line">  - name: web-files</span><br><span class="line">    persistentVolumeClaim:</span><br><span class="line">      claimName: web-static-files</span><br></pre></td></tr></table></figure>
+<p>如你所见，我们还在使用volume关键字来制定pod所需要的持久化存储，但是我们使用了额外的<code>PersistentVolumeClaim</code>声明来请求Kubernenetes替我们发起请求。总体上，集群管理员会为每一个集群部署一个<code>StorageClass</code>代表可用的底层存储。然后应用开发者会在第一次需要持久存储时指定<code>PersistentVolumeClaim</code>。之后根据应用程序升级的需要部署和更换pod，不会丢失持久存储中的数据。</p>
+<h3 id="Docker-Swarm"><a href="#Docker-Swarm" class="headerlink" title="Docker Swarm"></a>Docker Swarm</h3><p>Docker Swarm利用我们在单节点Docker卷上看到的核心卷管理功能, 从而支持能够为任何节点上的容器提供存储：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line">services:</span><br><span class="line">  webserver:</span><br><span class="line">    image: nginx</span><br><span class="line">    volumes:</span><br><span class="line">      - web-files:/usr/share/nginx/html</span><br><span class="line">volumes:</span><br><span class="line">  web-files:</span><br><span class="line">    driver: storageos</span><br><span class="line">    driver-opts:</span><br><span class="line">      size: 20</span><br><span class="line">      storageos.feature.replicas: 2</span><br></pre></td></tr></table></figure>
+<p>当我们使用docker栈部署时，Docker Swarm会创建web-files卷，仿佛它并不存在。这个卷会被保留，及时我们删除了docker栈。</p>
+<p>总的来说，我们可以看到Kubernetes和Docker都满足了云原生存储的要求。他们允许容器声明依赖的存储，并且动态的管理存储从而使其在应用需要时可见。无论容器在集群的哪个机器上运行，他们都能够提供持久存储。</p>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/refcardz/persistent-container-storage?chapter=1">https://dzone.com/refcardz/persistent-container-storage?chapter=1</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96MYSQL%E6%9F%A5%E8%AF%A2/" rel="prev" title="猫头鹰的深夜翻译：如何优化MYSQL查询">
+                  <i class="fa fa-angle-left"></i> 猫头鹰的深夜翻译：如何优化MYSQL查询
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E5%9B%BA%E5%AE%9A%E7%AA%97%E5%8F%A3%E5%92%8C%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%AE%97%E6%B3%95%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/" rel="next" title="固定窗口和滑动窗口算法了解一下">
+                  固定窗口和滑动窗口算法了解一下 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

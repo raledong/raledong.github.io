@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言今天，我们将介绍一个比较新的设计模式（也就是没有在GoF那本书中出现过的一种设计模式），这个设计模式就是Event Bus设计模式。 起源假设一个大型应用中，有大量的组件彼此间存在交互。而你希望能够在组件通信的同时能够满足低耦合和关注点分离原则。Event Bus设计模式是一个很好的解决方案。 Event Bus的概念和网络中的总线拓扑概念类似。即存在某种管道，而所有的电脑都连接在这条管道之上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：设计模式EventBus">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FEventBus/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言今天，我们将介绍一个比较新的设计模式（也就是没有在GoF那本书中出现过的一种设计模式），这个设计模式就是Event Bus设计模式。 起源假设一个大型应用中，有大量的组件彼此间存在交互。而你希望能够在组件通信的同时能够满足低耦合和关注点分离原则。Event Bus设计模式是一个很好的解决方案。 Event Bus的概念和网络中的总线拓扑概念类似。即存在某种管道，而所有的电脑都连接在这条管道之上">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FEventBus/%E5%9B%BE%E7%89%871.png">
+<meta property="article:published_time" content="2019-02-04T19:29:10.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.484Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FEventBus/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FEventBus/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FEventBus/","path":"2019/02/05/猫头鹰的深夜翻译：设计模式EventBus/","title":"猫头鹰的深夜翻译：设计模式EventBus"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：设计模式EventBus | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">起源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">第一种方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">第二种方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FEventBus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：设计模式EventBus | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：设计模式EventBus
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 03:29:10" itemprop="dateCreated datePublished" datetime="2019-02-05T03:29:10+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天，我们将介绍一个比较新的设计模式（也就是没有在GoF那本书中出现过的一种设计模式），这个设计模式就是Event Bus设计模式。</p>
+<h2 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h2><p>假设一个大型应用中，有大量的组件彼此间存在交互。而你希望能够在组件通信的同时能够满足低耦合和关注点分离原则。Event Bus设计模式是一个很好的解决方案。</p>
+<p>Event Bus的概念和网络中的总线拓扑概念类似。即存在某种管道，而所有的电脑都连接在这条管道之上。其中的任何一台电脑发送的消息都将分发给总线上所有其它的主机。然后，每台主机决定是否接收还是抛弃掉这条消息。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FEventBus/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<p>在组件的层面上也是类似的：主机对应着应用的组件，消息对应于事件（event）或者数据。而管道是<code>Event Bus</code>对象。</p>
+<span id="more"></span>
+
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>并没有一种绝对正确的实现EventBus的方式。在这里我会简单的介绍两种方法。</p>
+<h3 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h3><p>这是比较经典的一种方法，它主要取决于定义<code>EventBus</code>接口（从而强制实现一个特定的协议），按需对其实现，然后定义一个<code>Subscriber</code>（另一份协议)来进行<code>Event</code>的处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * interface describing a generic event, and it&#x27;s associated meta data, it&#x27;s this what&#x27;s going to</span></span><br><span class="line"><span class="comment"> * get sent in the bus to be dispatched to intrested Subscribers</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> chermehdi</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Event</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns</span> the stored data associated with the event</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  T <span class="title function_">getData</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Description of a generic subscriber</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> chermehdi</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Subscribable</span> &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Consume the events dispatched by the bus, events passed as parameter are can only be of type</span></span><br><span class="line"><span class="comment">   * declared by the supports() Set</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">handle</span><span class="params">(Event&lt;?&gt; event)</span>;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * describes the set of classes the subscribable object intends to handle</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  </span><br><span class="line">  Set&lt;Class&lt;?&gt;&gt; supports();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Description of the contract of a generic EventBus implementation, the library contains two main</span></span><br><span class="line"><span class="comment"> * version, Sync and Async event bus implementations, if you want to provide your own implementation</span></span><br><span class="line"><span class="comment"> * and stay compliant with the components of the library just implement this contract</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> chermehdi</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">EventBus</span> &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * registers a new subscribable to this EventBus instance</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">register</span><span class="params">(Subscribable subscribable)</span>;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * send the given event in this EventBus implementation to be consumed by interested subscribers</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">dispatch</span><span class="params">(Event&lt;?&gt; event)</span>;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * get the list of all the subscribers associated with this EventBus instance</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  List&lt;Subscribable&gt; <span class="title function_">getSubscribers</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Subscribable</code>接口定义了一个方法来处理一个特定类型的消息，并且通过定义<code>supports</code>方法决定支持哪种类型。</p>
+<p><code>EventBus</code>的实现持有所有<code>Subscribable</code>对象，并且每当一个新事件触发<code>dispatch</code>方法时，通知所有的Subscribable对象。</p>
+<p>这种方案的有点事可以在编译时检查传递过来的<code>Subscribable</code>对象，而且更加符合面向对象的思想，因为无需使用反射。同时，可以看到，这种方案更容易实现。缺点是接口的强制性–你总是需要一个新的类来处理一种类型的Event，在项目初期这个问题可能不明显，但是随着项目发展，你会发现，新建一个类只是为了处理简单的逻辑比如日志或是数据分析会显得很冗余。</p>
+<h3 id="第二种方法"><a href="#第二种方法" class="headerlink" title="第二种方法"></a>第二种方法</h3><p>这个方法来源于Guava的实现。<code>EventBus</code>看上去更简单更好用，对于每个时间的<code>consumer</code>， 你只需要通过对一个方法加上<code>@Subscribe</code>注解，并且在注解的参数中传入你希望处理的对象类型（单个对象&#x2F;参数）。然后你通过调用<code>eventBus.register(objectContainingTheMethod)</code>来注册事件的消费者。要产生一个新的时间，你只需要调用<code>eventBus.post(someObject)</code>，然后所有相关的消费者都将会被通知。</p>
+<p>如果对应一个特定的对象没有对应的消费者怎么办？在guava的实现中，它们被称为<code>DeadEvents</code>，在我的实现中，post调用会被忽略。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Vector;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ConcurrentHashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Simple implementation demonstrating how a guava EventBus works generally, without all the noise</span></span><br><span class="line"><span class="comment"> * of special cases handling, and special guava collections</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> chermehdi</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EventBus</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> Map&lt;Class&lt;?&gt;, List&lt;Invocation&gt;&gt; invocations;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">EventBus</span><span class="params">(String name)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">    invocations = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">post</span><span class="params">(Object object)</span> &#123;</span><br><span class="line">    Class&lt;?&gt; clazz = object.getClass();</span><br><span class="line">    <span class="keyword">if</span> (invocations.containsKey(clazz)) &#123;</span><br><span class="line">      invocations.get(clazz).forEach(invocation -&gt; invocation.invoke(object));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">register</span><span class="params">(Object object)</span> &#123;</span><br><span class="line">    Class&lt;?&gt; currentClass = object.getClass();</span><br><span class="line">    <span class="comment">// we try to navigate the object tree back to object ot see if</span></span><br><span class="line">    <span class="comment">// there is any annotated @Subscribe classes</span></span><br><span class="line">    <span class="keyword">while</span> (currentClass != <span class="literal">null</span>) &#123;</span><br><span class="line">      List&lt;Method&gt; subscribeMethods = findSubscriptionMethods(currentClass);</span><br><span class="line">      <span class="keyword">for</span> (Method method : subscribeMethods) &#123;</span><br><span class="line">        <span class="comment">// we know for sure that it has only one parameter</span></span><br><span class="line">        Class&lt;?&gt; type = method.getParameterTypes()[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span> (invocations.containsKey(type)) &#123;</span><br><span class="line">          invocations.get(type).add(<span class="keyword">new</span> <span class="title class_">Invocation</span>(method, object));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          List&lt;Invocation&gt; temp = <span class="keyword">new</span> <span class="title class_">Vector</span>&lt;&gt;();</span><br><span class="line">          temp.add(<span class="keyword">new</span> <span class="title class_">Invocation</span>(method, object));</span><br><span class="line">          invocations.put(type, temp);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      currentClass = currentClass.getSuperclass();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">private</span> List&lt;Method&gt; <span class="title function_">findSubscriptionMethods</span><span class="params">(Class&lt;?&gt; type)</span> &#123;</span><br><span class="line">    List&lt;Method&gt; subscribeMethods = Arrays.stream(type.getDeclaredMethods())</span><br><span class="line">        .filter(method -&gt; method.isAnnotationPresent(Subscribe.class))</span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line">    checkSubscriberMethods(subscribeMethods);</span><br><span class="line">    <span class="keyword">return</span> subscribeMethods;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkSubscriberMethods</span><span class="params">(List&lt;Method&gt; subscribeMethods)</span> &#123;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">hasMoreThanOneParameter</span> <span class="operator">=</span> subscribeMethods.stream()</span><br><span class="line">        .anyMatch(method -&gt; method.getParameterCount() != <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (hasMoreThanOneParameter) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(</span><br><span class="line">          <span class="string">&quot;Method annotated with @Susbscribe has more than one parameter&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> Map&lt;Class&lt;?&gt;, List&lt;Invocation&gt;&gt; getInvocations() &#123;</span><br><span class="line">    <span class="keyword">return</span> invocations;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这种方案所需要的额外工作比较少。你只需要定义方法的名称而不是为各个处理器命名。而且你可以将所有的消费者定义在一个类中。你只需要为每个方法传递不同的事件类型即可。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/docker%E5%AE%9E%E6%88%98/" rel="prev" title="docker实战">
+                  <i class="fa fa-angle-left"></i> docker实战
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/docker%E6%8C%87%E4%BB%A4%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="next" title="docker指令学习记录">
+                  docker指令学习记录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="什么是仿射变换一组设备无关的坐标被用来将所有的坐标信息传递给Graphics2D对象。AffineTransform对象作为Graphics2D对象状态的一部分。该对象定义了如何将用户空间的坐标转化为设备空间的设备相关的坐标点。  AffineTransform类代表一个2D的仿射变化，将一组2D的坐标进行线性映射到另一组保留了平行关系和竖直关系的2D坐标中。该转化包括平移，缩放，翻转，旋转和扭曲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的仿射变换">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="什么是仿射变换一组设备无关的坐标被用来将所有的坐标信息传递给Graphics2D对象。AffineTransform对象作为Graphics2D对象状态的一部分。该对象定义了如何将用户空间的坐标转化为设备空间的设备相关的坐标点。  AffineTransform类代表一个2D的仿射变化，将一组2D的坐标进行线性映射到另一组保留了平行关系和竖直关系的2D坐标中。该转化包括平移，缩放，翻转，旋转和扭曲">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/%E5%9B%BE%E7%89%871.png">
+<meta property="article:published_time" content="2019-02-05T14:12:17.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.492Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/","path":"2019/02/05/简单的仿射变换/","title":"简单的仿射变换"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>简单的仿射变换 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">什么是仿射变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E6%96%B9%EF%BC%81"><span class="nav-number">2.</span> <span class="nav-text">不要方！##</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E9%87%8C%E7%9A%84%E7%AC%A6%E5%8F%B7%E9%83%BD%E4%BB%A3%E8%A1%A8%E5%95%A5%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">矩阵里的符号都代表啥？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%BF%99%E4%BA%9B%E5%8F%82%E6%95%B0%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">如何使用这些参数？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE"><span class="nav-number">4.1.</span> <span class="nav-text">缩放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E7%A7%BB"><span class="nav-number">4.2.</span> <span class="nav-text">平移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%AD%E6%9B%B2"><span class="nav-number">4.3.</span> <span class="nav-text">扭曲</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC"><span class="nav-number">4.4.</span> <span class="nav-text">旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E7%A8%8B%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">简单的程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%A0%E5%8A%A0%E4%BD%86%E4%B8%8D%E5%8F%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">5.1.</span> <span class="nav-text">可叠加但不可交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E4%B8%AA%E5%8F%82%E6%95%B0"><span class="nav-number">5.2.</span> <span class="nav-text">6个参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="nav-number">6.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="简单的仿射变换 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          简单的仿射变换
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 22:12:17" itemprop="dateCreated datePublished" datetime="2019-02-05T22:12:17+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="什么是仿射变换"><a href="#什么是仿射变换" class="headerlink" title="什么是仿射变换"></a>什么是仿射变换</h2><p>一组设备无关的坐标被用来将所有的坐标信息传递给Graphics2D对象。<code>AffineTransform</code>对象作为<code>Graphics2D</code>对象状态的一部分。该对象定义了如何将用户空间的坐标转化为设备空间的设备相关的坐标点。</p>
+<blockquote>
+<p><code>AffineTransform</code>类代表一个2D的仿射变化，将一组2D的坐标进行线性映射到另一组保留了平行关系和竖直关系的2D坐标中。该转化包括平移，缩放，翻转，旋转和扭曲。</p>
+</blockquote>
+<p>根据AffineTransform定义的变化有两个非常重要的属性：<br>直线依然是直线<br>平行的线依然保持平行</p>
+<blockquote>
+<p><code>AffineTransform</code>是限次那个转化，所以可以通过矩阵的形式表示转化，然以一个AffineTransform可以通过数学的形式转化为一个包含六个数字的矩阵。<br> sx shx tx<br>shy  sy ty</p>
+</blockquote>
+<p>这里省略了矩阵的大括号。</p>
+<span id="more"></span>
+
+<h2 id="不要方！"><a href="#不要方！" class="headerlink" title="不要方！##"></a>不要方！##</h2><p>不要担心看不懂矩阵。你不需要了解矩阵运算的一切。你只需要有些许的基础知识即可。</p>
+<p>事实上，你甚至不用担心需要理解一般的矩阵运算来完成接下来我将说明的简单转换，但是这些可以帮助你更好的理解它是如何运作的。</p>
+<h2 id="矩阵里的符号都代表啥？"><a href="#矩阵里的符号都代表啥？" class="headerlink" title="矩阵里的符号都代表啥？"></a>矩阵里的符号都代表啥？</h2><p>我将说明如何使用<code>AffineTransform</code>使图片在展示于外设之前进行下列转换：</p>
+<ul>
+<li>缩放</li>
+<li>平移</li>
+<li>扭曲</li>
+<li>旋转</li>
+</ul>
+<p>在上面的矩阵中，<strong>sx</strong>和<strong>sy</strong>代表缩放的比例，<strong>tx</strong>和<strong>ty</strong>是实现平移的参数。<strong>shx</strong>和<strong>shy</strong>是实现扭曲的参数。</p>
+<p>旋转实际上是缩放和扭曲的组合，所以它可以由上面的参数组合完成操作。</p>
+<h2 id="如何使用这些参数？"><a href="#如何使用这些参数？" class="headerlink" title="如何使用这些参数？"></a>如何使用这些参数？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// ‘*’ 代表乘号</span><br><span class="line">newX = sx*x + shx*y + tx</span><br><span class="line">newY = shy*x + sy*y + ty</span><br></pre></td></tr></table></figure>
+<p>假设在用户空间中存在坐标(x, y)，这些参数将通过上面的公式计算出新的坐标，从而实现缩放，扭曲和平移。</p>
+<p>我们后面会看到，如果表示剪切和平移的因子的值为零，那么将不执行该类型的变换。如果缩放的值为1（默认值），那么图片不会进行缩放。其它的任何值都会导致缩放，平移或扭曲的发生。</p>
+<p>对于所有三种类型的变换，用于变换x坐标的值与用于变换y坐标的值无关。因此，例如，可以对x进行大树枝的平移，并在y中用进行小数值平移。</p>
+<p>在详细描述执行这些转换之前，对每个转换提供些许解释可能会很有用。</p>
+<h3 id="缩放"><a href="#缩放" class="headerlink" title="缩放"></a>缩放</h3><p>缩放可能是四种转化中最好理解的一种。它是指如果一个点在用户空间中的坐标为<code>(x,y)</code>，那么它在设备空间中的坐标为<code>(sx * x, sy * y )</code>。乘数<code>sx</code>与<code>sy</code>可以为正数或是负数。</p>
+<h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>平移的目的是在设备空间中移动坐标系的原点。</p>
+<p>比如，默认的原点是组件左上角的点。假设组件是一个边长四英寸的Frame，你可能希望原点位于框架的中心，而不是左上角。你可以通过将原点坐标分别从水平和垂直方向平移两英寸实现。</p>
+<p>另一个使用平移的场景（与缩放同时使用）是翻转垂直轴的默认正方向，从而使y轴值的增加使得点向上移动而不是默认的向下移动。</p>
+<h3 id="扭曲"><a href="#扭曲" class="headerlink" title="扭曲"></a>扭曲</h3><img src="/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<p>这是网上给的一个shearing的图例，即将原图以平行四边形拉伸。</p>
+<h3 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h3><p>旋转从视觉上很好理解。为了可视化旋转，在一张纸上画一张照片。 使用一个钉子将其粘到公告板上。 然后围绕大头钉旋转纸张。</p>
+<p>在Java 2D中，旋转是使用radians而不是degree的形式传入参数。如果您不熟悉使用弧度度量来指定角度，请记住以下标识：</p>
+<p>PI radians &#x3D; 180 degrees</p>
+<p>PI是在几何类中学到的数值。它的值为3.14159………..。但是，你无须记住PI的数值，因为MATH类中包含了它的静态值。你可以通过<code>Math.PI</code>获得该值。</p>
+<p>还有一个需要关注的是正角度的旋转代表顺时针旋转。</p>
+<h2 id="简单的程序"><a href="#简单的程序" class="headerlink" title="简单的程序"></a>简单的程序</h2><p>我们来看看一些代码，并且学习使用Java 2D实现缩放，平移，扭曲和旋转。</p>
+<h3 id="可叠加但不可交换"><a href="#可叠加但不可交换" class="headerlink" title="可叠加但不可交换"></a>可叠加但不可交换</h3><p>你会发现执行两个或是多个变化带来的结果是累加的，但是不是可交换的。比如，执行平移和旋转并不一定等于先旋转再平移得到的结果。</p>
+<h3 id="6个参数"><a href="#6个参数" class="headerlink" title="6个参数"></a>6个参数</h3><p>执行相应操作时对应的矩阵参数如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">默认</span><br><span class="line">1.0 0.0 0.0</span><br><span class="line">0.0 1.0 0.0 </span><br><span class="line"></span><br><span class="line">添加缩放转换</span><br><span class="line">1.6666666666666667 0.0 0.0 </span><br><span class="line">0.0 1.6666666666666667 0.0  </span><br><span class="line"></span><br><span class="line">添加平移转换</span><br><span class="line">1.6666666666666667 0.0 30.0 </span><br><span class="line">0.0 1.6666666666666667 30.0  </span><br><span class="line"></span><br><span class="line">添加扭曲转换</span><br><span class="line">1.6666666666666667 0.08333333333333334 30.0</span><br><span class="line">0.16666666666666669 1.666666666666666730.0 </span><br><span class="line"></span><br><span class="line">添加旋转转换</span><br><span class="line">1.6508996608400615 -0.2434184299932779 79.32270275806317 </span><br><span class="line">0.4886147500940855 1.6021270803360292 -7.066823581936546</span><br></pre></td></tr></table></figure>
+
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.awt.geom.*;</span><br><span class="line"><span class="keyword">import</span> java.awt.*;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Affine01</span>&#123;</span><br><span class="line">  publicstaticvoid <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">    <span class="type">GUI</span> <span class="variable">guiObj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GUI</span>();</span><br><span class="line">  &#125;<span class="comment">//end main</span></span><br><span class="line">&#125;<span class="comment">//end controlling class Affine01</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GUI</span> <span class="keyword">extends</span> <span class="title class_">Frame</span>&#123;</span><br><span class="line">  <span class="type">int</span> res;<span class="comment">//store screen resolution here</span></span><br><span class="line">  <span class="type">staticfinalint</span> <span class="variable">ds</span> <span class="operator">=</span> <span class="number">72</span>;<span class="comment">//default scale, 72 units/inch</span></span><br><span class="line">  </span><br><span class="line">  GUI()&#123;<span class="comment">//constructor</span></span><br><span class="line">    <span class="comment">//Get screen resolution</span></span><br><span class="line">    res = Toolkit.getDefaultToolkit().</span><br><span class="line">                           getScreenResolution();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Set Frame size to four-inches by four-inches</span></span><br><span class="line">    <span class="built_in">this</span>.setSize(<span class="number">4</span>*res,<span class="number">4</span>*res);</span><br><span class="line">    <span class="built_in">this</span>.setVisible(<span class="literal">true</span>);</span><br><span class="line">    <span class="built_in">this</span>.setTitle(<span class="string">&quot;Copyright 1999, R.G.Baldwin&quot;</span>);</span><br><span class="line">       </span><br><span class="line">    <span class="comment">//Window listener to terminate program.</span></span><br><span class="line">    <span class="built_in">this</span>.addWindowListener(<span class="keyword">new</span> <span class="title class_">WindowAdapter</span>()&#123;</span><br><span class="line">      publicvoid <span class="title function_">windowClosing</span><span class="params">(WindowEvent e)</span>&#123;</span><br><span class="line">        System.exit(<span class="number">0</span>);&#125;&#125;);</span><br><span class="line">  &#125;<span class="comment">//end constructor</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//Override the paint() method to draw and manipulate a</span></span><br><span class="line">  <span class="comment">// square.</span></span><br><span class="line">  publicvoid <span class="title function_">paint</span><span class="params">(Graphics g)</span>&#123;</span><br><span class="line">    <span class="comment">//Downcast the Graphics object to a Graphics2D object</span></span><br><span class="line">    <span class="type">Graphics2D</span> <span class="variable">g2</span> <span class="operator">=</span> (Graphics2D)g;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Display contents of default AffineTransform object</span></span><br><span class="line">    System.out.println(<span class="string">&quot;Default Transform&quot;</span>);</span><br><span class="line">    displayMatrix(g2.getTransform());    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Update transform to include a scale component, </span></span><br><span class="line">    <span class="comment">// and display the values.</span></span><br><span class="line">    System.out.println(<span class="string">&quot;Add Scale Transform&quot;</span>);</span><br><span class="line">    g2.scale((<span class="type">double</span>)res/<span class="number">72</span>,(<span class="type">double</span>)res/<span class="number">72</span>);</span><br><span class="line">    displayMatrix(g2.getTransform());</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Update transform to include a translate component, </span></span><br><span class="line">    <span class="comment">// and display the values.</span></span><br><span class="line">    System.out.println(<span class="string">&quot;Add Translate Transform&quot;</span>);</span><br><span class="line">    g2.translate(<span class="number">0.25</span>*ds,<span class="number">0.25</span>*ds);</span><br><span class="line">    displayMatrix(g2.getTransform());</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Update transform to include a shear component, </span></span><br><span class="line">    <span class="comment">// and display the values.</span></span><br><span class="line">    System.out.println(<span class="string">&quot;Add Shear Transform&quot;</span>);</span><br><span class="line">    g2.shear(<span class="number">0.05</span>,<span class="number">0.1</span>);</span><br><span class="line">    displayMatrix(g2.getTransform());</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Update transform to provide rotation and display, </span></span><br><span class="line">    <span class="comment">// the transform values.    </span></span><br><span class="line">    System.out.println(<span class="string">&quot;Add Rotate Transform&quot;</span>);</span><br><span class="line">    <span class="comment">//11.25 degrees about center</span></span><br><span class="line">    g2.rotate(Math.PI/<span class="number">16</span>,<span class="number">2.0</span>*ds, <span class="number">2.0</span>*ds);</span><br><span class="line">    displayMatrix(g2.getTransform());</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Draw five concentric squares and apply the transform</span></span><br><span class="line">    <span class="comment">// that results from the above transform updates.  If</span></span><br><span class="line">    <span class="comment">// the above scale transform is applied, the outer</span></span><br><span class="line">    <span class="comment">// square is one inch on each side, and the squares</span></span><br><span class="line">    <span class="comment">// are separated by 0.1 inch </span></span><br><span class="line">    <span class="type">double</span> <span class="variable">delta</span> <span class="operator">=</span> <span class="number">0.1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">cnt</span> <span class="operator">=</span> <span class="number">0</span>; cnt &lt; <span class="number">5</span>; cnt++)&#123;</span><br><span class="line">      g2.draw(<span class="keyword">new</span> <span class="title class_">Rectangle2D</span>.Double(</span><br><span class="line">         (<span class="number">1.5</span>+cnt*delta)*ds, (<span class="number">1.5</span>+cnt*delta)*ds, </span><br><span class="line">         (<span class="number">1.0</span>-cnt*<span class="number">2</span>*delta)*ds, (<span class="number">1.0</span>-cnt*<span class="number">2</span>*delta)*ds));</span><br><span class="line">    &#125;<span class="comment">//end for loop</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Superimpose some text on the squares with the </span></span><br><span class="line">    <span class="comment">// lower left corner of the first character at the</span></span><br><span class="line">    <span class="comment">// center of the squares.</span></span><br><span class="line">    g2.drawString(<span class="string">&quot;Exit -&gt;&quot;</span>,<span class="number">2.0f</span>*ds,<span class="number">2.0f</span>*ds);</span><br><span class="line">  &#125;<span class="comment">//end overridden paint()</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment">//This method receives a reference to an AffineTransform</span></span><br><span class="line">  <span class="comment">// and displays the six controllable values in the</span></span><br><span class="line">  <span class="comment">// transform matrix</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">displayMatrix</span><span class="params">(AffineTransform theTransform)</span>&#123;</span><br><span class="line">    <span class="type">double</span>[] theMatrix = newdouble[<span class="number">6</span>];</span><br><span class="line">    theTransform.getMatrix(theMatrix);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Display first row of values by displaying every</span></span><br><span class="line">    <span class="comment">// other element in the array starting with element</span></span><br><span class="line">    <span class="comment">// zero.</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">cnt</span> <span class="operator">=</span> <span class="number">0</span>; cnt &lt; <span class="number">6</span>; cnt+=<span class="number">2</span>)&#123;</span><br><span class="line">      System.out.print(theMatrix[cnt] + <span class="string">&quot; &quot;</span>);</span><br><span class="line">    &#125;<span class="comment">//end for loop</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Display second row of values displaying every</span></span><br><span class="line">    <span class="comment">// other element in the array starting with element</span></span><br><span class="line">    <span class="comment">// number one.</span></span><br><span class="line">    System.out.println();<span class="comment">//new line</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">cnt</span> <span class="operator">=</span> <span class="number">1</span>; cnt &lt; <span class="number">6</span>; cnt+=<span class="number">2</span>)&#123;</span><br><span class="line">      System.out.print(theMatrix[cnt] + <span class="string">&quot; &quot;</span>);</span><br><span class="line">    &#125;<span class="comment">//end for loop</span></span><br><span class="line">    System.out.println();<span class="comment">//end of line</span></span><br><span class="line">    System.out.println();<span class="comment">//blank line</span></span><br><span class="line">    </span><br><span class="line">  &#125;<span class="comment">//end displayMatrix</span></span><br><span class="line">&#125;<span class="comment">//end class GUI</span></span><br><span class="line"><span class="comment">//==============================//</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<!-- more -->
+<blockquote>
+<p>原文链接: <a href="https://www.developer.com/net/vb/article.php/626051/Java-2D-Graphics-Simple-Affine-Transforms.htm">https://www.developer.com/net/vb/article.php/626051/Java-2D-Graphics-Simple-Affine-Transforms.htm</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/bash%E6%8C%87%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%95%B4%E7%90%86/" rel="prev" title="bash指令学习与整理">
+                  <i class="fa fa-angle-left"></i> bash指令学习与整理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/Programming%EF%BC%88%E5%9B%9B%EF%BC%89URLConnection/" rel="next" title="重拾Java Network Programming（四）URLConnection & Cache">
+                  重拾Java Network Programming（四）URLConnection & Cache <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

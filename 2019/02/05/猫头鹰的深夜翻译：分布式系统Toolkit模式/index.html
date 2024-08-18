@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="过去几年容器逐渐成为了打包和部署代码的流行的方式。容器镜像解决很多现有的打包和部署工具所带来的问题，初次以外，还为我们提供了构建分布式应用的全新的思路。就如SOA提倡将应用拆分为模块化的内聚的服务，容器应当进一步提倡将这些服务拆分为紧密协作的模块化容器。通过构建应用边界，容器使用户能够使用模块化，可重用的组件构建其服务，从而使得服务比单机容器构建的应用程序更可靠，更具可扩展性并且构建速度更快。 从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：分布式系统Toolkit模式">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="过去几年容器逐渐成为了打包和部署代码的流行的方式。容器镜像解决很多现有的打包和部署工具所带来的问题，初次以外，还为我们提供了构建分布式应用的全新的思路。就如SOA提倡将应用拆分为模块化的内聚的服务，容器应当进一步提倡将这些服务拆分为紧密协作的模块化容器。通过构建应用边界，容器使用户能够使用模块化，可重用的组件构建其服务，从而使得服务比单机容器构建的应用程序更可靠，更具可扩展性并且构建速度更快。 从">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/%E5%9B%BE%E7%89%872.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/%E5%9B%BE%E7%89%873.png">
+<meta property="article:published_time" content="2019-02-04T18:52:45.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.469Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="分布式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/","path":"2019/02/05/猫头鹰的深夜翻译：分布式系统Toolkit模式/","title":"猫头鹰的深夜翻译：分布式系统Toolkit模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：分布式系统Toolkit模式 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%901%EF%BC%9ASidecar%E5%AE%B9%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">例子1：Sidecar容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%902%EF%BC%9AAmbassador%E5%AE%B9%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">例子2：Ambassador容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%903%EF%BC%9AAdapter%E5%AE%B9%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">例子3：Adapter容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refrence"><span class="nav-number">4.</span> <span class="nav-text">Refrence</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：分布式系统Toolkit模式 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：分布式系统Toolkit模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 02:52:45" itemprop="dateCreated datePublished" datetime="2019-02-05T02:52:45+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>过去几年容器逐渐成为了打包和部署代码的流行的方式。容器镜像解决很多现有的打包和部署工具所带来的问题，初次以外，还为我们提供了构建分布式应用的全新的思路。就如SOA提倡将应用拆分为模块化的内聚的服务，容器应当进一步提倡将这些服务拆分为紧密协作的模块化容器。通过构建应用边界，容器使用户能够使用模块化，可重用的组件构建其服务，从而使得服务比单机容器构建的应用程序更可靠，更具可扩展性并且构建速度更快。</p>
+<p>从VM向容器的演变从各种角度来说就如同当年从单机应用转化为模块化的面向对象的应用程序。容器镜像提供的抽象层与面向对象编程中类的抽象边界有很大的共同点，而且也提高了开发者的效率和程序的质量。就像正确的编码方式是将关注点分离为模块化对象一样，在容器中打包应用程序的正确方法是将关注点分离为模块化容器。根本上来说，这意味着不仅要将整个应用程序分解，而且要将任何一个服务器中的各个部分分解为多个模块化容器，这些容器易于参数化和重复使用。这就像现代语言中的标准语言库，大多数应用程序开发人员可以将由其他人编写的模块化容器组合在一起，并使用更高质量的组件更快地构建应用程序。</p>
+<p>从模块化容器方面进行思考的好处很多，特别是模块化容器提供以下内容：</p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加快应用的开发，因为容器可以在团队甚至是大型社区之间进行复用</span><br><span class="line"></span><br><span class="line">支持敏捷团队，因为容器边界是一个天然的边界，划分给各个团队。</span><br><span class="line"></span><br><span class="line">支持关注点分离，并专注于开发特定功能从而减少复杂的依赖和不可测试组件。</span><br></pre></td></tr></table></figure>
+
+<p>从模块化容器构建应用程序意味着考虑协作提供服务容器的共生组，而不是一个容器提供一个服务。在Kubernetes中，这种模块化容器服务的实施者是Pod。一个Pod是指一组共享文件系统，内核命名空间和IP地址的一组容器。Pod在K8s集群中是调度的基本单位，正是因为Pod中容器的共生特性要求它们共同安排在同一台机器上，而可靠地实现这一点的唯一方法是将容器组作为原子调度单元。</p>
+<p>当你从Pod的角度思考时，自然会出现一些模块化应用程序开发的通用模式，这些模式会多次重复出现。我相信，随着我们在Kubernetes的开发中向前发展，将会发现更多这些模式，但这里有三个我们常见的模式：</p>
+<h2 id="例子1：Sidecar容器"><a href="#例子1：Sidecar容器" class="headerlink" title="例子1：Sidecar容器"></a>例子1：Sidecar容器</h2><p>Sidecar容器拓展并且加强主容器，他们融合当前已有的容器并且将它们完善。举个例子，假设有一个运行这Nginx web应用的容器。添加另一个容器将文件系统与git仓库同步，在容器间共享文件系统，从而实现git的提交并部署。但是这种模块化实现使得git同步器可以交给另一个容器开发，并且跨不同的web服务器复用。因为这种模块化，你只需要编写并测试单个git同步应用并且提供给多个应用使用。而如果有别的团队开发了这个工具，你甚至不需要重复开发。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<h2 id="例子2：Ambassador容器"><a href="#例子2：Ambassador容器" class="headerlink" title="例子2：Ambassador容器"></a>例子2：Ambassador容器</h2><p>Ambassador容器代理外界至本地的连接。比如，现在有一个Redis集群，包含多个读者和单个写者。 你可以创建一个Pod，包含主应用和Redis ambassador容器。ambassador容器作为代理分离读写请求分别交给对应的服务器。因为这两个容器共享一个网络命名空间，即他们共享一个IP地址，因此主应用可以用localhost访问ambassador服务，无需通过服务发现。从主应用的视角来看，就仿佛在localhost上连接了redis集群。这种方式非常方便，不仅因为不同的团队可以管理自己的组件，而且因为在开发环境中，你可以跳过代理，直接连接到Redis集群上。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/%E5%9B%BE%E7%89%872.png" class="" title="图片2">
+
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/%E5%9B%BE%E7%89%873.png" class="" title="图片3">
+
+<h2 id="例子3：Adapter容器"><a href="#例子3：Adapter容器" class="headerlink" title="例子3：Adapter容器"></a>例子3：Adapter容器</h2><p>Adapter容器标准化输入输出。假设现在需要监控N个应用，每个应用可能使用了不同的方法来输出监控数据（比如JMX, StatsD等）。但是每个监控系统都希望用一个一致的数据模型来管理收集的数据。通过使用Adapter模式来组合容器，你可以创建一个pod将应用容器和适配器容器组合起来，从而将同质的监控数据转化为单个同一个的表现形式。同样的，因为这些Pod共享命名空间和文件系统，这两个容器间的协作简单明。</p>
+<h2 id="Refrence"><a href="#Refrence" class="headerlink" title="Refrence"></a>Refrence</h2><p><a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/sidecar">Sidecar Pattern</a><br><a href="https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/">Ambassador Pattern</a></p>
+<blockquote>
+<p>原文链接: <a href="https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/">https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/</a> </p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"># 分布式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/REST%E6%9C%8D%E5%8A%A1%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" rel="prev" title="REST服务异常处理">
+                  <i class="fa fa-angle-left"></i> REST服务异常处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/" rel="next" title="猫头鹰的深夜翻译：微服务概述">
+                  猫头鹰的深夜翻译：微服务概述 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

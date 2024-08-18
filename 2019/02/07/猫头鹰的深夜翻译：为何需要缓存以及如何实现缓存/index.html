@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言这篇文章探索了现有的各种JAVA缓存基数，它们对各种场景下提高应用的性能起着重要的作用。 近十年来，信息技术极高的提升了业务流程，它已经成为了全球企业的战略性方案。它从“可有可无”演变到现在的“不可或缺”。因此，响应时间变得越发的重要。数据获取时间对用户体验影响极大，它在所有的商业应用中几乎都是关键性需求。影响响应时间的因素很多，包括网络管道，协议，硬件，软件以及网速。庞大的IT基础设施和苛刻">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存">
+<meta property="og:url" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言这篇文章探索了现有的各种JAVA缓存基数，它们对各种场景下提高应用的性能起着重要的作用。 近十年来，信息技术极高的提升了业务流程，它已经成为了全球企业的战略性方案。它从“可有可无”演变到现在的“不可或缺”。因此，响应时间变得越发的重要。数据获取时间对用户体验影响极大，它在所有的商业应用中几乎都是关键性需求。影响响应时间的因素很多，包括网络管道，协议，硬件，软件以及网速。庞大的IT基础设施和苛刻">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%872.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%873.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%874.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%875.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%876.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%877.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%878.png">
+<meta property="article:published_time" content="2019-02-07T15:21:59.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.465Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/","path":"2019/02/07/猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存/","title":"猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">缓存的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%82%E7%9B%B4%E4%BC%B8%E7%BC%A9"><span class="nav-number">3.</span> <span class="nav-text">垂直伸缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E4%BC%B8%E7%BC%A9"><span class="nav-number">4.</span> <span class="nav-text">水平伸缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%AD%E7%BC%93%E5%AD%98"><span class="nav-number">5.</span> <span class="nav-text">进程中缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%B8%AD%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98"><span class="nav-number">6.</span> <span class="nav-text">内存中分布式缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">7.</span> <span class="nav-text">内存数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E7%BD%91%E6%A0%BC"><span class="nav-number">8.</span> <span class="nav-text">内存数据网格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%94%A8%E4%BE%8B"><span class="nav-number">9.</span> <span class="nav-text">缓存用例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%BC%93%E5%AD%98"><span class="nav-number">9.1.</span> <span class="nav-text">应用缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Level-1-L1-%E7%BC%93%E5%AD%98"><span class="nav-number">9.2.</span> <span class="nav-text">Level 1 (L1) 缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Level-2-L2-%E7%BC%93%E5%AD%98"><span class="nav-number">9.3.</span> <span class="nav-text">Level 2 (L2) 缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L1-L2%E7%BC%93%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">9.4.</span> <span class="nav-text">L1 &#x2F; L2缓存的使用流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98"><span class="nav-number">9.5.</span> <span class="nav-text">混合高速缓存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">10.</span> <span class="nav-text">缓存设计注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%92%8C%E6%9B%B4%E6%96%B0"><span class="nav-number">10.1.</span> <span class="nav-text">数据加载和更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD-%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F-32-64%E4%BD%8D"><span class="nav-number">10.2.</span> <span class="nav-text">性能&#x2F;内存大小 32&#x2F;64位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%A7%BB%E9%99%A4%E7%AD%96%E7%95%A5"><span class="nav-number">10.3.</span> <span class="nav-text">缓存移除策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91"><span class="nav-number">10.4.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%BB%9F%E8%AE%A1"><span class="nav-number">10.5.</span> <span class="nav-text">缓存统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E5%90%84%E7%A7%8D%E7%BC%93%E5%AD%98%E6%96%B9%E6%A1%88"><span class="nav-number">10.6.</span> <span class="nav-text">总结：各种缓存方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">11.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：为何需要缓存以及如何实现缓存
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-07 23:21:59" itemprop="dateCreated datePublished" datetime="2019-02-07T23:21:59+08:00">2019-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章探索了现有的各种JAVA缓存基数，它们对各种场景下提高应用的性能起着重要的作用。</p>
+<p>近十年来，信息技术极高的提升了业务流程，它已经成为了全球企业的战略性方案。它从“可有可无”演变到现在的“不可或缺”。因此，响应时间变得越发的重要。数据获取时间对用户体验影响极大，它在所有的商业应用中几乎都是关键性需求。影响响应时间的因素很多，包括网络管道，协议，硬件，软件以及网速。庞大的IT基础设施和苛刻的系统性能要求严重影响了任何组织的战略目标。</p>
+<p>本文旨在强调通过Java缓存机制提升应用的性能。</p>
+<span id="more"></span>
+
+<h2 id="缓存的概念"><a href="#缓存的概念" class="headerlink" title="缓存的概念"></a>缓存的概念</h2><p>缓存是指一块内存缓冲区，用来临时存储经常访问的数据。因为数据无需从原始来源重新获取，因此提升了性能。缓存这个概念应用在计算机&#x2F;网络产业的各个领域，因此根据不同的用例，有不同的实现缓存的方法。事实上，像路由器，交换机，PC这样的设备使用缓存来加速内存访问。还有一个常见的场景，几乎存在于所有的PC，即浏览器缓存最近请求获取的对象，这样就无需多次获取同样的数据了。在一个分布式的JEE应用中，客户端&#x2F;服务器端缓存对于提升性能也起着至关重要的作用。客户端缓存用来临时存储从服务器传来的静态数据，从而避免不必要的对服务器的方位。另一方面，服务器端的缓存会将它从别的地方获取的数据存储在内存中。</p>
+<p>缓存可以建立在单点&#x2F;多点JVM或是集群环境上。可以使用缓存来满足不同伸缩性程度的场景如下。</p>
+<h2 id="垂直伸缩"><a href="#垂直伸缩" class="headerlink" title="垂直伸缩"></a>垂直伸缩</h2><p>可以通过升级单个机器，赋予其更多的有效资源(CPU,RAM,HDD,SSD)，并且开启缓存来实现。但是有个局限性，缓存升级的程度是有限的。在下面的用例中，可以通过增加内存并在应用层实现缓存来提升应用的性能。</p>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<h2 id="水平伸缩"><a href="#水平伸缩" class="headerlink" title="水平伸缩"></a>水平伸缩</h2><p>它可以通过添加更多的机器并在每台机器的应用层开启缓存来实现。但是它也存在局限，因为与之交互的下游应用并没有增加额外的机器。在下面的用例中，通过给每一个应用添加一个服务器&#x2F;缓存来提高整体的性能。数据库可能会成为性能瓶颈，但是可以通过在缓存中存储静态&#x2F;主数据来缓解。</p>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%872.png" class="" title="图片2">
+
+<h2 id="进程中缓存"><a href="#进程中缓存" class="headerlink" title="进程中缓存"></a>进程中缓存</h2><p>进程内缓存使对象可以与应用程序存储在同一实例中，即本地缓存可供应用程序使用，并共享相同的内存空间。<br>考虑进程缓存时的重点：</p>
+<ul>
+<li>如果应用程序仅部署在一个节点中，即具有单个实例，那么进程内缓存是存储经常访问的数据以及快速访问数据的合适选择。</li>
+<li>如果进程内高速缓存将部署在应用程序的多个实例中，那么在所有实例之间保持数据同步可能是一个挑战，并且会导致数据不一致。</li>
+<li>如果服务器配置有限，那么这种类型的缓存会降低所有应用程序的性能，因为它共享相同的内存和CPU。垃圾收集器经常会被调用来清理可能导致性能开销的对象。如果不能有效管理缓存移除，则可能会发生内存不足报错。</li>
+</ul>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%873.png" class="" title="图片3">
+
+<h2 id="内存中分布式缓存"><a href="#内存中分布式缓存" class="headerlink" title="内存中分布式缓存"></a>内存中分布式缓存</h2><p>分布式缓存（键&#x2F;值对象）可以在支持从&#x2F;向数据存储库读取&#x2F;写入的应用程序的外部构建。它会频繁的从RAM中访问数据，避免从数据源获取数据。这样的缓存可以部署在集群的多个节点中，构成单一逻辑视图。缓存的客户端使用哈希算法来得出集群中对象的位置。</p>
+<p>考虑分布式缓存的重点：</p>
+<ul>
+<li>内存分布式缓存对于中型到大型，在集群中有多个实例，并且性能至关重要的应用是最佳的解决方案。数据不一致以及共享内存不再是性能的焦点，因为部署在集群中的分布式缓存可以展现出单一逻辑状态。</li>
+<li>由于需要跨进程访问网络上的高速缓存，因此延迟，故障和对象序列化会导致性能下降。</li>
+<li>实现的难度大于进程内缓存。</li>
+</ul>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%874.png" class="" title="图片4">
+
+
+<h2 id="内存数据库"><a href="#内存数据库" class="headerlink" title="内存数据库"></a>内存数据库</h2><p>这种类型的数据库也称为主存数据库。数据存储在RAM中而不是硬盘上，以实现更快的响应。数据以压缩格式存储并且支持SQL。相关的数据库驱动程序可以用来代替现有的RDBMS。使用内存数据库替换RDBMS可以在不改变应用程序层的情况下提高应用程序的性能。只有垂直伸缩可用于扩展内存数据库。</p>
+<h2 id="内存数据网格"><a href="#内存数据网格" class="headerlink" title="内存数据网格"></a>内存数据网格</h2><p>这种分布式缓存解决方案可以快速访问常用数据。数据可以在多个节点上缓存，复制和分区。</p>
+<p>实现内存数据网格可以提高应用程序的性能并在不改变RDBMS的情况下扩展应用程序。</p>
+<p>核心功能：</p>
+<ul>
+<li>并行计算内存中的数据</li>
+<li>在内存中搜索，聚合和排序数据</li>
+<li>内存中的事务管理</li>
+<li>事件处理</li>
+</ul>
+<blockquote>
+<p>In-memory database vs In-memory data grid<br>内存中数据库通过替换和升级底层RDBMS的基础上提升性能，它将应用和底层数据库的变更隔离开来。<br>内存中数据网格通过调整应用程序来提升速度，将应用的变更和底层数据库隔离开来。</p>
+</blockquote>
+<h2 id="缓存用例"><a href="#缓存用例" class="headerlink" title="缓存用例"></a>缓存用例</h2><p>在任何一个企业级应用中都可以通过配置商业或者开源的框架来提升应用的性能。下面是几个常见的缓存用例。</p>
+<h3 id="应用缓存"><a href="#应用缓存" class="headerlink" title="应用缓存"></a>应用缓存</h3><p>应用程序缓存是应用程序保存在内存中用来频繁访问的数据的本地缓存。应用程序高速缓存会自动清除条目以保持其内存占用。</p>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%875.png" class="" title="图片5">
+
+<h3 id="Level-1-L1-缓存"><a href="#Level-1-L1-缓存" class="headerlink" title="Level 1 (L1) 缓存"></a>Level 1 (L1) 缓存</h3><p>这是每个会话的默认事务缓存。它可以由任何Java持久性框架（JPA）或对象关系映射（ORM）工具来管理。L1缓存存储属于特定会话的实体对象，并在会话关闭后清除。如果一个会话内有多个事务，则所有这些事务都将被存储。</p>
+<h3 id="Level-2-L2-缓存"><a href="#Level-2-L2-缓存" class="headerlink" title="Level 2 (L2) 缓存"></a>Level 2 (L2) 缓存</h3><p>二级缓存可以配置为提供自定义缓存，可以保存要缓存的所有实体的数据。它可能与属性，关联和集合有关。它在会话工厂中配置，并且只要会话工厂可用，它就存在。</p>
+<p>二级缓存可以配置为可在以下场景中共享：</p>
+<ul>
+<li>应用的会话</li>
+<li>具有相同数据库的在相同服务器上的应用程序</li>
+<li>拥有同一数据库的在不同服务器上不同的应用程序</li>
+</ul>
+<h3 id="L1-L2缓存的使用流程"><a href="#L1-L2缓存的使用流程" class="headerlink" title="L1 &#x2F; L2缓存的使用流程"></a>L1 &#x2F; L2缓存的使用流程</h3><ul>
+<li>标准ORM框架首先会在L1缓存中查找实体，然后在L2缓存中查找。L1缓存是查找开始的地方。如果找到一个实体的缓存，就会返回该实体。</li>
+<li>如果在L1缓存中没有找到，就会去L2缓存查找</li>
+<li>如果在L2缓存中找到，则会存到L1缓存，并且返回实体</li>
+<li>如果在L1和L2中找不到实体，则它将从数据库中提取并存储在两个高速缓存中，然后再返回给调用方。</li>
+<li>当任何会话在实体上机型任何修改时，L2缓存验证&#x2F;刷新自身。</li>
+<li>如果数据库完全由外部进程修改，即没有应用程序会话，则不能隐式刷新L2高速缓存，除非某些高速缓存刷新策略通过框架API或某个自定义API实现。</li>
+</ul>
+<p>下面的通信图展现了使用L1&#x2F;L2缓存：</p>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%876.png" class="" title="图片6">
+
+<h3 id="混合高速缓存"><a href="#混合高速缓存" class="headerlink" title="混合高速缓存"></a>混合高速缓存</h3><p>混合高速缓存是标准ORM框架提供的高速缓存和开源&#x2F;定制&#x2F; JDBC API实现的组合。应用可以使用混合高速缓存来调整局限于标准ORM框架的缓存能力。这种缓存用于响应时间至关重要的任务关键型应用。</p>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%877.png" class="" title="图片7">
+
+<h2 id="缓存设计注意事项"><a href="#缓存设计注意事项" class="headerlink" title="缓存设计注意事项"></a>缓存设计注意事项</h2><p>缓存设计注意事项包括数据加载&#x2F;更新，性能&#x2F;内存大小，缓存移除策略，并发性和缓存统计信息。</p>
+<h3 id="数据加载和更新"><a href="#数据加载和更新" class="headerlink" title="数据加载和更新"></a>数据加载和更新</h3><p>将数据加载到缓存中是保持所有缓存内容一致性的重要设计决策。加载数据可以考虑以下方法：</p>
+<ul>
+<li>使用标准框架（如hibernate，openJPA）提供的默认的功能或配置</li>
+<li>使用开源缓存API（如Google Guava或是COTS的产品如Coherence, Ehcache或 Hazelcast.）实现键值映射。</li>
+<li>利用编程自动或是显式插入加载实体</li>
+<li>外部的应用可以通过同步或异步通信</li>
+</ul>
+<h3 id="性能-内存大小-32-64位"><a href="#性能-内存大小-32-64位" class="headerlink" title="性能&#x2F;内存大小 32&#x2F;64位"></a>性能&#x2F;内存大小 32&#x2F;64位</h3><p>可用内存是实现性能SLA的一个重要因素，它取决于32&#x2F;64位JRE，而JRE又依赖于32&#x2F;64位机器的CPU架构。在32位的机器中，应用程序可用的堆大小大约是1.5G，而在64位机器中，堆的大小依赖于RAM的大小。</p>
+<p>内存的高可用性确实会在运行时产生成本，并可能产生负面影响。</p>
+<ul>
+<li>由于存储器布局，64位所需要的堆大小比32位多出30-50％。</li>
+<li>保持更多的堆需要更多的GC任务来清理可能降低性能的未使用的对象。通过微调GC可以减少由GC导致的暂停运行。</li>
+</ul>
+<h3 id="缓存移除策略"><a href="#缓存移除策略" class="headerlink" title="缓存移除策略"></a>缓存移除策略</h3><p>缓存移除策略使缓存能够确保缓存的大小不超过最大限制。为了实现这一点，元素将根据缓存移除策略从缓存中删除，它还可以根据应用的需求自定义。缓存解决方案中有各种流行的缓存移除策略。</p>
+<ul>
+<li>最近最少使用 (LRU)：首先淘汰最长时间未被使用的缓存</li>
+<li>最不常使用 (LFU)：首先淘汰在一段时间内使用次数最少的缓存</li>
+<li>先进先出 (FIFO)</li>
+</ul>
+<h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><p>并发性是企业应用程序中的常见问题。它会引入冲突并且使系统位于不一致的状态中。当多个客户端尝试在缓存刷新期间同时更新相同的数据对象时，可能会发生这种情况。通常使用锁来解决，但是锁会影响性能。因此，需要针对这个考虑优化策略。</p>
+<h3 id="缓存统计"><a href="#缓存统计" class="headerlink" title="缓存统计"></a>缓存统计</h3><p>高速缓存统计信息可帮助识别高速缓存的运行状况并提供有关高速缓存行为和性能的信息。通常，以下属性可用于统计缓存：</p>
+<ul>
+<li><strong>Hit count</strong>：找到对象所需要的查找次数</li>
+<li><strong>Miss Count</strong>：没有找到对象所需要的查找次数</li>
+<li><strong>Load success count</strong>：成功加载的条目数</li>
+<li><strong>Total load time</strong>：加载元素的总时间</li>
+<li><strong>Load exception count</strong>：加载条目时抛出的异常数</li>
+<li><strong>Eviction count</strong>：从缓存中移除的条目数量</li>
+</ul>
+<h3 id="总结：各种缓存方案"><a href="#总结：各种缓存方案" class="headerlink" title="总结：各种缓存方案"></a>总结：各种缓存方案</h3><p>有各种Java缓存解决方案可供选择 - 正确的选择取决于使用案例。以下是一些问题和比较，可以帮助找出最具成本效益和可行的缓存解决方案。</p>
+<ul>
+<li>你需要一个轻量级还是全面的缓存解决方案？</li>
+<li>你需要开源的，商业的或框架提供的缓存解决方案？</li>
+<li>你需要进程中缓存还是分布式缓存？</li>
+<li>一致性和延迟要求之间的折衷是什么？</li>
+<li>你需要维护事务&#x2F;主数据的缓存吗？</li>
+<li>你需要一个缓存复制吗？</li>
+<li>性能，可靠性，可伸缩性和可用性如何？</li>
+</ul>
+<img src="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E7%BC%93%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98/%E5%9B%BE%E7%89%878.png" class="" title="图片8">
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p><a href="https://www.gridgain.com/resources/blog/in-memory-database-vs-in-memory-data-grid-revisited#tldr">In-memory database vs In-memory datagrid</a><br><a href="http://blog.csdn.net/summerhust/article/details/6867171">LRU 和 LFU的区别</a></p>
+</blockquote>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/introducing-amp-assimilating-caching-quick-read-fo">https://dzone.com/articles/introducing-amp-assimilating-caching-quick-read-fo</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/07/286-%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD/" rel="prev" title="猫头鹰的深夜翻译：Java 10的JEP 286-局部变量类型推断">
+                  <i class="fa fa-angle-left"></i> 猫头鹰的深夜翻译：Java 10的JEP 286-局部变量类型推断
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/07/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E7%90%86%E8%A7%A3CAP%E5%AE%9A%E7%90%86/" rel="next" title="猫头鹰的深夜翻译：理解CAP定理">
+                  猫头鹰的深夜翻译：理解CAP定理 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简介 大多数时候，开发者极少关注事务管理从而导致大量代码需要重新开发，或是实现事务的时候没有注意事务究竟是如何实现的以及在这些场景中需要关注的维度。 事务管理的一个重要方面是定义正确的事务边界，例如事务何时开始，什么时候应该结束，什么时候应该在数据库中提交数据，什么时候应该回滚（在出现异常的时候）。 对于开发人员而言，最重要的是了解如何在应用程序中更好的实现事务管理。所以现在让我们用不同的方式探索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：spring事务管理">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9Aspring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="简介 大多数时候，开发者极少关注事务管理从而导致大量代码需要重新开发，或是实现事务的时候没有注意事务究竟是如何实现的以及在这些场景中需要关注的维度。 事务管理的一个重要方面是定义正确的事务边界，例如事务何时开始，什么时候应该结束，什么时候应该在数据库中提交数据，什么时候应该回滚（在出现异常的时候）。 对于开发人员而言，最重要的是了解如何在应用程序中更好的实现事务管理。所以现在让我们用不同的方式探索">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-05T12:46:01.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.465Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9Aspring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9Aspring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/","path":"2019/02/05/猫头鹰的深夜翻译：spring事务管理/","title":"猫头鹰的深夜翻译：spring事务管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：spring事务管理 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">管理事务的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%A5%E7%BC%96%E7%A8%8B%E6%96%B9%E5%BC%8F%EF%BC%8C%E5%A6%82%E4%B8%8B%E6%89%80%E7%A4%BA"><span class="nav-number">2.1.</span> <span class="nav-text">1. 以编程方式，如下所示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8Spring%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">2. 使用Spring管理事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">编程式事务管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E5%87%A0%E4%B9%8E%E7%94%A8%E4%BA%8E%E6%89%80%E6%9C%89web%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">声明式事务管理（几乎用于所有web应用场景）###</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9Aspring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：spring事务管理 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：spring事务管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 20:46:01" itemprop="dateCreated datePublished" datetime="2019-02-05T20:46:01+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
+<li>大多数时候，开发者极少关注事务管理从而导致大量代码需要重新开发，或是实现事务的时候没有注意事务究竟是如何实现的以及在这些场景中需要关注的维度。</li>
+<li>事务管理的一个重要方面是定义正确的事务边界，例如事务何时开始，什么时候应该结束，什么时候应该在数据库中提交数据，什么时候应该回滚（在出现异常的时候）。</li>
+<li>对于开发人员而言，最重要的是了解如何在应用程序中更好的实现事务管理。所以现在让我们用不同的方式探索事务。<span id="more"></span></li>
+</ul>
+<h2 id="管理事务的方法"><a href="#管理事务的方法" class="headerlink" title="管理事务的方法"></a>管理事务的方法</h2><p>事务可以用以下方式管理：</p>
+<h3 id="1-以编程方式，如下所示"><a href="#1-以编程方式，如下所示" class="headerlink" title="1. 以编程方式，如下所示"></a>1. 以编程方式，如下所示</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">EntityManagerFactory</span> <span class="variable">factory</span> <span class="operator">=</span> Persistence.createEntityManagerFactory(<span class="string">&quot;PERSISTENCE_UNIT_NAME&quot;</span>);                                       <span class="type">EntityManager</span> <span class="variable">entityManager</span> <span class="operator">=</span> entityManagerFactory.createEntityManager();                   </span><br><span class="line"><span class="type">Transaction</span> <span class="variable">transaction</span> <span class="operator">=</span> entityManager.getTransaction()                  </span><br><span class="line"><span class="keyword">try</span>                                       </span><br><span class="line">&#123;  </span><br><span class="line">   transaction.begin();                   </span><br><span class="line">   someBusinessCode();                    </span><br><span class="line">   transaction.commit();  </span><br><span class="line">&#125;                  </span><br><span class="line"><span class="keyword">catch</span>(Exception ex)                   </span><br><span class="line">&#123;                     </span><br><span class="line">   transaction.rollback();  </span><br><span class="line">   <span class="keyword">throw</span> ex;                  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>优点：</strong></p>
+<ul>
+<li>代码中事务的边界很清晰<br><strong>缺点：</strong></li>
+<li>重复的代码，容易出错</li>
+<li>任何错误都会产生很大的影响</li>
+<li>需要编写大量样板文件，如果要从此方法调用另一个方法，则还需要在那段代码中进行管理。</li>
+</ul>
+<h3 id="2-使用Spring管理事务"><a href="#2-使用Spring管理事务" class="headerlink" title="2. 使用Spring管理事务"></a>2. 使用Spring管理事务</h3><p>Spring支持两类事务管理</p>
+<ol>
+<li>编程式事务管理：这意味着必须在编程的帮助下管理事务。这提供了极大的灵活性，但很难维护。</li>
+<li>声明式事务管理：意味着您将事务管理与业务代码分开。只能使用注释或基于XML的配置来管理事务。</li>
+</ol>
+<blockquote>
+<p>强烈建议使用声明式事务。如果想知道其原因，请阅读下面的内容，否则，可以直接跳转到声明式事务管理实现的部分。</p>
+</blockquote>
+<p>现在，让我们细致的分析每一种事务管理方法。</p>
+<h3 id="编程式事务管理"><a href="#编程式事务管理" class="headerlink" title="编程式事务管理"></a>编程式事务管理</h3><p>Spring Framework提供了两种编程式事务管理方法。<br><strong>a. 使用TransactionTemplate (Spring推荐这种实现):</strong><br>Context Xml file: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Initialization for data source --&gt;   </span><br><span class="line">&lt;bean id=&quot;dataSource&quot; class=&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;&gt;              </span><br><span class="line">    &lt;property name=&quot;driverClassName&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;      </span><br><span class="line">    &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/TEST&quot;/&gt;      </span><br><span class="line">    &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;      </span><br><span class="line">    &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;   </span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!-- Initialization for TransactionManager --&gt;   </span><br><span class="line">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;    </span><br><span class="line">    &lt;property name=&quot;dataSource&quot;  ref=&quot;dataSource&quot; /&gt;  </span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!-- Definition for ServiceImpl bean --&gt;   </span><br><span class="line">&lt;bean id=&quot;serviceImpl&quot; class=&quot;com.service.ServiceImpl&quot;&gt;    </span><br><span class="line">    &lt;constructor-arg ref=&quot;transactionManager&quot;/&gt;   </span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>Service类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">Service</span></span><br><span class="line">&#123;        </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> TransactionTemplate transactionTemplate;</span><br><span class="line">  <span class="comment">// 使用构造器注入来使用PlatfromTransactionManager  </span></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">ServiceImpl</span><span class="params">(PlatformTransactionManager transactionManager)</span></span><br><span class="line">  &#123;     </span><br><span class="line">       <span class="built_in">this</span>.transactionTemplate = <span class="keyword">new</span> <span class="title class_">TransactionTemplate</span>(transactionManager);   </span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> Object <span class="title function_">someServiceMethod</span><span class="params">()</span></span><br><span class="line">  &#123;        </span><br><span class="line">    <span class="keyword">return</span> transactionTemplate.execute(<span class="keyword">new</span> <span class="title class_">TransactionCallback</span>() </span><br><span class="line">    &#123;</span><br><span class="line">     <span class="comment">//这段代码在事务上下文中执行</span></span><br><span class="line">     <span class="keyword">public</span> Object <span class="title function_">doInTransaction</span><span class="params">(TransactionStatus status)</span></span><br><span class="line">     &#123;                </span><br><span class="line">         updateOperation1();     </span><br><span class="line">         <span class="keyword">return</span> resultOfUpdateOperation2();    </span><br><span class="line">     &#125;</span><br><span class="line">   &#125;);   </span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>如果没有返回值，就使用<code>TransactionCallbackWithoutResult</code>匿名类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">transactionTemplate.execute(<span class="keyword">new</span> <span class="title class_">TransactionCallbackWithoutResult</span>()</span><br><span class="line">&#123;    </span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doInTransactionWithoutResult</span><span class="params">(TransactionStatus status)</span></span><br><span class="line">    &#123;       </span><br><span class="line">       updateOperation1();      </span><br><span class="line">       updateOperation2();  </span><br><span class="line">    &#125; </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>TransactionTemplate</code>类的实例是线程安全的，这些实例不包含任何会话状态。</li>
+<li>然而<code>TransactionTemplate</code>实例确实会维持配置信息状态，所以即使多个类共享同一个<code>TransactionTemplate</code>实例，如果一个类需要使用另一种配置的<code>TransactionTemplate</code>（比如不同的隔离级别），那么就需要配置两个不同的实例。</li>
+</ul>
+<p><strong>b. 直接使用<code>PlatformTransactionManager</code>实现</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Initialization for data source --&gt;  </span><br><span class="line">&lt;bean id=&quot;dataSource&quot; class=&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;&gt;    </span><br><span class="line">    &lt;property name=&quot;driverClassName&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;     </span><br><span class="line">    &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/TEST&quot;/&gt;      </span><br><span class="line">    &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;      </span><br><span class="line">    &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;  </span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!-- Initialization for TransactionManager --&gt;   </span><br><span class="line">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;      </span><br><span class="line">    &lt;property name=&quot;dataSource&quot;  ref=&quot;dataSource&quot; /&gt;       </span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">Service</span></span><br><span class="line">&#123;    </span><br><span class="line">    <span class="keyword">private</span> PlatformTransactionManager transactionManager;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setTransactionManager</span><span class="params">( PlatformTransactionManager transactionManager)</span></span><br><span class="line"> &#123;    </span><br><span class="line">       <span class="built_in">this</span>.transactionManager = transactionManager;  </span><br><span class="line"> &#125;</span><br><span class="line">    <span class="type">DefaultTransactionDefinition</span> <span class="variable">def</span> <span class="operator">=</span> <span class="keyword">new</span>     <span class="title class_">DefaultTransactionDefinition</span>();</span><br><span class="line">    <span class="comment">// explicitly setting the transaction name is something that can only be done programmatically</span></span><br><span class="line">    def.setName(<span class="string">&quot;SomeTxName&quot;</span>);</span><br><span class="line"> def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);</span><br><span class="line">    <span class="type">TransactionStatus</span> <span class="variable">status</span> <span class="operator">=</span> txManager.getTransaction(def);</span><br><span class="line">    <span class="keyword">try</span> </span><br><span class="line">    &#123;    </span><br><span class="line">    <span class="comment">// execute your business logic here</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception ex)</span><br><span class="line">    &#123;    </span><br><span class="line">        txManager.rollback(status);   </span><br><span class="line">    <span class="keyword">throw</span> ex;</span><br><span class="line">    &#125;</span><br><span class="line">    txManager.commit(status);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在进入声明式事务管理之前，让我们看看如何选择事务管理方式：</p>
+<ul>
+<li>只有在少量事务操作时，编程式事务管理更佳合适。</li>
+<li>只能通过编程式事务管理设置事务的名称</li>
+<li>当希望显示管理事务时，应当使用编程式事务管理</li>
+<li>另一方面，如果您的应用程序具有大量事务操作，则声明式事务管理是值得的。</li>
+<li>声明式事务管理使事务代码也业务代码分离，并且配置难度不大。</li>
+</ul>
+<h3 id="声明式事务管理（几乎用于所有web应用场景）"><a href="#声明式事务管理（几乎用于所有web应用场景）" class="headerlink" title="声明式事务管理（几乎用于所有web应用场景）###"></a>声明式事务管理（几乎用于所有web应用场景）###</h3><p><strong>第一步：在spring应用程序上下文xml文件中定义事务管理器。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;txManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>第二步：通过在spring应用程序上下文XML文件中添加以下条目，打开对事务注释的支持。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;tx:annotation-driven transaction-manager=&quot;txManager&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>或是在配置类中添加<code>@EnableTransactionManagement</code></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppConfig</span></span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Spring建议只使用@Transactional来注解具体类（以及具体类的方法），而不是接口。</p>
+</blockquote>
+<p>原因是如果在接口上注解，并且使用基于类的代理(proxy-target-class&#x3D;”true”）或是aop(mode&#x3D;”aspectj”)，那么事务注解将无法被识别。</p>
+<p><strong>第三步：将注解添加在类（或是类的方法）或是接口（或是接口的方法上）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;tx:annotation-driven proxy-target-class=&quot;true&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>默认配置为<code>proxy-target-class=&quot;false&quot;</code></p>
+<ul>
+<li><code>@Transactional</code>注解可以放在接口，接口方法，类或是类方法上</li>
+<li>如果你希望被注解在方法上的事务和类的事务配置不同，如隔离级别或传播级别，那么就在方法上覆盖类的配置</li>
+<li>在代理模式中，只有通过代理进入的“外部”方法调用才会被截获。这意味着“自我调用”，即目标对象中调用目标对象的其他方法的方法，即使被调用的方法用@Transactional标记，也不会在运行时触发事务。</li>
+</ul>
+<p>现在让我们了解一下<code>@Transactional</code>的属性：<br><code>@Transactional (isolation=Isolation.READ_COMMITTED)</code></p>
+<ul>
+<li>默认值为<code>Isolation.DEFAULT</code></li>
+<li>大多数场景下，使用默认值即可</li>
+<li>需要在事务开始之前配置。因为一旦事务开始，就无法进行配置</li>
+</ul>
+<p><em>READ_COMMITTED</em><br>防止脏读;会发生不可重复的读取和幻读。</p>
+<p><em>READ_UNCOMMITTED</em><br>会出现脏读，不可重复读和幻读。即可以看到事务尚未提交的数据</p>
+<p><em>REPEATABLE_READ</em><br>可重复读。会出现幻读</p>
+<p><em>序列化</em><br>防止脏读，幻读和不可重复读</p>
+<p><code>@Transactional(timeout=60)</code><br>默认为底层事务系统的默认超时。<br>当事务超过该时间没有响应时，则会对底层系统发出回滚请求</p>
+<p><code>@Transactional(propagation=Propagation.REQUIRED)</code><br>默认的传播级别为<code>Required</code>。其它的选项如<code>REQUIRES_NEW, MANDATORY, SUPPORTS, NOT_SUPPORTED, NEVER, 和NESTED</code></p>
+<p><em>REQUIRED</em><br>表示如果当前没有活跃的事务上下文，目标方法将无法运行。如果在调用此方法之前已经启动了事务管理，那么它将在相同的事务中继续，或者在调用此方法时将立即开始新的事务。</p>
+<p><em>REQUIRES_NEW</em><br>表示每次调用目标方法时都必须启动新的事务。如果已有事务，它将暂停。</p>
+<p><em>MANDATORY</em><br>表示目标方法需要运行中的事务。如果没有事务，它将抛出异常。</p>
+<p><em>SUPPORTS</em><br>无论是否有事务上下文，目标方法可以执行。如果当前有事务上下文，它将在同一个上下文中运行。如果没有，它仍将执行。这个选项适合获取数据的方法。</p>
+<p><em>NOT_SUPPORTED</em><br>目标方法无需传播事务上下文。</p>
+<p><em>NEVER</em><br>如果在事务上下文中执行目标方法，则抛出异常</p>
+<p><code>@Transactional (rollbackFor=Exception.class)</code></p>
+<ul>
+<li>默认为<code>rollbackFor=RunTimeException.class</code></li>
+<li>在spring中，这意味着只要事务上下文中抛出<code>RuntimeException</code>，事务就会回滚。</li>
+<li>可用于显示声明在某个异常出现时回滚<br><code>@Transactional (noRollbackFor=IllegalStateException.class)</code><br>如果该异常出现时，则不进行回滚</li>
+</ul>
+<p>最后，也是最重要的一个问题，<code>@Transactional</code>注解究竟应该放在哪一层？Service层还是Dao层？</p>
+<ul>
+<li>Service层是最合适的。服务层应该包含逻辑上进入事务的用户交互的详细级用例行为。</li>
+<li>在一些CRUD应用中，Service层的业务代码并不复杂，和Dao层的代码差不多。在这种场景下可以放置在DAO层</li>
+<li>如果在DAO层设置事务，而又有多个Service调用了DAO层的方法，那么将很难管理</li>
+<li>假如你的Service层是使用Hibernate在获取对象，而且你还使用懒加载获取集合。那么你需要在Service层开启事务，否则会抛出<code>LazyInitializationException</code></li>
+</ul>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/spring-transaction-management">https://dzone.com/articles/spring-transaction-management</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E7%90%86%E8%A7%A3java%E7%9A%84classloader/" rel="prev" title="猫头鹰的深夜翻译：理解java的classloader">
+                  <i class="fa fa-angle-left"></i> 猫头鹰的深夜翻译：理解java的classloader
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E8%AE%B0%E5%BD%95%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A6%82%E5%BF%B5/" rel="next" title="记录分布式一致性中的几个概念">
+                  记录分布式一致性中的几个概念 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基础知识  指令的历史记录位于~&#x2F;.bash_history文件中，可以使用cat指令查看。需要注意的是，它存储的是上一次登录时执行过的命令，而这一次登录中执行的命令将先暂存在内存中 Tab键可以用来补全命令或是提示可选的操作 \可以用来换行增强指令的可读性 将根据环境变量PATH来寻找指令，可以使用echo $PATH来查看环境变量 在命令执行的过程中，反引号中的指令会先执行，执行的结果会作为外">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bash指令学习与整理">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/bash%E6%8C%87%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="基础知识  指令的历史记录位于~&#x2F;.bash_history文件中，可以使用cat指令查看。需要注意的是，它存储的是上一次登录时执行过的命令，而这一次登录中执行的命令将先暂存在内存中 Tab键可以用来补全命令或是提示可选的操作 \可以用来换行增强指令的可读性 将根据环境变量PATH来寻找指令，可以使用echo $PATH来查看环境变量 在命令执行的过程中，反引号中的指令会先执行，执行的结果会作为外">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-05T14:09:39.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.372Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="bash">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/bash%E6%8C%87%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%95%B4%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/bash%E6%8C%87%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%95%B4%E7%90%86/","path":"2019/02/05/bash指令学习与整理/","title":"bash指令学习与整理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>bash指令学习与整理 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E6%8C%87%E4%BB%A4%E4%B8%8E%E4%BE%8B%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">各种指令与例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#alias"><span class="nav-number">2.1.</span> <span class="nav-text">alias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">2.2.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#echo"><span class="nav-number">2.3.</span> <span class="nav-text">echo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#env"><span class="nav-number">2.4.</span> <span class="nav-text">env</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-number">2.5.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#read"><span class="nav-number">2.6.</span> <span class="nav-text">read</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#declare-typeset"><span class="nav-number">2.7.</span> <span class="nav-text">declare&#x2F;typeset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#history"><span class="nav-number">2.8.</span> <span class="nav-text">history</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#source"><span class="nav-number">2.9.</span> <span class="nav-text">source</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#last"><span class="nav-number">2.10.</span> <span class="nav-text">last</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">3.</span> <span class="nav-text">数据流重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">管道命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cut"><span class="nav-number">4.1.</span> <span class="nav-text">cut</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep"><span class="nav-number">4.2.</span> <span class="nav-text">grep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort"><span class="nav-number">4.3.</span> <span class="nav-text">sort</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uniq"><span class="nav-number">4.4.</span> <span class="nav-text">uniq</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wc"><span class="nav-number">4.5.</span> <span class="nav-text">wc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tee"><span class="nav-number">4.6.</span> <span class="nav-text">tee</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tr"><span class="nav-number">4.7.</span> <span class="nav-text">tr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#col"><span class="nav-number">4.8.</span> <span class="nav-text">col</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#join"><span class="nav-number">4.9.</span> <span class="nav-text">join</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#paste"><span class="nav-number">4.10.</span> <span class="nav-text">paste</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#expand"><span class="nav-number">4.11.</span> <span class="nav-text">expand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#split"><span class="nav-number">4.12.</span> <span class="nav-text">split</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed"><span class="nav-number">4.13.</span> <span class="nav-text">sed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#egrep"><span class="nav-number">4.14.</span> <span class="nav-text">egrep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#printf"><span class="nav-number">4.15.</span> <span class="nav-text">printf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk"><span class="nav-number">4.16.</span> <span class="nav-text">awk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#diff"><span class="nav-number">4.17.</span> <span class="nav-text">diff</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B9%A6%E7%B1%8D"><span class="nav-number">5.</span> <span class="nav-text">参考书籍</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/bash%E6%8C%87%E4%BB%A4%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%95%B4%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="bash指令学习与整理 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          bash指令学习与整理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 22:09:39" itemprop="dateCreated datePublished" datetime="2019-02-05T22:09:39+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">原创</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><blockquote>
+<ol>
+<li>指令的历史记录位于<code>~/.bash_history</code>文件中，可以使用<code>cat</code>指令查看。需要注意的是，它存储的是上一次登录时执行过的命令，而这一次登录中执行的命令将先暂存在内存中</li>
+<li>Tab键可以用来补全命令或是提示可选的操作</li>
+<li><code>\</code>可以用来换行增强指令的可读性</li>
+<li>将根据环境变量PATH来寻找指令，可以使用<code>echo $PATH</code>来查看环境变量</li>
+<li>在命令执行的过程中，反引号中的指令会先执行，执行的结果会作为外部的输入信息，<code>$()</code>具有同样的效果</li>
+<li>命令执行顺序：以相对&#x2F;绝对路径执行命令，以alias找到该命令来执行，由bash内置的命令来执行，通过$PATH的顺序找到第一个命令并执行</li>
+<li>数据流重定向是指将某个指令执行后应该要出现在屏幕上的数据传输到其它地方。</li>
+<li>直接执行和bash或sh执行脚本会在子进程中执行，而使用source执行脚本则会在父进程中执行</li>
+</ol>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="各种指令与例子"><a href="#各种指令与例子" class="headerlink" title="各种指令与例子"></a>各种指令与例子</h2><h3 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h3><p><code>alias</code>: 显示所有的别名<br><code>alias lm=&#39;ls -al&#39;</code>：设置别名为lm<br><code>unalias &lt;COMMAND_NAME&gt;</code>: 取消别名</p>
+<h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><p>格式：<code>type [-ta] name</code> 可以通过type指令找到执行文件而不是一般的文件<br><code>type name</code>: 显示name是外部指令还是bash内部指令<br><code>type -t name</code>：外部命令则为file，别名命令则为alias，内置命令则为builtin<br><code>type -a name</code>: 从PATH变量定义的路径中，将所有含name的命令都列出来，包括alias</p>
+<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p>显示变量<br><code>echo $PATH</code>:显示环境变量<br><code>echo $HOME</code>: 显示当前用户的主目录<br><code>echo $MAIL</code>: 显示当前用户的邮件目录<br>也可以直接赋值，赋值时需要注意等号两边不能直接接空格符，如果有空格符可以用双引号包住。如果希望累加则应当使用双引号，如<code>name=&quot;$name&quot;yes</code><br><code>unset VARIABLE</code>:取消对VARIABLE的赋值<br><code>export VARIALBE</code>: 导出变量使子进程也可以使用</p>
+<h3 id="env"><a href="#env" class="headerlink" title="env"></a>env</h3><p>查看所有的环境变量，如PATH，HOME，SHELL</p>
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><p>不仅可以查看环境变量，还可以将bash内的其他变量全部显示出来，如HISTFILE，MAILCHECK，PS1<br><code>PS1</code>的默认格式为<code>&#39;[\u@\h \W]\$&#39;</code>也就是我们通常看到的<code>[rale@localhost ~]$</code>这里参数的含义如下：<br><code>\d</code>: 可显示出星期月日的格式<br><code>\H</code>: 完整的主机名<br><code>\h</code>: 仅取主机名在第一个小数点之前的名字<br><code>\t</code>: 显示24小时格式的时间，格式为”HH:MM:SS”<br><code>\t</code>: 显示12小时格式的时间<br><code>\A</code>: 显示24小时格式的时间，格式为”HH:MM”<br><code>\@</code>: 显示时间，格式为”am&#x2F;pm格式”<br><code>\u</code>: 目前用户的账户名称<br><code>\v</code>: bash的版本信息<br><code>\w</code>: 完整的工作目录<br><code>\W</code>: 利用basename获取的工作目录名称，仅显示最后一个目录名<br><code>\#</code>: 执行的第几个命令<br><code>\$</code>: 提示符，如果是root，则为#，否则为$<br>可以使用如下指令<code>PS1=&#39;[\u@\h \w \A #\#]\$&#39;</code>来修改PS1。</p>
+<h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><p>获取来自键盘的输入<br><code>read [-pt] variable</code><br><code>-p</code>: 后面可以接提示符<br><code>-t</code>: 后面可以接等待秒数<br><code>read -p &quot;please enter your name: &quot; -t 30 name</code></p>
+<h3 id="declare-typeset"><a href="#declare-typeset" class="headerlink" title="declare&#x2F;typeset"></a>declare&#x2F;typeset</h3><p>声明变量的类型, 默认类型为字符串，且无法进行小数的运算<br><code>declare [-aixr] variable</code><br><code>-a</code>: 将后面的变量定义为数组类型<br><code>-i</code>: 将后面的变量定义为整数数字类型<br><code>-x</code>: 将后面的变量定义为环境变量，等价于export<br><code>-r</code>: 将变量设置为readonly<br><code>declare -i sum=100+100+50</code></p>
+<h3 id="history"><a href="#history" class="headerlink" title="history"></a>history</h3><p><code>history n</code>: 显示最近n条命令<br><code>history -c</code>: 将目前shell中所有history内容全部消除<br><code>history -a histfiles</code>: 将目前新增的history命令新增入histfiles中。若灭有histfiles，则默认写入<code>~/bash_history</code><br><code>history -r histfiles</code>: 将histfiles的内容读入到目前这个shell的history记忆中<br><code>history -w histfiles</code>: 将history的内容写入histfiles<br><code>!&lt;number&gt;</code>：执行编号为number的指令<br><code>!command</code>: 执行command开头的指令<br><code>!!</code>: 执行上一个命令</p>
+<h3 id="source"><a href="#source" class="headerlink" title="source"></a>source</h3><p>读入环境配置文件的命令<br><code>source ENV_FILE</code><br>比如如果修改了<code>~/.bashrc</code>，无需退出重新登录，直接使用source指令即可。</p>
+<h3 id="last"><a href="#last" class="headerlink" title="last"></a>last</h3><p>查到这个月份有哪些用户登录了主机</p>
+<h2 id="数据流重定向"><a href="#数据流重定向" class="headerlink" title="数据流重定向"></a>数据流重定向</h2><p>标准输入：代码为0，&lt;或&lt;&lt;<br>标准输出：代码为1，&gt;或&gt;&gt;<br>标准错误输出：代码为2，2&gt;或2&gt;&gt;</p>
+<p>单个符号代表重写，两个符号代表添加<br><code>find /home -name .bashrc &gt; list 2&gt;&amp;1</code>将两个输出写入到同一个文件时，要使用2&gt;&amp;1指令<br><code>cat &gt; catfile</code>: 创建一个文件，并将键盘输入的数据覆盖该文件，按[ctrl]+d结束输入<br><code>cat &gt; catfile &lt; ~/.bashrc</code>将该文件的内容写入并覆盖catfile的内容<br><code>cat &gt; catfile &lt;&lt; &quot;eof&quot;</code> 键盘输入eof时结束输入，eof并不会出现在文件中</p>
+<h2 id="管道命令"><a href="#管道命令" class="headerlink" title="管道命令"></a>管道命令</h2><p>管道命令仅会处理标准输出，对于标准错误输出会予以忽略。管道命令必须要能够接收来自前一个命令的数据成为标准输入<br>管道命令有：less more head tail等</p>
+<h3 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h3><p>以行为单位处理信息，将每行的数据进行分割并获取。但是在多空格的环境中使用效果不佳。<br><code>cut -d &#39;分隔字符&#39; -f fields</code> 用于分隔字符<br><code>cut -c 字符范围</code> 用于排列整齐的信息<br><code>echo $PATH | cut -d &#39;:&#39; -f 3,5</code> 将$PATH根据：分割并且获取第3个值和第5个值<br><code>last | cut -d &#39; &#39; -f 1</code><br><code>export | cut -c 12-</code>获取export每行12字符开始往后的值</p>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><p>分析一行的数据，如果有所需要的数据，就将该行取出<br><code>grep [-acinv] [--color=auto] &#39;查找字符串&#39; filename</code><br><code>-a</code>: 将binary文件以text的方式查找数据<br><code>-c</code>: 计算找到’查找字符串’的次数<br><code>-i</code>: 忽略大小写不同<br><code>-n</code>: 输出行号<br><code>-v</code>: 输出没找到关键字的行<br><code>--color=auto</code>: 将关键字部分上色<br><code>last | grep &#39;root&#39;</code> 将last中出现root的行取出<br><code>last | grep -v &#39;root&#39;</code> 将last中没有root的行取出<br><code>last | grep &#39;root&#39; | cut -d &#39; &#39; -f 1</code>将包含root的行的第一个值取出来</p>
+<h3 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h3><p><code>sort [-fbMnrtuk] [file or stdin]</code><br><code>-f</code>: 忽略大小写<br><code>-b</code>: 忽略最前面的空格符部分<br><code>-M</code>: 以月份的名字来排序<br><code>-n</code>: 使用纯数字排序<br><code>-r</code>: 反向排序<br><code>-u</code>: 相同数据仅出现一次<br><code>-t</code>: 分隔符，默认为Tab键<br><code>-k</code>: 以哪个区间进行排序<br><code>cat /etc/passed | sort -t &#39;:&#39; -k 3 -n</code>将输入的每一行按照：分割并根据第三列进行排序，并且将第三列作为数字来排序，默认为字符串排序</p>
+<h3 id="uniq"><a href="#uniq" class="headerlink" title="uniq"></a>uniq</h3><p>删去重复的行进行统计<br><code>uniq [-ic]</code><br><code>-i</code>: 忽略大小写<br><code>-c</code>: 计数<br><code>last | cut -d &#39; &#39; -f 1 | sort | uniq</code><br><code>last | cut -d &#39; &#39; -f 1 | sort | uniq -c</code>获取最近登录用户的登录次数</p>
+<h3 id="wc"><a href="#wc" class="headerlink" title="wc"></a>wc</h3><p>统计文件的行数，字数和字符数<br><code>wc [-lwm]</code><br><code>-l</code> 仅列出多少行<br><code>-w</code> 仅列出多少字<br><code>-m</code> 多少字符<br><code>cat /etc/man.config | wc</code> 会输出该文件的行数，字数和字符数<br><code>last | grep [a-zzA-z] | grep -v &#39;wtmp&#39; | wc -l</code> 知道最近登录的用户数，除去空白行和wtmp行</p>
+<h3 id="tee"><a href="#tee" class="headerlink" title="tee"></a>tee</h3><p>双向重定向，即可以将一个标准输出转存一份到文件内并将同样的数据继续送到屏幕去处理<br><code>tee [-a] file</code> -a会以累加的方式<br><code>last | tee last.list | cut -d &quot; &quot; -f 1</code>将last的内容转存一份到last.list</p>
+<h3 id="tr"><a href="#tr" class="headerlink" title="tr"></a>tr</h3><p>删除一段信息中的文字，或是进行文字信息的转换<br><code>tr [-ds] SET1...</code><br><code>-d</code> 删除信息中SET1这个字符串<br><code>-s</code> 替换掉重复的字符<br><code>last | tr &#39;[a-z] [A-Z]&#39;</code>将last中的所有小写字符变成大写字符<br><code>cat /etc/passwd | tr -d &#39;:&#39;</code> 将输出信息中的冒号删除</p>
+<h3 id="col"><a href="#col" class="headerlink" title="col"></a>col</h3><p>常用于替换tab键或是将man page转存为纯文本文件以方便查阅的功能。<br><code>col [-xb]</code>-x将tab转换为对等的空格键，-b在文字内有反斜杠&#x2F;时，仅保留反斜杠后面接的字符</p>
+<h3 id="join"><a href="#join" class="headerlink" title="join"></a>join</h3><p>将两个文件中有相同数据的那一行加在一次。特别注意<strong>使用join前应当对文件进行排序，否则有些对比的项目会被略过</strong><br><code>join [-ti12] file1 file2</code><br><code>-t</code>: 分隔符，默认以空格符分割数据，并且对比第一个字段的数据，如果两个文件相同，则将两条数据连成一行，并且第一个字段放在第一个<br><code>-i</code>: 忽略大小写差异<br><code>-1</code>: 代表第一个文件要用哪个字段来分析<br><code>-2</code>: 代表第二个文件要用哪个字段来分析<br><code>join -t &#39;:&#39; -1 4 -2 3 /etc/passwd /etc/group</code>将两个文件按照：分割，第一个文件采用第4个作为比较符，第二个文件采用第3个作为比较符</p>
+<h3 id="paste"><a href="#paste" class="headerlink" title="paste"></a>paste</h3><p>直接将两行粘在一起，且中间以tab键隔开<br><code>paste [-d] file1 file2</code> -d表示分隔符，默认为tab。如果file的部分写为-，则表示来自标准输入的数据<br><code>cat /etc/group | paste /etc/passwd /etc/shadow - | head -n 3</code></p>
+<h3 id="expand"><a href="#expand" class="headerlink" title="expand"></a>expand</h3><p>将tab键转化为空格键<br><code>expand [-t] file</code>-t后面表示空格的个数，默认为8个空格键替换<br><code>grep &#39;^MANPATH&#39; /etc/man.confg | head -n 3 | expand -t 6 - | cat -A</code>此时的输出将不会出现tab键<br><code>unexpand</code>会将空格转换为tab</p>
+<h3 id="split"><a href="#split" class="headerlink" title="split"></a>split</h3><p>将一个大文件依据文件大小或是行数来切割为小文件<br><code>split [-bl] file PREFIX</code><br><code>-b</code> 欲切割的文件大小，可加单位如b，k，m<br><code>-l</code> 以行数来切割<br><code>PREFIX</code>： 作为切割问价你的前导文字<br><code>cd /tmp; split -b 300k /etc/termcap termcap</code>将文件切割为不超过300k的子文件，子文件的前缀为termcap<br><code>cat termcap* &gt;&gt; termcapback</code> 将子文件合并<br><code>ls -al / | split -l 10 - lsroot</code>将结果按照每十行记录为一个文件</p>
+<h3 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h3><p>可以分析standard input，还可以将数据进行替换、删除、新增、选取特定行等<br><code>sed [-nefr] [动作]</code><br><code>-n</code> 使用安静模式，在一般的sed中，所有来自stdin的数据一般都会被列出到屏幕，该模式只会列出经过sed特殊处理的那一行<br><code>-e</code>直接在命令行模式上进行sed的动作编辑<br><code>-f</code>将sed动作写入一个文件<br><code>-r</code>正则表示式语法<br><code>-i</code>直接修改读取的文件内容，而不是由屏幕输出<br><code>[n1][,n2]function</code><br><code>nl /etc/passwd | sed &#39;2,5d&#39;</code>列出&#x2F;etc&#x2F;passwd并删除2到5行<br><code>nl /etc/passwd | sed &#39;2,$d&#39;</code>列出&#x2F;etc&#x2F;passwd并删除第2行至最后一行<br><code>nl /etc/passwd | sed &#39;2a hello world&#39;</code>在第二行后的一行添加hello world，可以通过反斜线添加多行<br><code>nl /etc/passwd | sed &#39;2,5c No 2-5 line</code>将2到5行替换为No 2-5 line<br><code>sed &#39;s/要被替换的字符串/新的字符串/g&#39;</code>进行逐行的正则替换操作</p>
+<h3 id="egrep"><a href="#egrep" class="headerlink" title="egrep"></a>egrep</h3><p>支持扩展的正则表达式检索，包括<code>+</code>,<code>?</code>,<code>|</code>,<code>()</code>,<code>()+</code><br>正则表达式详情请参考<a href="https://segmentfault.com/a/1190000010012393">这篇文章</a></p>
+<h3 id="printf"><a href="#printf" class="headerlink" title="printf"></a>printf</h3><p>格式化打印<br><code>printf &#39;打印格式&#39; 实际内容</code></p>
+<h3 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h3><p>将一行分为数个字段来处理，默认的字段的分隔符为空格或是tab键。它适合处理小型的数据<br><code>awk &#39;条件类型1&#39;&#123;动作1&#125; &#39;条件类型2&#39;&#123;动作2&#125;...</code> filename<br><code>NF</code>: 每一行拥有的字段数<br><code>NR</code>: 目前awk在处理第几行数据<br><code>FS</code>: 目前的分割字符，默认为空格键<br>awk后序的所有动作都以单引号括住，非变量的文字部分都需要用双引号定义<br><code>last -n 5 | awk &#39;&#123;print $1 &quot;\t lines:&quot; NR &quot;\t columns: &quot; NF&#125;&#39;</code> 按照默认的空格划分一行为多个字段，打印第一个字段，以及目前在第几行和每一行拥有几个字段<br><code>cat /etc/passwd | awk &#39;&#123;FS=&quot;:&quot;&#125; $3 &lt; 10 &#123;print $1 &quot;\t&quot; $3&#125;&#39;</code> 按照：分割，取出第三个字段小于10的内容</p>
+<h3 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h3><p>以行为单位比较两个文件的区别，通常用在同一文件的新旧版本上的区别。<br><code>diff [-bBi] from-file to-file</code><br><code>-b</code>: 忽略一行当中仅有多个空白的区别，如<code>about me</code>和<code>about    me</code>为相同的<br><code>-B</code>: 忽略空白行的区别<br><code>-i</code>: 忽略大小写</p>
+<h2 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h2><p>鸟哥的linux私房菜</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/bash/" rel="tag"># bash</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E5%9C%A8Centos%E4%B8%8A%E6%90%AD%E5%BB%BAMaven%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93/" rel="prev" title="在Centos上搭建Maven中央仓库">
+                  <i class="fa fa-angle-left"></i> 在Centos上搭建Maven中央仓库
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/" rel="next" title="简单的仿射变换">
+                  简单的仿射变换 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

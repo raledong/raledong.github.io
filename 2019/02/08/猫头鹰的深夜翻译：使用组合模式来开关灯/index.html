@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言设计模式可能是博客圈最热门的话题之一。但是，用来说明每个设计模式的例子通常不是很形象。为了挽救这一点，这篇博客将用一个简单有效的例子来解释组合模式。 我们不会再重复解释这个模型的概念。唯一需要记住的是组合模式通常用在一个树结构的递归操作上。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：使用组合模式来开关灯">
+<meta property="og:url" content="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F%E6%9D%A5%E5%BC%80%E5%85%B3%E7%81%AF/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言设计模式可能是博客圈最热门的话题之一。但是，用来说明每个设计模式的例子通常不是很形象。为了挽救这一点，这篇博客将用一个简单有效的例子来解释组合模式。 我们不会再重复解释这个模型的概念。唯一需要记住的是组合模式通常用在一个树结构的递归操作上。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-07T16:20:40.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.469Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F%E6%9D%A5%E5%BC%80%E5%85%B3%E7%81%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F%E6%9D%A5%E5%BC%80%E5%85%B3%E7%81%AF/","path":"2019/02/08/猫头鹰的深夜翻译：使用组合模式来开关灯/","title":"猫头鹰的深夜翻译：使用组合模式来开关灯"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：使用组合模式来开关灯 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F%E4%BE%8B%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">组合模式例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Building"><span class="nav-number">2.1.</span> <span class="nav-text">Building</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Floor"><span class="nav-number">2.2.</span> <span class="nav-text">Floor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Room"><span class="nav-number">2.3.</span> <span class="nav-text">Room</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F%E6%9D%A5%E5%BC%80%E5%85%B3%E7%81%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：使用组合模式来开关灯 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：使用组合模式来开关灯
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-08 00:20:40" itemprop="dateCreated datePublished" datetime="2019-02-08T00:20:40+08:00">2019-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>设计模式可能是博客圈最热门的话题之一。但是，用来说明每个设计模式的例子通常不是很形象。为了挽救这一点，这篇博客将用一个简单有效的例子来解释<a href="https://en.wikipedia.org/wiki/Composite_pattern">组合模式</a>。</p>
+<p>我们不会再重复解释这个模型的概念。唯一需要记住的是组合模式通常用在一个树结构的递归操作上。</p>
+<span id="more"></span>
+
+<h2 id="组合模式例子"><a href="#组合模式例子" class="headerlink" title="组合模式例子"></a>组合模式例子</h2><p>假设有一栋建筑，这个建筑有几层楼，每层楼有几个房间。<br>这个建筑的神奇之处在于，它没有一个总开关。因此，当需要关闭或是开启整栋楼的灯时，就不得不逐层逐个房间按动开关。</p>
+<p>为了改变这种情况，我们需要首先定义一个包含开关灯操作的基本接口。这个接口我们命名为<code>Component</code>，对应于组合模式中的<code>Component</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Component</span> &#123;</span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">switchLightsOn</span><span class="params">()</span>;</span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">switchLightsOff</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着，我们定义表示建筑的类<code>Building,Floor和Room</code>。每个类实现该接口，并且实现的逻辑如下：</p>
+<ul>
+<li>Building的开关灯操作意味着整栋楼都将开灯或关灯</li>
+<li>Floor的开关灯操作意味着整层楼的开灯或关灯</li>
+<li>Room的开关灯操作意味着该房间的开灯或关灯</li>
+</ul>
+<p>以下是三个类的内容：</p>
+<h3 id="Building"><a href="#Building" class="headerlink" title="Building"></a>Building</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Building</span> <span class="keyword">extends</span> <span class="title class_">ArrayList</span>&lt;Floor&gt; <span class="keyword">implements</span> <span class="title class_">Component</span>&#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">switchLightsOn</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (Floor floor : <span class="built_in">this</span>) &#123;</span><br><span class="line">         floor.switchLightsOn();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">switchLightsOff</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (Floor floor : <span class="built_in">this</span>) &#123;</span><br><span class="line">         floor.switchLightsOff();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Floor"><a href="#Floor" class="headerlink" title="Floor"></a>Floor</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Floor</span> <span class="keyword">extends</span> <span class="title class_">ArrayList</span>&lt;Room&gt; <span class="keyword">implements</span> <span class="title class_">Component</span> &#123;</span><br><span class="line">   <span class="keyword">private</span> <span class="type">int</span> floorNumber;</span><br><span class="line">   <span class="keyword">public</span> <span class="title function_">Floor</span><span class="params">(<span class="type">int</span> floorNumber)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.floorNumber=floorNumber;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">switchLightsOn</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (Room room : <span class="built_in">this</span>) &#123;</span><br><span class="line">         room.switchLightsOn();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">switchLightsOff</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (Room room : <span class="built_in">this</span>) &#123;</span><br><span class="line">         room.switchLightsOff();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Room"><a href="#Room" class="headerlink" title="Room"></a>Room</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Room</span> <span class="keyword">implements</span> <span class="title class_">Component</span> &#123;</span><br><span class="line">   <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">lightsOn</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">private</span> <span class="type">int</span> roomNumber;</span><br><span class="line">   <span class="keyword">public</span> <span class="title function_">Room</span><span class="params">(<span class="type">int</span> roomNumber)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.roomNumber=roomNumber;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">switchLightsOn</span><span class="params">()</span> &#123;</span><br><span class="line">      lightsOn = <span class="literal">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">switchLightsOff</span><span class="params">()</span> &#123;</span><br><span class="line">      lightsOn = <span class="literal">false</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLightsOn</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> lightsOn;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>补充说明一下：</p>
+<ul>
+<li>出于方便，Building类和Floor类直接继承了ArrayList来获得其容器的功能</li>
+<li>Building将关灯的操作传递给其下所有的楼层。类似的，每个楼层将关灯的操作传递给每个房间。这种<em>递归传递</em>时组合模式独有的一个特点。</li>
+<li>总体的效果是Building上的行为启动了一系列操作并传递给Floors和Rooms。这种<em>多米诺骨牌效应</em>也是组合模式的一个特点。</li>
+</ul>
+<p>看一下具体的运行情况。首先，我们需要新建一个Building（默认情况下，灯是关闭状态）。之后，调用建筑的<code>switchLightsOn</code>方法，打开建筑中的所有房间的灯。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CompositeTest</span> &#123;</span><br><span class="line">   <span class="keyword">private</span> Building building;</span><br><span class="line">   <span class="meta">@Before</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">createBuilding</span><span class="params">()</span>&#123;</span><br><span class="line">      building = <span class="keyword">new</span> <span class="title class_">Building</span>();</span><br><span class="line">      <span class="comment">//1st floor</span></span><br><span class="line">      <span class="type">Floor</span> <span class="variable">floor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Floor</span>(<span class="number">1</span>);</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">11</span>));</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">12</span>));</span><br><span class="line">      building.add(floor);</span><br><span class="line">      <span class="comment">//2nd floor</span></span><br><span class="line">      floor = <span class="keyword">new</span> <span class="title class_">Floor</span>(<span class="number">2</span>);</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">21</span>));</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">22</span>));</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">23</span>));</span><br><span class="line">      building.add(floor);</span><br><span class="line">      <span class="comment">//3rd floor</span></span><br><span class="line">      floor = <span class="keyword">new</span> <span class="title class_">Floor</span>(<span class="number">3</span>);</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">31</span>));</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">32</span>));</span><br><span class="line">      floor.add(<span class="keyword">new</span> <span class="title class_">Room</span>(<span class="number">33</span>));</span><br><span class="line">      building.add(floor);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">buildingLightsAreOn</span><span class="params">()</span>&#123;</span><br><span class="line">       <span class="comment">//checking that all rooms are off</span></span><br><span class="line">      <span class="keyword">for</span>(Floor floor : building)&#123;</span><br><span class="line">         <span class="keyword">for</span>(Room room : floor)&#123;</span><br><span class="line">            assertEquals(<span class="literal">false</span>,room.isLightsOn());</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      building.switchLightsOn();</span><br><span class="line">       <span class="comment">//checking that all rooms are on</span></span><br><span class="line">      <span class="keyword">for</span>(Floor floor : building)&#123;</span><br><span class="line">         <span class="keyword">for</span>(Room room : floor)&#123;</span><br><span class="line">            assertEquals(<span class="literal">true</span>,room.isLightsOn());</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/using-the-composite-pattern-to-turn-the-lights-on">https://dzone.com/articles/using-the-composite-pattern-to-turn-the-lights-on</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%9C%A8JAVA%E4%B8%AD%E8%AE%B0%E5%BD%95%E6%97%A5%E5%BF%97%E7%9A%84%E5%8D%81%E4%B8%AA%E5%B0%8F%E5%BB%BA%E8%AE%AE/" rel="prev" title="猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议">
+                  <i class="fa fa-angle-left"></i> 猫头鹰的深夜翻译：在JAVA中记录日志的十个小建议
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/08/Boot%EF%BC%9F/" rel="next" title="猫头鹰的深夜翻译：为什么要使用Spring Boot？">
+                  猫头鹰的深夜翻译：为什么要使用Spring Boot？ <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

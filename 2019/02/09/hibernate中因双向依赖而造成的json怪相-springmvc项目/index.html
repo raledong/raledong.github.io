@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简单说一下Jackson如果想要详细了解一下Jackson，可以去其github上的项目主页查看其版本情况以及各项功能。除此以外，需要格外提一下Jackson的版本问题。Jackson目前主流版本有两种，1.x和2.x，而这二者的核心包是不同的。在2.0以后的Jackson版本中，groupId从原来的org.codehaus.jackson.core转而变成了com.fasterxml.jack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hibernate中因双向依赖而造成的json怪相--springmvc项目">
+<meta property="og:url" content="http://yoursite.com/2019/02/09/hibernate%E4%B8%AD%E5%9B%A0%E5%8F%8C%E5%90%91%E4%BE%9D%E8%B5%96%E8%80%8C%E9%80%A0%E6%88%90%E7%9A%84json%E6%80%AA%E7%9B%B8-springmvc%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="简单说一下Jackson如果想要详细了解一下Jackson，可以去其github上的项目主页查看其版本情况以及各项功能。除此以外，需要格外提一下Jackson的版本问题。Jackson目前主流版本有两种，1.x和2.x，而这二者的核心包是不同的。在2.0以后的Jackson版本中，groupId从原来的org.codehaus.jackson.core转而变成了com.fasterxml.jack">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-09T12:15:46.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.376Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="SpringMVC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/09/hibernate%E4%B8%AD%E5%9B%A0%E5%8F%8C%E5%90%91%E4%BE%9D%E8%B5%96%E8%80%8C%E9%80%A0%E6%88%90%E7%9A%84json%E6%80%AA%E7%9B%B8-springmvc%E9%A1%B9%E7%9B%AE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/09/hibernate%E4%B8%AD%E5%9B%A0%E5%8F%8C%E5%90%91%E4%BE%9D%E8%B5%96%E8%80%8C%E9%80%A0%E6%88%90%E7%9A%84json%E6%80%AA%E7%9B%B8-springmvc%E9%A1%B9%E7%9B%AE/","path":"2019/02/09/hibernate中因双向依赖而造成的json怪相-springmvc项目/","title":"hibernate中因双向依赖而造成的json怪相--springmvc项目"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>hibernate中因双向依赖而造成的json怪相--springmvc项目 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B4%E4%B8%80%E4%B8%8BJackson"><span class="nav-number">1.</span> <span class="nav-text">简单说一下Jackson</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AAbug%E8%AF%B4%E8%B5%B7"><span class="nav-number">2.</span> <span class="nav-text">从一个bug说起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JsonIgnore"><span class="nav-number">2.1.</span> <span class="nav-text">@JsonIgnore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JsonManagedReference-and-JsonBackReference"><span class="nav-number">2.2.</span> <span class="nav-text">@JsonManagedReference and @JsonBackReference.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JsonIdentityInfo"><span class="nav-number">2.3.</span> <span class="nav-text">@JsonIdentityInfo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JsonIgnoreProperties-%E4%B8%AA%E4%BA%BA%E5%BF%83%E4%B8%AD%E7%9A%84%E5%85%A8%E5%9C%BA%E6%9C%80%E4%BD%B3"><span class="nav-number">2.4.</span> <span class="nav-text">@JsonIgnoreProperties 个人心中的全场最佳</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8A%E5%9C%BA%E5%B0%8F%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">半场小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E6%95%99%E7%A8%8B%E4%BC%A0%E9%80%81%E9%97%A8"><span class="nav-number">4.</span> <span class="nav-text">其它教程传送门</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/hibernate%E4%B8%AD%E5%9B%A0%E5%8F%8C%E5%90%91%E4%BE%9D%E8%B5%96%E8%80%8C%E9%80%A0%E6%88%90%E7%9A%84json%E6%80%AA%E7%9B%B8-springmvc%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="hibernate中因双向依赖而造成的json怪相--springmvc项目 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hibernate中因双向依赖而造成的json怪相--springmvc项目
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-09 20:15:46" itemprop="dateCreated datePublished" datetime="2019-02-09T20:15:46+08:00">2019-02-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">原创</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="简单说一下Jackson"><a href="#简单说一下Jackson" class="headerlink" title="简单说一下Jackson"></a>简单说一下Jackson</h2><p>如果想要详细了解一下Jackson，可以去其github上的<a href="https://github.com/FasterXML/jackson">项目主页</a>查看其版本情况以及各项功能。除此以外，需要格外提一下Jackson的版本问题。Jackson目前主流版本有两种，1.x和2.x，而这二者的核心包是不同的。在2.0以后的Jackson版本中，groupId从原来的org.codehaus.jackson.core转而变成了com.fasterxml.jackson.core。所以如果希望用到新性能的Jackson，请将原来的maven依赖改为以下的依赖。</p>
+<blockquote>
+<p>下文中的jackson-2-version是指特定的版本，当前的稳定版本为<strong>2.8.9</strong>。想要了解最新的版本情况还请去项目主页或是maven官网上查看。但是如果是要和spring mvc配合使用的话，还要注意一下他们之间的兼容问题。目前我采用的是4.2.6版本的springmvc和2.6.6版本的jackson</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- the core, which includes Streaming API, shared low-level abstractions (but NOT data-binding) --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;jackson-2-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">&lt;!-- Just the annotations; use this dependency if you want to </span></span><br><span class="line"><span class="comment">    attach annotations to classes without connecting them to the code. --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;jackson-2-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- databinding; ObjectMapper, JsonNode and related classes are here --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;jackson-2-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- smile (binary JSON). Other artifacts in this group do other formats. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.dataformat<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-dataformat-smile<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;jackson-2-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- JAX-RS provider --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.jaxrs<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-jaxrs-json-provider<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;jackson-2-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Support for JAX-B annotations as additional configuration --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.module<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-module-jaxb-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;jackson-2-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果是在springmvc中配置maven依赖，则需要的依赖包为<code>core，annotation和databind</code></p>
+<span id="more"></span>
+
+<h2 id="从一个bug说起"><a href="#从一个bug说起" class="headerlink" title="从一个bug说起"></a>从一个bug说起</h2><p>刚开始上手springmvc的时候并没有详细去了解更多的JSON操作，只是简单的了解了一下如何将对象转化为JSON数据传送回前端。但是在这时出现了一个问题，就是当两个entity之间存在双向依赖时，传回的JSON数据会出现无限的读取情况。也就是说，因为两个实体中都存在着指向对方的指针，导致序列化的时候会出现二者之间不断相互访问的情况。hibernate这种实体设计方式一直让我有些困惑，毕竟在一般代码的设计模式中是应当尽量避免出现双向依赖的。</p>
+<p>这里举一个具体的例子说明这个情况。<br>假设我有一个订单，订单中有多个商品。也就是<strong>订单和商品之间是一对多的关系</strong>。订单和商品的实体类如下：</p>
+<p><em><strong>订单实体类</strong></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.hibernate.annotations.Fetch;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.annotations.FetchMode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.persistence.*;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by rale on 7/15/17.</span></span><br><span class="line"><span class="comment"> * 销售单</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name=&quot;sales_order&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrder</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;sales_order_id&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long salesOrderId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**订单创建人员**/</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;salesman_id&quot;, nullable = false)</span></span><br><span class="line">    <span class="keyword">private</span> Long userId;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Temporal(TemporalType.TIMESTAMP)</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;sales_order_created_at&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Date createAt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**订单中商品列表清单**/</span></span><br><span class="line">    <span class="meta">@OneToMany(mappedBy = &quot;salesOrder&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span></span><br><span class="line">    <span class="meta">@OrderBy(value = &quot;order_item_id&quot;)</span></span><br><span class="line">    <span class="meta">@Fetch(FetchMode.JOIN)</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;SalesOrderItem&gt; salesOrderItems;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Long <span class="title function_">getSalesOrderId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> salesOrderId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSalesSource</span><span class="params">(SalesSource salesSource)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.salesSource = salesSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Long <span class="title function_">getUserId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> userId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setUserId</span><span class="params">(Long userId)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userId = userId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">getCreateAt</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> createAt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCreateAt</span><span class="params">(Date createAt)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.createAt = createAt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;SalesOrderItem&gt; <span class="title function_">getSalesOrderItems</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> salesOrderItems==<span class="literal">null</span> ? <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;SalesOrderItem&gt;() : salesOrderItems;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSalesOrderItems</span><span class="params">(List&lt;SalesOrderItem&gt; salesOrderItems)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.salesOrderItems = salesOrderItems;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addSalesOrderItem</span><span class="params">(SalesOrderItem salesOrderItem)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.salesOrderItems == <span class="literal">null</span>) <span class="built_in">this</span>.salesOrderItems = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;SalesOrderItem&gt;();</span><br><span class="line">        salesOrderItem.setSalesOrder(<span class="built_in">this</span>);</span><br><span class="line">        <span class="built_in">this</span>.salesOrderItems.add(salesOrderItem);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><em><strong>订单商品实体类</strong></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.persistence.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by rale on 7/15/17.</span></span><br><span class="line"><span class="comment"> * 销售清单中的单品和数量</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;sales_order_item&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrderItem</span> &#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;order_item_id&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long salesOrderItemId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Column(name = &quot;order_item_quantity&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> quantity;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Column(name = &quot;order_item_price&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> salesPrice;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对应的销售单实体类</span></span><br><span class="line">    <span class="meta">@ManyToOne</span></span><br><span class="line">    <span class="meta">@JoinColumn(name = &quot;order_id&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> SalesOrder salesOrder;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SalesOrderItem</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SalesOrderItem</span><span class="params">(Long salesOrderItemId)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.salesOrderItemId = salesOrderItemId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Long <span class="title function_">getSalesOrderItemId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> salesOrderItemId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSalesOrderItemId</span><span class="params">(Long salesOrderItemId)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.salesOrderItemId = salesOrderItemId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getQuantity</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> quantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setQuantity</span><span class="params">(<span class="type">int</span> quantity)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.quantity = quantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">getSalesPrice</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> salesPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSalesPrice</span><span class="params">(<span class="type">double</span> salesPrice)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.salesPrice = salesPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> SalesOrder <span class="title function_">getSalesOrder</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> salesOrder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSalesOrder</span><span class="params">(SalesOrder salesOrder)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.salesOrder = salesOrder;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>解决双向依赖的方法如下：</p>
+<h3 id="JsonIgnore"><a href="#JsonIgnore" class="headerlink" title="@JsonIgnore"></a>@JsonIgnore</h3><p>在不希望被序列化的field或property上使用<code>@JsonIgnore</code>标记，即可使该属性在序列化和解序列化的过程中不被访问。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name=&quot;sales_order&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrder</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**订单中商品列表清单**/</span></span><br><span class="line">    <span class="meta">@OneToMany(mappedBy = &quot;salesOrder&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span></span><br><span class="line">    <span class="meta">@OrderBy(value = &quot;order_item_id&quot;)</span></span><br><span class="line">    <span class="meta">@Fetch(FetchMode.JOIN)</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;SalesOrderItem&gt; salesOrderItems;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;sales_order_item&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrderItem</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对应的销售单实体类</span></span><br><span class="line">    <span class="meta">@ManyToOne</span></span><br><span class="line">    <span class="meta">@JoinColumn(name = &quot;order_id&quot;)</span></span><br><span class="line">    <span class="meta">@JsonIgnore</span></span><br><span class="line">    <span class="keyword">private</span> SalesOrder salesOrder;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里可能会出现不适用的场景，比如说，当我希望从SalesOrderItem的方向获取SalesOrder的数据，将会出现无法被序列化的情况。</p>
+<blockquote>
+<p>这里需要特别强调一下 不要使用transient标记属性 会报错</p>
+</blockquote>
+<h3 id="JsonManagedReference-and-JsonBackReference"><a href="#JsonManagedReference-and-JsonBackReference" class="headerlink" title="@JsonManagedReference and @JsonBackReference."></a>@JsonManagedReference and @JsonBackReference.</h3><p>将<code>@JsonManagedReference</code>标记在父类对子类的引用变量上，并将<code>@JsonBackReference</code>标记在子类对父类的引用变量上。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name=&quot;sales_order&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrder</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**订单中商品列表清单**/</span></span><br><span class="line">    <span class="meta">@OneToMany(mappedBy = &quot;salesOrder&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span></span><br><span class="line">    <span class="meta">@OrderBy(value = &quot;order_item_id&quot;)</span></span><br><span class="line">    <span class="meta">@Fetch(FetchMode.JOIN)</span></span><br><span class="line">    <span class="meta">@JsonManagedReference</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;SalesOrderItem&gt; salesOrderItems;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;sales_order_item&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrderItem</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对应的销售单实体类</span></span><br><span class="line">    <span class="meta">@ManyToOne</span></span><br><span class="line">    <span class="meta">@JoinColumn(name = &quot;order_id&quot;)</span></span><br><span class="line">    <span class="meta">@JsonBackReference</span></span><br><span class="line">    <span class="keyword">private</span> SalesOrder salesOrder;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过这种方式确保在双向关系中只有单个反向的实例被序列化</p>
+<h3 id="JsonIdentityInfo"><a href="#JsonIdentityInfo" class="headerlink" title="@JsonIdentityInfo"></a>@JsonIdentityInfo</h3><p>该annotation用于标注在entity上。当entity被标注后，jackson在每一次序列化的时候都会为该实例生成专门的ID（也可以是实例自带的属性），通过这种方式辨别实例。这种方式适用于存在一个<code>实体关联链的场景</code>。比如Order -&gt; OrderLine -&gt; User -&gt; Order</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name=&quot;sales_order&quot;)</span></span><br><span class="line"><span class="meta">@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property=&quot;@id&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrder</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**订单中商品列表清单**/</span></span><br><span class="line">    <span class="meta">@OneToMany(mappedBy = &quot;salesOrder&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span></span><br><span class="line">    <span class="meta">@OrderBy(value = &quot;order_item_id&quot;)</span></span><br><span class="line">    <span class="meta">@Fetch(FetchMode.JOIN)</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;SalesOrderItem&gt; salesOrderItems;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;sales_order_item&quot;)</span></span><br><span class="line"><span class="meta">@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property=&quot;@id&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrderItem</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对应的销售单实体类</span></span><br><span class="line">    <span class="meta">@ManyToOne</span></span><br><span class="line">    <span class="meta">@JoinColumn(name = &quot;order_id&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> SalesOrder salesOrder;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JsonIgnoreProperties-个人心中的全场最佳"><a href="#JsonIgnoreProperties-个人心中的全场最佳" class="headerlink" title="@JsonIgnoreProperties 个人心中的全场最佳"></a>@JsonIgnoreProperties 个人心中的全场最佳</h3><p>@JsonIgnoreProperties不同于@JsonIgnore在于，你可以注明该变量中的哪个属相不被序列化。从而允许在双向访问上都不存在环或是缺失。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name=&quot;sales_order&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrder</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**订单中商品列表清单**/</span></span><br><span class="line">    <span class="meta">@OneToMany(mappedBy = &quot;salesOrder&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span></span><br><span class="line">    <span class="meta">@OrderBy(value = &quot;order_item_id&quot;)</span></span><br><span class="line">    <span class="meta">@Fetch(FetchMode.JOIN)</span></span><br><span class="line">    <span class="meta">@JsonIgnoreProperties(&quot;salesOrder&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;SalesOrderItem&gt; salesOrderItems;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;sales_order_item&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SalesOrderItem</span> &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对应的销售单实体类</span></span><br><span class="line">    <span class="meta">@ManyToOne</span></span><br><span class="line">    <span class="meta">@JoinColumn(name = &quot;order_id&quot;)</span></span><br><span class="line">    <span class="meta">@JsonIgnoreProperties(&quot;salesOrderItems&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> SalesOrder salesOrder;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//getters and setters</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="半场小结"><a href="#半场小结" class="headerlink" title="半场小结"></a>半场小结</h2><p>其实jackson中还有很多很实用的功能，例如如何将Date类序列化成界面展示的格式等，将在下一次更新中说明。有兴趣的可以收藏加关注哦。</p>
+<h2 id="其它教程传送门"><a href="#其它教程传送门" class="headerlink" title="其它教程传送门"></a>其它教程传送门</h2><p><em><strong>springmvc + ajax 实现</strong></em><br><a href="http://www.mkyong.com/spring-mvc/spring-4-mvc-ajax-hello-world-example/">http://www.mkyong.com/spring-mvc/spring-4-mvc-ajax-hello-world-example/</a></p>
+<p><strong>jackson annotation教程</strong><br><a href="http://tutorials.jenkov.com/java-json/jackson-annotations.html">http://tutorials.jenkov.com/java-json/jackson-annotations.html</a></p>
+<p><strong>stack overflow上相关问题回答</strong><br><a href="https://stackoverflow.com/questions/12505141/only-using-jsonignore-during-serialization-but-not-deserialization">https://stackoverflow.com/questions/12505141/only-using-jsonignore-during-serialization-but-not-deserialization</a><br><a href="https://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue">https://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue</a><br><a href="https://stackoverflow.com/questions/30589257/json-jpa-manytoone-and-onetomany-recursive">https://stackoverflow.com/questions/30589257/json-jpa-manytoone-and-onetomany-recursive</a></p>
+<blockquote>
+<p>这里需要指出的是，虽然某些回答说，要将annotation标注在私有变量的get方法上，但是po主发现标注在私有变量上还是可以实现功能的。</p>
+</blockquote>
+<p><strong>data hiding using jsonignore and spring data jpa</strong><br><a href="https://dzone.com/articles/data-hiding-using-jsonignore-and-spring-data-jpa">https://dzone.com/articles/data-hiding-using-jsonignore-and-spring-data-jpa</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
+              <a href="/tags/SpringMVC/" rel="tag"># SpringMVC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/09/git%E6%8C%87%E4%BB%A4%E6%94%B6%E7%BC%96%E6%95%B4%E7%90%86/" rel="prev" title="git指令收编整理">
+                  <i class="fa fa-angle-left"></i> git指令收编整理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/09/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA1-%E4%BD%A0%E7%9A%84%E7%AC%A6%E5%8F%B7%E6%88%91%E5%81%9A%E4%B8%BB/" rel="next" title="深入浅出1--你的符号我做主">
+                  深入浅出1--你的符号我做主 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

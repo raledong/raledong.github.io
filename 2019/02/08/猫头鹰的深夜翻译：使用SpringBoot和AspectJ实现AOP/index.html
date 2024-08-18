@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言这篇文章会帮助你使用Spring Boot Starter AOP实现AOP。我们会使用AspectJ实现四个不同的通知(advice)，并且新建一个自定义的注解来追踪方法的执行时间。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP">
+<meta property="og:url" content="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8SpringBoot%E5%92%8CAspectJ%E5%AE%9E%E7%8E%B0AOP/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言这篇文章会帮助你使用Spring Boot Starter AOP实现AOP。我们会使用AspectJ实现四个不同的通知(advice)，并且新建一个自定义的注解来追踪方法的执行时间。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8SpringBoot%E5%92%8CAspectJ%E5%AE%9E%E7%8E%B0AOP/%E5%9B%BE%E7%89%871.png">
+<meta property="article:published_time" content="2019-02-07T16:48:35.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.469Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8SpringBoot%E5%92%8CAspectJ%E5%AE%9E%E7%8E%B0AOP/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8SpringBoot%E5%92%8CAspectJ%E5%AE%9E%E7%8E%B0AOP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8SpringBoot%E5%92%8CAspectJ%E5%AE%9E%E7%8E%B0AOP/","path":"2019/02/08/猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP/","title":"猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E5%B0%86%E4%BC%9A%E4%BA%86%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">你将会了解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">项目代码结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8DAOP"><span class="nav-number">4.</span> <span class="nav-text">介绍AOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96Spring-Boot-AOP%E9%A1%B9%E7%9B%AE"><span class="nav-number">5.</span> <span class="nav-text">初始化Spring Boot AOP项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot-AOP-starter"><span class="nav-number">6.</span> <span class="nav-text">Spring Boot AOP starter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEAOP"><span class="nav-number">7.</span> <span class="nav-text">配置AOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84AOP%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="nav-number">8.</span> <span class="nav-text">一个简单的AOP单元测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-Before%E9%80%9A%E7%9F%A5"><span class="nav-number">9.</span> <span class="nav-text">实现@Before通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%A7%A3AOP%E6%9C%AF%E8%AF%AD-Pointcut-Advice-Aspect-Join-Point"><span class="nav-number">10.</span> <span class="nav-text">理解AOP术语: Pointcut, Advice, Aspect,Join Point</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-After-AfterReturning%E5%92%8C-AfterThrowing%E9%80%9A%E7%9F%A5"><span class="nav-number">10.1.</span> <span class="nav-text">使用@After, @AfterReturning和@AfterThrowing通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83AOP%E5%8A%9F%E8%83%BD%EF%BC%9A-Around%E5%92%8C%E6%B3%A8%E8%A7%A3"><span class="nav-number">11.</span> <span class="nav-text">其它AOP功能：@Around和注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP%E6%9C%80%E8%B4%B1%E5%AE%9E%E8%B7%B5"><span class="nav-number">12.</span> <span class="nav-text">AOP最贱实践</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8SpringBoot%E5%92%8CAspectJ%E5%AE%9E%E7%8E%B0AOP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：使用SpringBoot和AspectJ实现AOP
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-08 00:48:35" itemprop="dateCreated datePublished" datetime="2019-02-08T00:48:35+08:00">2019-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章会帮助你使用<code>Spring Boot Starter AOP</code>实现AOP。我们会使用AspectJ实现四个不同的通知(advice)，并且新建一个自定义的注解来追踪方法的执行时间。</p>
+<span id="more"></span>
+
+<h2 id="你将会了解"><a href="#你将会了解" class="headerlink" title="你将会了解"></a>你将会了解</h2><ul>
+<li>什么是交叉分割关注点（cross-cutting concern）？</li>
+<li>在应用中你如何实现交叉分割关注点？<br> - 如果你想要将对web应用所有的访问请求记入日志，你能想到什么方法？<br> - 如果你想追踪每个请求的性能，你能想到什么方法？</li>
+<li>AOP中的切面（Aspects）和切点（Pointcut）是什么？</li>
+<li>有哪些不同类型的AOP通知（advice）？</li>
+<li>如何使用Spring Boot实现AOP？</li>
+<li>如何使用Spring AOP和AspectJ实现切面？</li>
+<li>有哪些AOP最佳实践？</li>
+</ul>
+<h2 id="项目代码结构"><a href="#项目代码结构" class="headerlink" title="项目代码结构"></a>项目代码结构</h2><p>下图是我们即将创建的项目结构的截图：</p>
+<img src="/2019/02/08/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%BD%BF%E7%94%A8SpringBoot%E5%92%8CAspectJ%E5%AE%9E%E7%8E%B0AOP/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<p>一些细节：</p>
+<ul>
+<li><code>SpringBootTutorialBasicsApplication.java</code>: 由Spring Initializer初始化生成的Spring Boot应用类。这个类是应用启动类。</li>
+<li><code>pom.xml</code>: 创建项目所需的全部依赖。我们将会使用Spring Boot Starter AOP依赖。</li>
+<li><code>Business1.java, Business2.java, Dao1.java, Dao2.java</code>: 业务类依赖于Dao类。我们会写切面来拦截对这些业务类和DAO类的调用。</li>
+<li><code>AfterAopAspect.java</code>: 实现一些<code>After</code>通知。</li>
+<li><code>UserAccessAspect.java</code>: 实现一个<code>Before</code>通知，用来做访问权限检查</li>
+<li><code>BusinessAopSpringBootTest.java</code>：对业务方法进行单元测试</li>
+<li><code>Maven3.0+</code>：编译工具</li>
+<li><code>Eclipse</code>: 开发工具</li>
+<li><code>JDK1.8+</code></li>
+</ul>
+<p><a href="https://github.com/in28minutes/spring-boot-examples/tree/master/spring-boot-tutorial-basics">源码Github地址</a></p>
+<h2 id="介绍AOP"><a href="#介绍AOP" class="headerlink" title="介绍AOP"></a>介绍AOP</h2><p>应用通常划分为多个层进行开发，一个经典的JAVA应用有：</p>
+<ul>
+<li>网络层：用REST或是应用的形式将服务暴露给外部使用</li>
+<li>业务层：业务逻辑</li>
+<li>数据层：数据持久化逻辑<br>虽然各个层的职责不同，但是每个层之间也有一些共通的地方</li>
+<li>日志</li>
+<li>安全</li>
+</ul>
+<p>这些共通的切面成为交叉分割关注点（cross-cutting-concerns）</p>
+<p>实现交叉分割关注点的一个方法是在每一个层分贝进行实现。但是，这样会使得代码难以维护。</p>
+<p>面向切面编程为实现交叉分割关注点提供了一个解决方案：</p>
+<ul>
+<li>将交叉分割切入点实现为一个切面</li>
+<li>定义切点，说明这些切面在何时调用<br>这样确保了交叉分割关注点定义在一个内聚的代码组件中，并且能够在需要的时候使用。</li>
+</ul>
+<h2 id="初始化Spring-Boot-AOP项目"><a href="#初始化Spring-Boot-AOP项目" class="headerlink" title="初始化Spring Boot AOP项目"></a>初始化Spring Boot AOP项目</h2><p>使用Spring Initializer新建一个Spring AOP项目非常的方法。</p>
+<blockquote>
+<p><a href="http://start.spring.io/">Spring Initializer</a>是创建Spring Boot项目的超级棒的工具。</p>
+</blockquote>
+<p>备注：</p>
+<ul>
+<li>启动Spring Initializer并且选择一下内容<ul>
+<li>选择<code>com.in28minutes.springboot.tutorial.basics.example</code>为Group</li>
+<li>选择<code> spring-boot-tutorial-basics</code>为Artifact</li>
+<li>选择AOP依赖</li>
+</ul>
+</li>
+<li>点击Generate Project</li>
+<li>将项目导入Eclipse</li>
+</ul>
+<h2 id="Spring-Boot-AOP-starter"><a href="#Spring-Boot-AOP-starter" class="headerlink" title="Spring Boot AOP starter"></a>Spring Boot AOP starter</h2><p>Spring Boot AOP Starter的关键依赖有：</p>
+<ul>
+<li>Spring AOP提供的基本的AOP功能</li>
+<li>AspectJ提供的完整的AOP框架<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.0.1.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.8.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="配置AOP"><a href="#配置AOP" class="headerlink" title="配置AOP"></a>配置AOP</h2><p>让我们添加一些业务逻辑类 - Business1和Business2。这些业务逻辑类依赖于一组数据类 - Data1和Data2。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Business1</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="built_in">this</span>.getClass());</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Dao1 dao1;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">calculateSomething</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> dao1.retrieveSomething();</span><br><span class="line">        logger.info(<span class="string">&quot;In Business - &#123;&#125;&quot;</span>, value);</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Business2</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Dao2 dao2;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">calculateSomething</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//Business Logic</span></span><br><span class="line">        <span class="keyword">return</span> dao2.retrieveSomething();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dao1</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">retrieveSomething</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Dao1&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dao2</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">retrieveSomething</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Dao2&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>备注：</p>
+<ul>
+<li><code>@Autowired private Dao1 dao1</code>: DAO作为依赖注入业务类中</li>
+<li><code>public String calculateSomething()</code>: 每个业务类包含一个简单的calculate方法</li>
+</ul>
+<h2 id="一个简单的AOP单元测试"><a href="#一个简单的AOP单元测试" class="headerlink" title="一个简单的AOP单元测试"></a>一个简单的AOP单元测试</h2><p>让我们写一个简单的单元测试来调用刚刚创建的业务类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringRunner.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BusinessAopSpringBootTest</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="built_in">this</span>.getClass());</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Business1 business1;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Business2 business2;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">invokeAOPStuff</span><span class="params">()</span> &#123;</span><br><span class="line">        logger.info(business1.calculateSomething());</span><br><span class="line">        logger.info(business2.calculateSomething());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>备注：</p>
+<ul>
+<li><code>@RunWith(SpringRunner.class) @SpringBootTest public class BusinessAopSpringBootTest:</code>: 我们将在单元测试用启动一个完整的Spring Boot应用</li>
+<li><code>@Autowired private Business1 business1</code>和<code>@Autowiredprivate Business2 business2</code>: 将业务类注入启动测试的Spring上下文中</li>
+<li><code>@Test public void invokeAOPStuff()&#123;...&#125;</code>: 调用业务层的方法</li>
+</ul>
+<p>这时，我们没有实现任何的AOP逻辑，因此，测试的输出应该就是从DAO类和业务类中返回的简单的信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c.i.s.t.b.e.a.BusinessAopSpringBootTest  : In Business - Dao1</span><br><span class="line">c.i.s.t.b.e.a.BusinessAopSpringBootTest  : Dao1</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现-Before通知"><a href="#实现-Before通知" class="headerlink" title="实现@Before通知"></a>实现@Before通知</h2><p>通常来讲，当我们使用AOP来实现安全时，我们会想要拦截对方法的调用并进行检查。这可以直接通过@Before通知实现。</p>
+<p>下面给出了一种实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserAccessAspect</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="built_in">this</span>.getClass());</span><br><span class="line">    <span class="comment">//What kind of method calls I would intercept</span></span><br><span class="line">    <span class="comment">//execution(* PACKAGE.*.*(..))</span></span><br><span class="line">    <span class="comment">//Weaving &amp; Weaver</span></span><br><span class="line">    <span class="meta">@Before(&quot;execution(* com.in28minutes.springboot.tutorial.basics.example.aop.data.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint joinPoint)</span> &#123;</span><br><span class="line">        <span class="comment">//Advice</span></span><br><span class="line">        logger.info(<span class="string">&quot; Check for user access &quot;</span>);</span><br><span class="line">        logger.info(<span class="string">&quot; Allowed execution for &#123;&#125;&quot;</span>, joinPoint);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>备注：</p>
+<ul>
+<li><code>@Aspect</code>: 说明这是一个切面</li>
+<li><code>@Configuration</code>: 说明这是一个对切面的Spring Bean配置</li>
+<li><code>@Before</code>: 我们想要在方法执行前执行切面</li>
+<li><code>(&quot;execution(* com.in28minutes.springboot.tutorial.basics.example.aop.data.*.*(..))&quot;</code>: 定义了切点。我们想要拦截<code>com.in28minutes.springboot.tutorial.basics.example.aop.data</code>包中的所有方法。</li>
+</ul>
+<p>当我们运行单元测试时，你会看见，在执行DAO方法之前，会执行用户权限检查：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Check for user access </span><br><span class="line">Allowed execution for execution(String com.in28minutes.springboot.tutorial.basics.example.aop.data.Dao1.retrieveSomething())</span><br><span class="line">c.i.s.t.b.e.a.BusinessAopSpringBootTest  : In Business - Dao1</span><br><span class="line">c.i.s.t.b.e.a.BusinessAopSpringBootTest  : Dao1</span><br><span class="line">Check for user access </span><br><span class="line">Allowed execution for execution(String com.in28minutes.springboot.tutorial.basics.example.aop.data.Dao2.retrieveSomething())</span><br><span class="line">c.i.s.t.b.e.a.BusinessAopSpringBootTest  : Dao2</span><br></pre></td></tr></table></figure>
+
+<h2 id="理解AOP术语-Pointcut-Advice-Aspect-Join-Point"><a href="#理解AOP术语-Pointcut-Advice-Aspect-Join-Point" class="headerlink" title="理解AOP术语: Pointcut, Advice, Aspect,Join Point"></a>理解AOP术语: Pointcut, Advice, Aspect,Join Point</h2><p>让我们花点时间来了解一下AOP术语：</p>
+<ul>
+<li>切点（Pointcut）：该表达式用来定义何时方法应当被拦截。在上例中，切点为<code>execution(* com.in28minutes.springboot.tutorial.basics. example.aop.data.*.*(..))</code>。</li>
+<li>通知（Advice）：你想要做什么？一个通知是你在拦截方法时想要调用的逻辑。在上例中，通知为<code>before(JoinPoint joinPoint)</code>方法中的代码。</li>
+<li>切面（Aspect）：定义何时拦截一个方法（Pointcut）以及做什么（Advice）和在一起成为切面</li>
+<li>连接点（Join Point）：当代码开始执行，并且切点的条件满足时，通知被调用。连接点是一个通知运行的特定实例。</li>
+<li>织如（Weaver）：实现AOP的框架 - AspectJ或Spring AOP</li>
+</ul>
+<h3 id="使用-After-AfterReturning和-AfterThrowing通知"><a href="#使用-After-AfterReturning和-AfterThrowing通知" class="headerlink" title="使用@After, @AfterReturning和@AfterThrowing通知"></a>使用@After, @AfterReturning和@AfterThrowing通知</h3><p>让我们现在来看看AOP提供的别的拦截选项：</p>
+<ul>
+<li><code>@After</code>: 在两种场景下执行 - 当一个方法成功执行或是抛出异常</li>
+<li><code>@AfterReturning</code>: 只有在方法成功执行后运行</li>
+<li><code>@AfterThrowing</code>: 只有在方法抛出异常后运行</li>
+</ul>
+<p>让我们创建一个包含这些元素的简单的切面：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AfterAopAspect</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="built_in">this</span>.getClass());</span><br><span class="line">    <span class="meta">@AfterReturning(value = &quot;execution(* com.in28minutes.springboot.tutorial.basics.example.aop.business.*.*(..))&quot;,</span></span><br><span class="line"><span class="meta">        returning = &quot;result&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">(JoinPoint joinPoint, Object result)</span> &#123;</span><br><span class="line">        logger.info(<span class="string">&quot;&#123;&#125; returned with value &#123;&#125;&quot;</span>, joinPoint, result);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@After(value = &quot;execution(* com.in28minutes.springboot.tutorial.basics.example.aop.business.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">after</span><span class="params">(JoinPoint joinPoint)</span> &#123;</span><br><span class="line">        logger.info(<span class="string">&quot;after execution of &#123;&#125;&quot;</span>, joinPoint);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行后运行结果如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Check for user access </span><br><span class="line">Allowed execution for execution(String com.in28minutes.springboot.tutorial.basics.example.aop.data.Dao1.retrieveSomething())</span><br><span class="line">In Business - Dao1</span><br><span class="line">after execution of execution(String com.in28minutes.springboot.tutorial.basics.example.aop.business.Business1.calculateSomething())</span><br><span class="line">execution(String com.in28minutes.springboot.tutorial.basics.example.aop.business.Business1.calculateSomething()) returned with value Dao1</span><br><span class="line">c.i.s.t.b.e.a.BusinessAopSpringBootTest  : Dao1</span><br><span class="line">Check for user access </span><br><span class="line">Allowed execution for execution(String com.in28minutes.springboot.tutorial.basics.example.aop.data.Dao2.retrieveSomething())</span><br><span class="line">after execution of execution(String com.in28minutes.springboot.tutorial.basics.example.aop.business.Business2.calculateSomething())</span><br><span class="line">execution(String com.in28minutes.springboot.tutorial.basics.example.aop.business.Business2.calculateSomething()) returned with value Dao2</span><br><span class="line">c.i.s.t.b.e.a.BusinessAopSpringBootTest  : Dao2</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，就在将值返回给调用的业务逻辑之前，<code>after</code>通知被执行了。</p>
+<h2 id="其它AOP功能：-Around和注解"><a href="#其它AOP功能：-Around和注解" class="headerlink" title="其它AOP功能：@Around和注解"></a>其它AOP功能：@Around和注解</h2><p>能够使用AOP实现的功能之一是通过自定义注释来解析方法调用。</p>
+<p>下面的例子展示了一个简单的<code>TrackTiem</code>注释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> TrackTime &#123;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以添加一个切面来定义当添加<code>TrackTime</code>注解以后执行的逻辑。<code>MethodExecutionCalculationAspect</code>实现了一个简单的时间追踪功能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MethodExecutionCalculationAspect</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="built_in">this</span>.getClass());</span><br><span class="line">    <span class="meta">@Around(&quot;@annotation(com.in28minutes.springboot.tutorial.basics.example.aop.TrackTime)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">around</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">        joinPoint.proceed();</span><br><span class="line">        <span class="type">long</span> <span class="variable">timeTaken</span> <span class="operator">=</span> System.currentTimeMillis() - startTime;</span><br><span class="line">        logger.info(<span class="string">&quot;Time Taken by &#123;&#125; is &#123;&#125;&quot;</span>, joinPoint, timeTaken);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>备注：</p>
+<ul>
+<li><code>@Around</code>: 是一个环绕型通知。它拦截方法调用后使用<code>joinPoint.proceed()</code>来执行方法</li>
+<li><code>@annotation(com.in28minutes.springboot.tutorial.basics.example.aop.TrackTime)</code>: 基于注解进行拦截的切点 - @annotation紧跟着完整的注解的名称</li>
+</ul>
+<p>定义了注解和通知之后，我们可以将注解运用到想要跟踪的方法上，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Business1</span> &#123;</span><br><span class="line">    <span class="meta">@TrackTime</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">calculateSomething</span><span class="params">()</span>&#123;</span><br></pre></td></tr></table></figure>
+
+<h2 id="AOP最贱实践"><a href="#AOP最贱实践" class="headerlink" title="AOP最贱实践"></a>AOP最贱实践</h2><p>AOP最佳实践之一是将所有的切点定义在一个类中。这样有利于在一个地方维护所有的切点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CommonJoinPointConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(* com.in28minutes.spring.aop.springaop.data.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">dataLayerExecution</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(* com.in28minutes.spring.aop.springaop.business.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">businessLayerExecution</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在定义其它切面的切入点时，可以这样调用上面的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Around(&quot;com.in28minutes.spring.aop.springaop.aspect.CommonJoinPointConfig.businessLayerExecution()&quot;)</span></span><br></pre></td></tr></table></figure>
+<p>完整的代码请前往<a href="https://github.com/in28minutes/spring-boot-examples/tree/master/spring-boot-tutorial-basics">GITHUB</a>浏览</p>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/implementing-aop-with-spring-boot-and-aspectj#">https://dzone.com/articles/implementing-aop-with-spring-boot-and-aspectj#</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/08/API%E8%AE%BE%E8%AE%A1%E5%87%86%E5%88%99/" rel="prev" title="猫头鹰的深夜翻译：JAVA8 API设计准则">
+                  <i class="fa fa-angle-left"></i> 猫头鹰的深夜翻译：JAVA8 API设计准则
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/09/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E6%A0%B8%E5%BF%83JAVA%E5%B9%B6%E5%8F%91%E4%BA%8C/" rel="next" title="猫头鹰的深夜翻译：核心JAVA并发二">
+                  猫头鹰的深夜翻译：核心JAVA并发二 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

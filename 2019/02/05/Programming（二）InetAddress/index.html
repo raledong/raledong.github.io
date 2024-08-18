@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言今天，我将梳理在Java网络编程中很重要的一个类InetAddress以及其相关的类NetworkInterface。在这篇文章中将会涉及：  InetAddress NetworkInterface 具体应用范例  这里的范例将会实现一个简单的日志IP解析系统。我们将会在后面详细介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programming（二）InetAddress">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/Programming%EF%BC%88%E4%BA%8C%EF%BC%89InetAddress/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言今天，我将梳理在Java网络编程中很重要的一个类InetAddress以及其相关的类NetworkInterface。在这篇文章中将会涉及：  InetAddress NetworkInterface 具体应用范例  这里的范例将会实现一个简单的日志IP解析系统。我们将会在后面详细介绍。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-05T14:25:15.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.355Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="原创">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/Programming%EF%BC%88%E4%BA%8C%EF%BC%89InetAddress/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/Programming%EF%BC%88%E4%BA%8C%EF%BC%89InetAddress/","path":"2019/02/05/Programming（二）InetAddress/","title":"Programming（二）InetAddress"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Programming（二）InetAddress | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InetAddress-API"><span class="nav-number">2.</span> <span class="nav-text">InetAddress API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96WebLog%E4%B8%AD%E7%9A%84IP%E5%9C%B0%E5%9D%80%E5%AF%B9%E5%BA%94%E7%9A%84hostName"><span class="nav-number">3.</span> <span class="nav-text">获取WebLog中的IP地址对应的hostName</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B9%A6%E7%B1%8D"><span class="nav-number">4.</span> <span class="nav-text">参考书籍</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/Programming%EF%BC%88%E4%BA%8C%EF%BC%89InetAddress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Programming（二）InetAddress | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Programming（二）InetAddress
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 22:25:15" itemprop="dateCreated datePublished" datetime="2019-02-05T22:25:15+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">原创</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NET/" itemprop="url" rel="index"><span itemprop="name">NET</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天，我将梳理在Java网络编程中很重要的一个类<code>InetAddress</code>以及其相关的类<code>NetworkInterface</code>。在这篇文章中将会涉及：</p>
+<ul>
+<li>InetAddress</li>
+<li>NetworkInterface</li>
+<li>具体应用范例</li>
+</ul>
+<p>这里的范例将会实现一个简单的日志IP解析系统。我们将会在后面详细介绍。</p>
+<span id="more"></span>
+
+<h2 id="InetAddress-API"><a href="#InetAddress-API" class="headerlink" title="InetAddress API"></a>InetAddress API</h2><p>在此我将会直接从API入手，如果对其中的名词有何疑惑，可以先行了解一下基础概念。<br>需要先行了解的概念包括：</p>
+<ul>
+<li>IP，IPv4，IPv6</li>
+<li>单播，多播，广播</li>
+<li>loop地址</li>
+<li>域名</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InetAddress</span>&#123;</span><br><span class="line">    <span class="comment">//私有化构造器，我们只能通过其提供的静态工厂方法来获取一个实例</span></span><br><span class="line">    <span class="comment">//同时我们也不可以修改内部的IP地址或是域名</span></span><br><span class="line">    <span class="comment">//这种Immutable的方式确保了其线程安全性</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里需要注意java没有正整数型，因此我们需要对开头为1的二进制数进行转义，如下</span></span><br><span class="line">    <span class="comment">//byte[] address = &#123;107, 23, (byte) 216, (byte) 196&#125;;</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InetAddress <span class="title function_">getByAddress</span><span class="params">(<span class="type">byte</span>[] addr)</span> <span class="keyword">throws</span> UnknownHostException;</span><br><span class="line">    <span class="comment">//该方法不会查询DNS来确保域名和IP地址相符</span></span><br><span class="line">    <span class="comment">//这里有一个比较有意思的在于如果你希望寻找家用设备如打印机等的局域网地址，则可以通过遍历254个可能的局域网地址来找到它，而不需要将其硬编码进代码中</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InetAddress <span class="title function_">getByAddress</span><span class="params">(String host, <span class="type">byte</span>[] addr)</span> <span class="keyword">throws</span> UnknownHostException;</span><br><span class="line">    <span class="comment">//根据域名获取一个实例，该加载为懒加载，即除非到必要的时候，否则将不会启动DNS查询</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InetAddress <span class="title function_">getByName</span><span class="params">(String host)</span> <span class="keyword">throws</span> UnknownHostException;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取该域名对应的所有IP地址（即一个域名可以映射到多个IP地址）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InetAddress[] getAllByName(String host)</span><br><span class="line">                                  <span class="keyword">throws</span> UnknownHostException</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取环回地址，通常为172.0.0.1                              </span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InetAddress <span class="title function_">getLoopbackAddress</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">//获取本机的IP地址，如果本机没有联网，则返回环回地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InetAddress <span class="title function_">getLoaclHost</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取主机名</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getHostName</span><span class="params">()</span></span><br><span class="line">    <span class="comment">//获取主机别名</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getCanonicalHostName</span><span class="params">()</span> </span><br><span class="line">    <span class="comment">//获取主机的IP地址</span></span><br><span class="line">    <span class="comment">//该方法可以用来判断是IPv4地址还是IPv6地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] getAddress()</span><br><span class="line">    <span class="comment">//获取String类型的IP地址</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getHostAddress</span><span class="params">()</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//是否是一个和本地主机相关的地址</span></span><br><span class="line">    <span class="comment">//包括本机IP，loopback，wifi地址等</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isAnyLocalAddress</span><span class="params">()</span> </span><br><span class="line">    <span class="comment">//是否是环回地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLoopbackAddress</span><span class="params">()</span> </span><br><span class="line">    <span class="comment">//是否是链路本地地址</span></span><br><span class="line">    <span class="comment">//链路本地地址（Link-local address）是计算机网络中一类特殊的地址，</span></span><br><span class="line">    <span class="comment">//它仅供于在网段，或广播域中的主机相互通信使用。</span></span><br><span class="line">    <span class="comment">//这类主机通常不需要外部互联网服务，仅有主机间相互通讯的需求。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLinkLocalAddress</span><span class="params">()</span> </span><br><span class="line">    <span class="comment">//是否落入这三个网段</span></span><br><span class="line">    <span class="comment">//10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSiteLocalAddress</span><span class="params">()</span> </span><br><span class="line">    <span class="comment">//是否是广播地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isMulticastAddress</span><span class="params">()</span> </span><br><span class="line">    <span class="comment">//是否是全球通用的广播地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isMCGlobal</span><span class="params">()</span></span><br><span class="line">    <span class="comment">//是否是企业专属的多播地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isMCOrgLocal</span><span class="params">()</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//判断当前节点是否可以访问目标节点</span></span><br><span class="line">    <span class="comment">//通常使用ICMP报文实现</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isReachable</span><span class="params">(<span class="type">int</span> timeout)</span> <span class="keyword">throws</span> IOException</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isReachable</span><span class="params">(NetworkInterface interface, <span class="type">int</span> ttl, <span class="type">int</span> timeout)</span> <span class="keyword">throws</span> IOException</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只要两个对象的IP地址相等，则二者相等（与域名无关）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> </span><br><span class="line">    <span class="comment">//仅根据IP地址计算hashCode</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span></span><br><span class="line">    <span class="comment">//格式为 “域名/IP地址”</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相关参数：<br><code>networkaddress.cache.negative.ttl</code>：失败的DNS查找被缓存的时间<br><code>networkaddress.cache.ttl</code>：成功的DNS查找被缓存的时间</p>
+<p>##NetworkInterface API##<br>NetworkInterface代表一个本地的IP地址。可以通过该接口获取所有本地地址，并根据这些地址创建InetAddress。通过NetworkInterface接口，可以获取本机配置的网络接口的名字，IP列表（包括IPV4和IPV6），网卡地址，最大传输单元（MTU），接口状态（开启&#x2F;关闭）、接口网络类型（点对点网络、回环网络）等信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">NetworkInterface</span>&#123;</span><br><span class="line">    <span class="comment">//根据名称获取网络接口</span></span><br><span class="line">    <span class="comment">//该方法依赖于底层平台</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> NetworkInterface <span class="title function_">getByName</span><span class="params">(String name)</span> <span class="keyword">throws</span> SocketException</span><br><span class="line">    <span class="comment">//根据IP地址获得对应的网络接口</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> NetworkInterface <span class="title function_">getByInetAddress</span><span class="params">(InetAddress address)</span> <span class="keyword">throws</span> SocketException</span><br><span class="line">    <span class="comment">//获取所有的网络接口</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Enumeration <span class="title function_">getNetworkInterfaces</span><span class="params">()</span> <span class="keyword">throws</span> SocketException</span><br><span class="line">    <span class="comment">//获取该接口之下所有的IP地址</span></span><br><span class="line">    <span class="keyword">public</span> Enumeration <span class="title function_">getInetAddresses</span><span class="params">()</span></span><br><span class="line">    <span class="comment">//获取MAC地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] getHardwareAddress()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="获取WebLog中的IP地址对应的hostName"><a href="#获取WebLog中的IP地址对应的hostName" class="headerlink" title="获取WebLog中的IP地址对应的hostName"></a>获取WebLog中的IP地址对应的hostName</h2><p>当我们启动web应用时，我们往往会从HTTP报文中获取访客的IP并且将其记录进日志中。从而可以从日志中分析常见的访客或是不明访客。这里我们将获取一个手动生成的包含IP地址的日志文件，并且将其中的IP地址转化为hostName输出。这里我们将采用多线程实现，因为读取一条IP记录的速度远远高于从DNS服务器获取域名的速度。</p>
+<p>首先我们使用工具类向文件中写入日志：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Util</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">filePath</span> <span class="operator">=</span> <span class="string">&quot;YOUR_FILE_PATH&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String[] hostNames = <span class="keyword">new</span> <span class="title class_">String</span>[]&#123;</span><br><span class="line">            <span class="string">&quot;www.sina.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.sohu.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.taobao.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.baidu.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.qq.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.163.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.dzone.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.github.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.acmcoder.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.meituan.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;kafka.apachecn.org&quot;</span>,</span><br><span class="line">            <span class="string">&quot;www.ibm.com&quot;</span>,</span><br><span class="line">            <span class="string">&quot;javarevisited.blogspot.kr&quot;</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">try</span> (<span class="type">BufferedWriter</span> <span class="variable">bf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedWriter</span>(<span class="keyword">new</span> <span class="title class_">FileWriter</span>(filePath)))&#123;</span><br><span class="line">           <span class="keyword">for</span>(String host : hostNames)&#123;</span><br><span class="line">               InetAddress[] addresses = InetAddress.getAllByName(host);</span><br><span class="line">               count+= addresses.length;</span><br><span class="line">               <span class="keyword">for</span> (InetAddress address : addresses) &#123;</span><br><span class="line">                   bf.write(address.getHostAddress() + <span class="string">&quot; &quot;</span> + address.getHostName());</span><br><span class="line">                   bf.newLine();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           System.out.println(count);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个处理LOG的IPAnalyser类，该类实现Callable接口，支持将内部的值返回给别的线程使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IPAnalyser</span> <span class="keyword">implements</span> <span class="title class_">Callable</span>&lt;String&gt;&#123;</span><br><span class="line">    <span class="keyword">private</span> String logItem;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">IPAnalyser</span><span class="params">(String logItem)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.logItem = logItem;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">if</span> (logItem!=<span class="literal">null</span>)&#123;</span><br><span class="line">            String[] items = logItem.split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">            <span class="type">InetAddress</span> <span class="variable">inetAddress</span> <span class="operator">=</span> InetAddress.getByName(items[<span class="number">0</span>]);</span><br><span class="line">            <span class="keyword">return</span> inetAddress.getHostAddress();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>额外使用一个线程来同步处理IPAnalyser返回的值，从而避免因为日志文件过大，日志条目全部存储在主存中，再一次性读取而带来因占用大量内存而影响性能的问题。<br>在这里我们使用阻塞队列实现主线程和打印线程之间的通信。但是我们需要在打印完该日志文件后，结束该打印线程，因此使用write来记录当前已经打印的日志条目数，然后在打印完成所有的之后结束该线程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IPPrinter</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> BlockingQueue&lt;LogEntry&gt; queue;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="type">int</span> writeCount;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">IPPrinter</span><span class="params">(BlockingQueue&lt;LogEntry&gt; queue)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.queue = queue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (writeCount == Main.readCount)&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;写完毕&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">LogEntry</span> <span class="variable">logEntry</span> <span class="operator">=</span> queue.take();</span><br><span class="line">                System.out.println(logEntry.getOrigin() + <span class="string">&quot;对应的主机名为&quot;</span> + logEntry.getHostName().get());</span><br><span class="line">                writeCount++;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实体类LogEntry保存原来的日志条目和解析后的日志线程返回：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogEntry</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Future&lt;String&gt; hostName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String origin;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LogEntry</span><span class="params">(Future&lt;String&gt; hostName, String origin)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.hostName = hostName;</span><br><span class="line">        <span class="built_in">this</span>.origin = origin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setOrigin</span><span class="params">(String origin)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.origin = origin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getOrigin</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> origin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Future&lt;String&gt; <span class="title function_">getHostName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> hostName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setHostName</span><span class="params">(Future&lt;String&gt; hostName)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.hostName = hostName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后在主线程中开启IO和相关的所有线程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">filePath</span> <span class="operator">=</span> <span class="string">&quot;/Users/rale/IdeaProjects/Demo/concurrency/src/main/java/cn/deerowl/weblog_analyse/web.log&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BlockingQueue&lt;LogEntry&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="type">int</span> <span class="variable">readCount</span>  <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">ExecutorService</span> <span class="variable">executorService</span> <span class="operator">=</span> Executors.newFixedThreadPool(<span class="number">6</span>);</span><br><span class="line">        executorService.submit(<span class="keyword">new</span> <span class="title class_">IPPrinter</span>(queue));</span><br><span class="line">        <span class="keyword">try</span> (<span class="type">BufferedReader</span> <span class="variable">bufferedReader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">FileReader</span>(filePath)))&#123;</span><br><span class="line">            String tmp;</span><br><span class="line">            <span class="keyword">while</span> ((tmp = bufferedReader.readLine()) != <span class="literal">null</span>)&#123;</span><br><span class="line">                Future&lt;String&gt; f = executorService.submit(<span class="keyword">new</span> <span class="title class_">IPAnalyser</span>(tmp));</span><br><span class="line">                queue.put(<span class="keyword">new</span> <span class="title class_">LogEntry</span>(f, tmp));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里要强调一下域名和主机名的关联：一个域名之下可以有多个主机名，如域名abc.com下，有主机server1和server2，其主机全名就是server1.abc.com和server2.abc.com。</p>
+<h2 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h2><blockquote>
+<p>Java Network Programming 4th Edition</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/Programming%EF%BC%88%E5%9B%9B%EF%BC%89URLConnection/" rel="prev" title="重拾Java Network Programming（四）URLConnection & Cache">
+                  <i class="fa fa-angle-left"></i> 重拾Java Network Programming（四）URLConnection & Cache
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E9%87%8D%E6%8B%BEJAVA%E7%BA%BF%E7%A8%8B%E4%B9%8B%E8%8E%B7%E5%8F%96%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%BF%94%E5%9B%9E/" rel="next" title="重拾JAVA线程之获取另一个线程的返回">
+                  重拾JAVA线程之获取另一个线程的返回 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

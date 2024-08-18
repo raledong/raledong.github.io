@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言Java ClassLoader是java运行系统中一个至关重要但是经常被忽略的组件。它负责在运行时寻找并加载类文件。创建自定义的ClassLoader可以彻底重定义如何将类文件加载至系统。 这个教程对Java的ClassLoader进行总体概述，并给了一个自定义ClassLoader的例子。这个ClassLoader会在加载代码之前自动编译。你将会了解ClassLoader是做什么的，以及如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：理解java的classloader">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E7%90%86%E8%A7%A3java%E7%9A%84classloader/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言Java ClassLoader是java运行系统中一个至关重要但是经常被忽略的组件。它负责在运行时寻找并加载类文件。创建自定义的ClassLoader可以彻底重定义如何将类文件加载至系统。 这个教程对Java的ClassLoader进行总体概述，并给了一个自定义ClassLoader的例子。这个ClassLoader会在加载代码之前自动编译。你将会了解ClassLoader是做什么的，以及如">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-05T12:39:13.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.483Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E7%90%86%E8%A7%A3java%E7%9A%84classloader/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E7%90%86%E8%A7%A3java%E7%9A%84classloader/","path":"2019/02/05/猫头鹰的深夜翻译：理解java的classloader/","title":"猫头鹰的深夜翻译：理解java的classloader"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：理解java的classloader | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFClassLoader"><span class="nav-number">2.</span> <span class="nav-text">什么是ClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BC%96%E5%86%99ClassLoader"><span class="nav-number">3.</span> <span class="nav-text">为什么编写ClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89ClassLoader%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">自定义ClassLoader的例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClassLoader%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">ClassLoader结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loadClass%E6%96%B9%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">loadClass方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#defineClass%E6%96%B9%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">defineClass方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#findSystemClass%E6%96%B9%E6%B3%95"><span class="nav-number">8.</span> <span class="nav-text">findSystemClass方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolveClass%E6%96%B9%E6%B3%95"><span class="nav-number">9.</span> <span class="nav-text">resolveClass方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#findLoadedClass%E6%96%B9%E6%B3%95"><span class="nav-number">10.</span> <span class="nav-text">findLoadedClass方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E4%B8%80%E4%B8%8B"><span class="nav-number">11.</span> <span class="nav-text">整合一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CompilingClassLoader"><span class="nav-number">12.</span> <span class="nav-text">CompilingClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E6%98%AF%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E7%9A%84"><span class="nav-number">13.</span> <span class="nav-text">Java是如何编译的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CompilingClassLoader"><span class="nav-number">14.</span> <span class="nav-text">如何使用CompilingClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java2%E4%B8%ADClassLoader%E7%9A%84%E5%8F%98%E5%8C%96"><span class="nav-number">15.</span> <span class="nav-text">Java2中ClassLoader的变化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#loadClass%E9%BB%98%E8%AE%A4%E5%AE%9E%E7%8E%B0"><span class="nav-number">15.1.</span> <span class="nav-text">loadClass默认实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E6%96%B9%E6%B3%95%EF%BC%9AfindClass"><span class="nav-number">15.2.</span> <span class="nav-text">新方法：findClass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E6%96%B9%E6%B3%95%EF%BC%9AgetSystenClassLoader"><span class="nav-number">15.3.</span> <span class="nav-text">新方法：getSystenClassLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E6%96%B9%E6%B3%95%EF%BC%9AgetParent"><span class="nav-number">15.4.</span> <span class="nav-text">新方法：getParent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81"><span class="nav-number">16.</span> <span class="nav-text">源码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E7%90%86%E8%A7%A3java%E7%9A%84classloader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：理解java的classloader | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：理解java的classloader
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 20:39:13" itemprop="dateCreated datePublished" datetime="2019-02-05T20:39:13+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Java ClassLoader是java运行系统中一个至关重要但是经常被忽略的组件。它负责在运行时寻找并加载类文件。创建自定义的ClassLoader可以彻底重定义如何将类文件加载至系统。</p>
+<p>这个教程对Java的ClassLoader进行总体概述，并给了一个自定义ClassLoader的例子。这个ClassLoader会在加载代码之前自动编译。你将会了解ClassLoader是做什么的，以及如何创建自定义ClassLoader。</p>
+<p>本教程需要阅读者对Java编程有基础了解，包括创建，编译和执行简单的命令行Java程序。</p>
+<p>阅读完本教程之后，你会知道如何：</p>
+<ul>
+<li>扩展JVM的功能</li>
+<li>创建一个自定义的ClassLoader</li>
+<li>学习如何将ClassLoader集成至Java应用</li>
+<li>修改ClassLoader使其符合Java2版本<span id="more"></span></li>
+</ul>
+<h2 id="什么是ClassLoader"><a href="#什么是ClassLoader" class="headerlink" title="什么是ClassLoader"></a>什么是ClassLoader</h2><p>在所有的编程语言中，Java以运行在Java虚拟机上而独树一帜。这意味着编译的程序将以一种独特的，与平台无关的形式运行在目标机器上，而不是目标机器的格式。这种格式在很多方面和传统的可执行程序相比，有很大的区别。</p>
+<p>Java程序与C或C++程序最大的不同在于，它不是单个可执行文件，而是由许多单独的类文件构成，每个类文件对应一个Java类。</p>
+<p>不仅如此，这些类文件并不是一次性加载到内存的，而是按需加载的。ClassLoader是JVM的一部分，它将类加载到内存中。</p>
+<p>此外，Java ClassLoader是用Java编写的。这意味着可以轻松的创建自己的ClassLoader，无需了解JVM更多的细节。</p>
+<h2 id="为什么编写ClassLoader"><a href="#为什么编写ClassLoader" class="headerlink" title="为什么编写ClassLoader"></a>为什么编写ClassLoader</h2><p>如果JVM已经有一个ClassLoader了，为什么还要再写一个？好问题，默认的ClassLoader只知道如何从本地的文件系统中加载类文件。一般场景下，当你在本地编写代码并且在本地编译时，完全足够了。</p>
+<p>但是,JAVA语言最新颖的特点之一就是可以从本地硬盘或是互联网之外的地方获取类。比如，浏览器使用自定义的ClassLoader从网站上获取可执行内容。</p>
+<p>还有很多其它获取类文件的方法。除了从本地或是网上加载类文件，还可以用类加载器来：</p>
+<ul>
+<li>在执行不受信任的代码之前自动验证数字签名</li>
+<li>使用用户提供的密码透明的解密代码</li>
+<li>根据用户的特定需求创建自定义的动态类</li>
+</ul>
+<p>任何生成Java字节码的内容都可以集成到你的应用程序中去。</p>
+<h2 id="自定义ClassLoader的例子"><a href="#自定义ClassLoader的例子" class="headerlink" title="自定义ClassLoader的例子"></a>自定义ClassLoader的例子</h2><p>如果你曾经使用过applet，你肯定用到了一个自定义的类加载器。</p>
+<p>在Sun发布Java语言的时候，最令人兴奋的事情之一就是观察这项技术是如何执行从远程Web服务器及时加载代码的。它们是通过来自远程的Web服务器的HTTP连接发送字节码并在本地运行，这一点令人兴奋。</p>
+<p>Java语言支持自定义ClassLoader的功能使这一想法成为可能。applet中有一个自定义的ClassLoader，它不是从本地文件系统加载类文件，而是从远程Web服务器上获取，通过Http加载原始字节码，再在jvm中转化为类。</p>
+<p>浏览器和Applet中的类加载器还有别的功能：安全管理，防止不同页面上的applet相互影响等。</p>
+<p>下面我们将会创建一个自定义的类加载器叫做<code>CompilingClassLoader(CCL)</code>、CCL会帮我们编译Java代码。它基本上就像是在运行系统中直接构建一个简单的make程序。</p>
+<h2 id="ClassLoader结构"><a href="#ClassLoader结构" class="headerlink" title="ClassLoader结构"></a>ClassLoader结构</h2><p>ClassLoader的基本目的是为类的请求提供服务。JVM需要一个类，于是它通过类的名字询问ClassLoader来加载这个类。ClassLoader试着返回一个代表该类的对象。</p>
+<p>通过覆盖此过程不同阶段对应的方法，可以创建自定义的ClassLoader。</p>
+<p>在本文的剩余部分，你会了解到ClassLoader中的一些关键方法。你会了解到每个方法的用途以及它在类加载过程中是如何调用的。你还会了解当你在自定义ClassLoader时需要完成的工作。</p>
+<h2 id="loadClass方法"><a href="#loadClass方法" class="headerlink" title="loadClass方法"></a><code>loadClass</code>方法</h2><p><code>ClassLoader.loadClass()</code>方法是ClassLoader的入口。它的方法标签如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class loadClass(String name, boolean resolve)</span><br></pre></td></tr></table></figure>
+<p><code>name</code>参数代表JVM需要的类的名称，比如<code>Foo</code>或是<code>java.lang.Object</code>。</p>
+<p><code>resolve</code>参数说明类是否需要被解析。可以把类的解析理解为完全的准备好执行类。解析并不是必要的。如果JVM只需要确定该类存在或是找出其父类，则无需解析。</p>
+<p>在java1.1版本以前，自定义ClassLoader只需要重写<code>loadClass</code>方法。</p>
+<h2 id="defineClass方法"><a href="#defineClass方法" class="headerlink" title="defineClass方法"></a>defineClass方法</h2><p><code>defineClass</code>方法是整个ClassLoader的核心。此方法将原始字节数组转化为一个<code>Class</code>对象。原始字节数组包含从本地或是远程得到的数据。</p>
+<p><code>defineClass</code>负责处理JVM的许多复杂，神秘而且依赖于具体实现的部分。它将字节码解析为运行时的数据结构，检查其有效性等。不用担心，这些你不用自己实现。事实上，你根本没法重写它，因为该方法为final方法。</p>
+<h2 id="findSystemClass方法"><a href="#findSystemClass方法" class="headerlink" title="findSystemClass方法"></a><code>findSystemClass方法</code></h2><p><code>findSysetmClass</code>方法从本地文件系统中加载文件。它在本地文件系统中查找类文件，如果存在，使用<code>defineClass</code>将其从原始字节转化为类对象。这是JVM在运行Java应用程序时加载类的默认机制。</p>
+<p>对于自定义的ClassLoader，我们只会在尝试了别的方法来加载类内容之后，才调用<code>findSystemClass</code>方法。道理很简单：自定义的ClassLoader包含加载特殊类的一些步骤，但是并非所有的类都是特殊类。比如，即便ClassLoader需要从远程网站上获取一些类，还是有许多类需要从本地的Java库中加载。这些类并不是我们关注的重点，因此我们需要JVM用默认的方式来获取。</p>
+<p>整个流程如下：</p>
+<ul>
+<li>请求自定义ClassLoader加载一个类</li>
+<li>查看远程服务器是否有该类</li>
+<li>如果有，则获取并返回</li>
+<li>如果没有，我们假设该类是位于本地的一个基础类，并调用<code>findSystemClass</code>从文件系统中加载出来。</li>
+</ul>
+<p>在大多数自定义的ClassLoader中，你需要先滴啊用<code>findSystemClass</code>来减少对远程网站的访问，因为大多数Java类都位于本地的类库中。但是，在下一节中你会看到，在自动将应用代码编译之前，我们不希望JVM从本地文件系统加载类。</p>
+<h2 id="resolveClass方法"><a href="#resolveClass方法" class="headerlink" title="resolveClass方法"></a><code>resolveClass</code>方法</h2><p>如前文所说，类的加载是可以部分进行（不进行解析）或是彻底进行的（进行解析）。当我们实现自己的<code>loadClass</code>方法时，我们或许需要调用<code>resolveClass</code>方法，这取决于<code>loadClass</code>中的<code>resolve</code>参数的值。</p>
+<h2 id="findLoadedClass方法"><a href="#findLoadedClass方法" class="headerlink" title="findLoadedClass方法"></a><code>findLoadedClass</code>方法</h2><p><code>findLoadedClass</code>方法充当一个缓存调用机制：当<code>loadClass</code>方法被调用时，他会调用这个方法来查看类是否已经被加载过了，省去了重复加载。这个方法应当最先被调用。</p>
+<h2 id="整合一下"><a href="#整合一下" class="headerlink" title="整合一下"></a>整合一下</h2><p>我们的例子中<code>loadClass</code>执行以下几步（这里我们不会特别关注到底采用了什么神奇的方法来获取类文件。它可以是从本地，网络或者是压缩文件中获得的，总之我们获得了原始类文件的字节码）：</p>
+<ul>
+<li>调用<code>findLoadedClass</code>查看是否已经加载过该类</li>
+<li>如果没有，则使用神奇的魔法来获得原始字节码</li>
+<li>如果获得字节码，调用<code>defineClass</code>将其转化为<code>Class</code>对象</li>
+<li>如果没有获得字节码，则调用<code>findSystemClass</code>，看是否能从本地文件系统获得类</li>
+<li>如果<code>resolve</code>值为true，则调用<code>resolveClass</code>来解析<code>Class</code>对象</li>
+<li>如果还是没有找到类，则抛出<code>ClassNotFoundException</code></li>
+<li>否则，将类返回给调用者</li>
+</ul>
+<h2 id="CompilingClassLoader"><a href="#CompilingClassLoader" class="headerlink" title="CompilingClassLoader"></a><code>CompilingClassLoader</code></h2><p><code>CCL</code>的作用是确保代码已经被编译，并且是最新版本的。<br>以下是该类的描述：</p>
+<ul>
+<li>当需要一个类时，查看该类是否在磁盘上，在当前的目录或是相应的子目录下</li>
+<li>如果该类不存在，但是其源码存在，在调用Java编译器来生成类文件</li>
+<li>如果类文件存在，查看他是否比源码的版本旧，如果低于源码的版本，则重新生成类文件</li>
+<li>如果编译失败，或者其他的原因导致无法从源码中生成类文件，抛出<code>ClassNotFoundException</code></li>
+<li>如果还是没有类文件，那么它或许在其他的一些库中，调用<code>findSystemClass</code>看是否有用</li>
+<li>如果还是找不到类，抛出<code>ClassNotFoundException</code></li>
+<li>否则，返回类</li>
+</ul>
+<h2 id="Java是如何编译的"><a href="#Java是如何编译的" class="headerlink" title="Java是如何编译的"></a>Java是如何编译的</h2><p>在深入研究之前，我们应该回过头来看一下Java的编译机制。总的来说，当你请求一个类的时候，Java不只是编译各种类信息，它还编译了别的相关联的类。</p>
+<p>CCL会按需一个接一个的编译相关的类。但是，当CCL编译完一个类之后试着去编译其它相关类的时候会发现，其它的类已经编译完成了。为什么呢？Java编译器遵循一个规则：如果一个类不存在，或者它相对于源码已经过时了，就需要编译它。从本质上讲，Java编译器先CCL一步完成了大部分的工作。</p>
+<p>CCL在编译类的时候会打印其编译的应用程序。在大多数场景里面，你会看到它在程序的主类上调用编译器。</p>
+<p>但是，有一种情况是不会在第一次调用时编译所有类的的。如果你通过类名<code>Class.forNasme</code>加载一个类,Java编译器不知道该类需要哪些信息。在这种场景下，你会看到CCL会再次运行Java编译器。</p>
+<h2 id="如何使用CompilingClassLoader"><a href="#如何使用CompilingClassLoader" class="headerlink" title="如何使用CompilingClassLoader"></a>如何使用<code>CompilingClassLoader</code></h2><p>为了使用CCL，我们需要用一种独特的方式启动程序。正常的启动程序如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">% java Foo arg1 arg2</span><br></pre></td></tr></table></figure>
+<p>而我们启动方式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">% java CCLRun Foo arg1 arg2</span><br></pre></td></tr></table></figure>
+<p>CCLRun是一个特殊的桩程序，它会创建一个CompilingClassLoader并使用它来加载程序的main方法，确保整个程序的类会通过CompilingClassLoader加载。CCLRun使用Java反射API来调用main方法并传参</p>
+<h2 id="Java2中ClassLoader的变化"><a href="#Java2中ClassLoader的变化" class="headerlink" title="Java2中ClassLoader的变化"></a>Java2中ClassLoader的变化</h2><p>Java1.2以后ClassLoader有一些变动。原有版本的ClassLoader还是兼容的，而且在新版本下开发ClassLoader更容易了</p>
+<p>新的版本下采用了delegate模型。ClassLoader可以将类的请求委托给父类。默认的实现会先调用父类的实现，在自己加载。但是这种模式是可以改变的。所有的ClassLoader的根节点是系统ClassLoader。它默认会从文件系统中加载类。</p>
+<h3 id="loadClass默认实现"><a href="#loadClass默认实现" class="headerlink" title="loadClass默认实现"></a><code>loadClass</code>默认实现</h3><p>一个自定义的<code>loadClass</code>方法通常会尝试用各种方法来获得一个类的信息。如果你写了大量的ClassLoader，你会发现基本上是在重复写复杂而变化不大的代码。</p>
+<p>java1.2的<code>loadClass</code>的默认实现中允许你直接重写<code>findClass</code>方法，<code>loadClass</code>将会在合适的时候调用该方法。</p>
+<p>这种方式的好处在于你无须重写<code>loadClass</code>方法。</p>
+<h3 id="新方法：findClass"><a href="#新方法：findClass" class="headerlink" title="新方法：findClass"></a>新方法：<code>findClass</code></h3><p>该方法会被<code>loadClass</code>的默认实现调用。<code>findClass</code>是为了包含ClassLoader所有特定的代码，而无需写大量重负的其他代码</p>
+<h3 id="新方法：getSystenClassLoader"><a href="#新方法：getSystenClassLoader" class="headerlink" title="新方法：getSystenClassLoader"></a>新方法：<code>getSystenClassLoader</code></h3><p>无论你是否重写了<code>findClass</code>或是<code>loadClass</code>方法，<code>getSystemClassLoader</code>允许你直接获得系统的ClassLoader（而不是隐式的用<code>findSystemClass</code>获得）</p>
+<h3 id="新方法：getParent"><a href="#新方法：getParent" class="headerlink" title="新方法：getParent"></a>新方法：<code>getParent</code></h3><p>该方法允许类加载器获取其父类加载器，从而将请求委托给它。当你自定义的加载器无法找到类时，可以使用该方法。父类加载器是指包含创建该类加载代码的加载器。</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $Id$</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment">A CompilingClassLoader compiles your Java source on-the-fly.  It</span></span><br><span class="line"><span class="comment">checks for nonexistent .class files, or .class files that are older</span></span><br><span class="line"><span class="comment">than their corresponding source code.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CompilingClassLoader</span> <span class="keyword">extends</span> <span class="title class_">ClassLoader</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Given a filename, read the entirety of that file from disk</span></span><br><span class="line">  <span class="comment">// and return it as a byte array.</span></span><br><span class="line">  <span class="keyword">private</span> <span class="type">byte</span>[] getBytes( String filename ) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// Find out the length of the file</span></span><br><span class="line">    <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>( filename );</span><br><span class="line">    <span class="type">long</span> <span class="variable">len</span> <span class="operator">=</span> file.length();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Create an array that&#x27;s just the right size for the file&#x27;s</span></span><br><span class="line">    <span class="comment">// contents</span></span><br><span class="line">    <span class="type">byte</span> raw[] = <span class="keyword">new</span> <span class="title class_">byte</span>[(<span class="type">int</span>)len];</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Open the file</span></span><br><span class="line">    <span class="type">FileInputStream</span> <span class="variable">fin</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>( file );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Read all of it into the array; if we don&#x27;t get all,</span></span><br><span class="line">    <span class="comment">// then it&#x27;s an error.</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> fin.read( raw );</span><br><span class="line">    <span class="keyword">if</span> (r != len)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IOException</span>( <span class="string">&quot;Can&#x27;t read all, &quot;</span>+r+<span class="string">&quot; != &quot;</span>+len );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Don&#x27;t forget to close the file!</span></span><br><span class="line">    fin.close();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// And finally return the file contents as an array</span></span><br><span class="line">    <span class="keyword">return</span> raw;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// Spawn a process to compile the java source code file</span></span><br><span class="line">  <span class="comment">// specified in the &#x27;javaFile&#x27; parameter.  Return a true if</span></span><br><span class="line">  <span class="comment">// the compilation worked, false otherwise.</span></span><br><span class="line">  <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">compile</span><span class="params">( String javaFile )</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// Let the user know what&#x27;s going on</span></span><br><span class="line">    System.out.println( <span class="string">&quot;CCL: Compiling &quot;</span>+javaFile+<span class="string">&quot;...&quot;</span> );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Start up the compiler</span></span><br><span class="line">    <span class="type">Process</span> <span class="variable">p</span> <span class="operator">=</span> Runtime.getRuntime().exec( <span class="string">&quot;javac &quot;</span>+javaFile );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Wait for it to finish running</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      p.waitFor();</span><br><span class="line">    &#125; <span class="keyword">catch</span>( InterruptedException ie ) &#123; System.out.println( ie ); &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Check the return code, in case of a compilation error</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">ret</span> <span class="operator">=</span> p.exitValue();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Tell whether the compilation worked</span></span><br><span class="line">    <span class="keyword">return</span> ret==<span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// The heart of the ClassLoader -- automatically compile</span></span><br><span class="line">  <span class="comment">// source as necessary when looking for class files</span></span><br><span class="line">  <span class="keyword">public</span> Class <span class="title function_">loadClass</span><span class="params">( String name, <span class="type">boolean</span> resolve )</span></span><br><span class="line">      <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Our goal is to get a Class object</span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">clas</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// First, see if we&#x27;ve already dealt with this one</span></span><br><span class="line">    clas = findLoadedClass( name );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//System.out.println( &quot;findLoadedClass: &quot;+clas );</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Create a pathname from the class name</span></span><br><span class="line">    <span class="comment">// E.g. java.lang.Object =&gt; java/lang/Object</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">fileStub</span> <span class="operator">=</span> name.replace( <span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;/&#x27;</span> );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Build objects pointing to the source code (.java) and object</span></span><br><span class="line">    <span class="comment">// code (.class)</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">javaFilename</span> <span class="operator">=</span> fileStub+<span class="string">&quot;.java&quot;</span>;</span><br><span class="line">    <span class="type">String</span> <span class="variable">classFilename</span> <span class="operator">=</span> fileStub+<span class="string">&quot;.class&quot;</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="type">File</span> <span class="variable">javaFile</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>( javaFilename );</span><br><span class="line">    <span class="type">File</span> <span class="variable">classFile</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>( classFilename );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//System.out.println( &quot;j &quot;+javaFile.lastModified()+&quot; c &quot;+</span></span><br><span class="line">    <span class="comment">//  classFile.lastModified() );</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// First, see if we want to try compiling.  We do if (a) there</span></span><br><span class="line">    <span class="comment">// is source code, and either (b0) there is no object code,</span></span><br><span class="line">    <span class="comment">// or (b1) there is object code, but it&#x27;s older than the source</span></span><br><span class="line">    <span class="keyword">if</span> (javaFile.exists() &amp;&amp;</span><br><span class="line">         (!classFile.exists() ||</span><br><span class="line">          javaFile.lastModified() &gt; classFile.lastModified())) &#123;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// Try to compile it.  If this doesn&#x27;t work, then</span></span><br><span class="line">        <span class="comment">// we must declare failure.  (It&#x27;s not good enough to use</span></span><br><span class="line">        <span class="comment">// and already-existing, but out-of-date, classfile)</span></span><br><span class="line">        <span class="keyword">if</span> (!compile( javaFilename ) || !classFile.exists()) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ClassNotFoundException</span>( <span class="string">&quot;Compile failed: &quot;</span>+javaFilename );</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span>( IOException ie ) &#123;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Another place where we might come to if we fail</span></span><br><span class="line">        <span class="comment">// to compile</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ClassNotFoundException</span>( ie.toString() );</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Let&#x27;s try to load up the raw bytes, assuming they were</span></span><br><span class="line">    <span class="comment">// properly compiled, or didn&#x27;t need to be compiled</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// read the bytes</span></span><br><span class="line">      <span class="type">byte</span> raw[] = getBytes( classFilename );</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// try to turn them into a class</span></span><br><span class="line">      clas = defineClass( name, raw, <span class="number">0</span>, raw.length );</span><br><span class="line">    &#125; <span class="keyword">catch</span>( IOException ie ) &#123;</span><br><span class="line">      <span class="comment">// This is not a failure!  If we reach here, it might</span></span><br><span class="line">      <span class="comment">// mean that we are dealing with a class in a library,</span></span><br><span class="line">      <span class="comment">// such as java.lang.Object</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//System.out.println( &quot;defineClass: &quot;+clas );</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Maybe the class is in a library -- try loading</span></span><br><span class="line">    <span class="comment">// the normal way</span></span><br><span class="line">    <span class="keyword">if</span> (clas==<span class="literal">null</span>) &#123;</span><br><span class="line">      clas = findSystemClass( name );</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//System.out.println( &quot;findSystemClass: &quot;+clas );</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Resolve the class, if any, but only if the &quot;resolve&quot;</span></span><br><span class="line">    <span class="comment">// flag is set to true</span></span><br><span class="line">    <span class="keyword">if</span> (resolve &amp;&amp; clas != <span class="literal">null</span>)</span><br><span class="line">      resolveClass( clas );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// If we still don&#x27;t have a class, it&#x27;s an error</span></span><br><span class="line">    <span class="keyword">if</span> (clas == <span class="literal">null</span>)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ClassNotFoundException</span>( name );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Otherwise, return the class</span></span><br><span class="line">    <span class="keyword">return</span> clas;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.*;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment">CCLRun executes a Java program by loading it through a</span></span><br><span class="line"><span class="comment">CompilingClassLoader.</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CCLRun</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String args[] )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// The first argument is the Java program (class) the user</span></span><br><span class="line">    <span class="comment">// wants to run</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">progClass</span> <span class="operator">=</span> args[<span class="number">0</span>];</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// And the arguments to that program are just</span></span><br><span class="line">    <span class="comment">// arguments 1..n, so separate those out into</span></span><br><span class="line">    <span class="comment">// their own array</span></span><br><span class="line">    String progArgs[] = <span class="keyword">new</span> <span class="title class_">String</span>[args.length-<span class="number">1</span>];</span><br><span class="line">    System.arraycopy( args, <span class="number">1</span>, progArgs, <span class="number">0</span>, progArgs.length );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Create a CompilingClassLoader</span></span><br><span class="line">    <span class="type">CompilingClassLoader</span> <span class="variable">ccl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CompilingClassLoader</span>();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Load the main class through our CCL</span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">clas</span> <span class="operator">=</span> ccl.loadClass( progClass );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Use reflection to call its main() method, and to</span></span><br><span class="line">    <span class="comment">// pass the arguments in.</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Get a class representing the type of the main method&#x27;s argument</span></span><br><span class="line">    Class mainArgType[] = &#123; (<span class="keyword">new</span> <span class="title class_">String</span>[<span class="number">0</span>]).getClass() &#125;;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Find the standard main method in the class</span></span><br><span class="line">    <span class="type">Method</span> <span class="variable">main</span> <span class="operator">=</span> clas.getMethod( <span class="string">&quot;main&quot;</span>, mainArgType );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Create a list containing the arguments -- in this case,</span></span><br><span class="line">    <span class="comment">// an array of strings</span></span><br><span class="line">    Object argsArray[] = &#123; progArgs &#125;;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Call the method</span></span><br><span class="line">    main.invoke( <span class="literal">null</span>, argsArray );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Foo</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String args[] )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    System.out.println( <span class="string">&quot;foo! &quot;</span>+args[<span class="number">0</span>]+<span class="string">&quot; &quot;</span>+args[<span class="number">1</span>] );</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Bar</span>( args[<span class="number">0</span>], args[<span class="number">1</span>] );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> baz.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Bar</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Bar</span><span class="params">( String a, String b )</span> &#123;</span><br><span class="line">    System.out.println( <span class="string">&quot;bar! &quot;</span>+a+<span class="string">&quot; &quot;</span>+b );</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Baz</span>( a, b );</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">Class</span> <span class="variable">booClass</span> <span class="operator">=</span> Class.forName( <span class="string">&quot;Boo&quot;</span> );</span><br><span class="line">      <span class="type">Object</span> <span class="variable">boo</span> <span class="operator">=</span> booClass.newInstance();</span><br><span class="line">    &#125; <span class="keyword">catch</span>( Exception e ) &#123;</span><br><span class="line">      e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="keyword">package</span> baz;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Baz</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Baz</span><span class="params">( String a, String b )</span> &#123;</span><br><span class="line">    System.out.println( <span class="string">&quot;baz! &quot;</span>+a+<span class="string">&quot; &quot;</span>+b );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boo</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Boo</span><span class="params">()</span> &#123;</span><br><span class="line">    System.out.println( <span class="string">&quot;Boo!&quot;</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://www.ibm.com/developerworks/java/tutorials/j-classloader/j-classloader.html">https://www.ibm.com/developerworks/java/tutorials/j-classloader/j-classloader.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/AbstractRegistry%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" rel="prev" title="Dubbo AbstractRegistry源码阅读">
+                  <i class="fa fa-angle-left"></i> Dubbo AbstractRegistry源码阅读
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9Aspring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" rel="next" title="猫头鹰的深夜翻译：spring事务管理">
+                  猫头鹰的深夜翻译：spring事务管理 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

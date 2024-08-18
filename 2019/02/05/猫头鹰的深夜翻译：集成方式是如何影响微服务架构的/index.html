@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言当万维网首次出现时，集成不同类型的操作系统是一项主要的挑战。HTTP的出现使得不同的操作系统之间可以通过超文本使用统一的协议进行通信。 当微服务的架构出现后，系统的集成带来的挑战没有太大的分别：多种实现技术在物理网络上彼此分离，需要相互通信。从最终用户的角度来看，微服务的集成在系统的无缝体验方面起着至关重要的作用。正确集成的系统还有助于实现分布式系统的优势：它们可以在service级实现扩容提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：集成方式是如何影响微服务架构的">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言当万维网首次出现时，集成不同类型的操作系统是一项主要的挑战。HTTP的出现使得不同的操作系统之间可以通过超文本使用统一的协议进行通信。 当微服务的架构出现后，系统的集成带来的挑战没有太大的分别：多种实现技术在物理网络上彼此分离，需要相互通信。从最终用户的角度来看，微服务的集成在系统的无缝体验方面起着至关重要的作用。正确集成的系统还有助于实现分布式系统的优势：它们可以在service级实现扩容提">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%872.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%873.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%874.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%875.png">
+<meta property="article:published_time" content="2019-02-04T19:04:32.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.486Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/","path":"2019/02/05/猫头鹰的深夜翻译：集成方式是如何影响微服务架构的/","title":"猫头鹰的深夜翻译：集成方式是如何影响微服务架构的"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：集成方式是如何影响微服务架构的 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9B%86%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">数据库集成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5API%E8%B0%83%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">同步API调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ETL-Extract-Transform-and-Load"><span class="nav-number">4.</span> <span class="nav-text">ETL (Extract, Transform, and Load)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%B6%88%E6%81%AF"><span class="nav-number">5.1.</span> <span class="nav-text">两种类型的消息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：集成方式是如何影响微服务架构的 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：集成方式是如何影响微服务架构的
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 03:04:32" itemprop="dateCreated datePublished" datetime="2019-02-05T03:04:32+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当万维网首次出现时，集成不同类型的操作系统是一项主要的挑战。HTTP的出现使得不同的操作系统之间可以通过超文本使用统一的协议进行通信。</p>
+<p>当微服务的架构出现后，系统的集成带来的挑战没有太大的分别：多种实现技术在物理网络上彼此分离，需要相互通信。从最终用户的角度来看，微服务的集成在系统的无缝体验方面起着至关重要的作用。正确集成的系统还有助于实现分布式系统的优势：它们可以在service级实现扩容提高效率，并且能够在满足业务需求的同时降低架构成本。</p>
+<p>另一方面，错误集成的系统可能会彻底破坏微服务架构的好处：它可能会导致数据丢失和继承问题。这些问题通常很难追踪，同时用户会受到不良的影响。</p>
+<p>无缝集成有许多因素需要考虑。我们需要针对不同的场景选择最合适的集成方式。接下来，我们会介绍不同集成方式的优缺点。</p>
+<span id="more"></span>
+
+<h2 id="数据库集成"><a href="#数据库集成" class="headerlink" title="数据库集成"></a>数据库集成</h2><p>在这种模式下，两个或多个服务都读写自同一个中心数据库。所有的服务连接到同一个中心数据库上。我们可以用一个银行系统来解释这种架构。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<p>数据库集成的显著优点之一是简单。事务的管理和别的模式相比更加直观。这可能是使用最广泛的一种模式，同时也可能是最被滥用的。</p>
+<p>这个模式下服务耦合度较高，使得微服务较难以变更和扩展。定义数据的所属权以及更新schema会很麻烦，因为需要重新编译和部署所有相关的服务。它导致大爆炸形式的集成。这种类型的集成可能在维护微服务的自治性方面存在问题。</p>
+<p>在大规模应用的场景下，唯一的选择是在数据库中投入更多硬件，即使这样，也很难避免数据库和行级争用中的死锁。</p>
+<p>想情况下，我们不建议将此模式用于服务间通信。它可以用于分阶段微服务部署的早期阶段。换句话说：如果你使用它，很快就会抛弃它。</p>
+<h2 id="同步API调用"><a href="#同步API调用" class="headerlink" title="同步API调用"></a>同步API调用</h2><img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%872.png" class="" title="图片2">
+
+<p>在这种集成模式下，服务之间通过API同步的通信。所有的数据访问都是通过API以请求响应的方式实现，调用方等待API的返回数据做进一步处理。在上面的例子中，如果事务服务需要读取用户信息，可以通过调用用户服务的API来实现。</p>
+<p>这种方式在直接数据库的调用之上进行了良好的抽象，并在调用技术选择方面提供了极好的灵活性。它隐藏了实现的细节：使得我们可以在不影响客户的前提下自由的变更。比如，用户模块可能使用的是Java和MySQL，而事务模块可能使用的是SQL Server和.NET，但是它们彼此之间还是可以通过API进行通信。</p>
+<p>但是，这个和直接的数据库集成模式没有本质的区别。在数据库调用之上添加另一个网络调用也会j降低可扩展性：增加了负载，降低了性能。这种集成模式也使事务管理变得困难并且影响了服务自治，因为服务依赖于彼此的正常运行。在微服务中，如果必须在系统边界之外同步读取数据，那就是SOA架构的感觉了。</p>
+<p>在某些场景下，这种集成模式是最佳的甚至是不可避免的。API集成模式中安全令牌是一个主要的应用场景，因为这些token生命周期短，而且在使用之前才生成。如果可能的话，应谨慎使用同步API调用。如果使用这种模式，它们应该版本化并且应该与熔断机制一起使用。</p>
+<h2 id="ETL-Extract-Transform-and-Load"><a href="#ETL-Extract-Transform-and-Load" class="headerlink" title="ETL (Extract, Transform, and Load)"></a>ETL (Extract, Transform, and Load)</h2><img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%873.png" class="" title="图片3">
+<p>ETL需要按预定义的时间表通过后台进程同步数据。这些数据可以是推模式或者拉模式。它是异步的，这意味着服务可以在不等待“回调”的情况下执行。</p>
+<p>这种集成模式也很好地隐藏了实现细节。它提供了合理的解耦，因为服务不依赖于彼此的正常运行。实时用户不会受到正常运行时间或处理时间的影响。</p>
+<p>ETL过程需要改变源和目标数据库。通过ETL集成，数据一致性取决于计划和持续时间。弄清楚变化的可能会使应用变得太复杂。在这种场景下，团队不得不导出全部的数据。这使得流程运行时间非常长，严重影响了它们的实用性。</p>
+<p>报告性的服务非常适用于这种集成。这些ETL的过程通常会有些耗时，只有在系统中可接受旧数据时才应使用它们。</p>
+<h2 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h2><img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%874.png" class="" title="图片4">
+
+<p>在这种模式下，服务彼此之间通过指令和事件交换信息它们通过消息中介如RabbitMQ，MSMQ等。在上面的例子中，事务服务建立了一个账号余额变更的时间并且放到消息中间件中。奖励服务，积分服务和消息服务分别订阅这个事件，并且进行处理。这是发布订阅模式，还有很多别的消息模式。</p>
+<p>只要正确的实现，消息提供了非常好的解耦。它提供了非常高的灵活性，只要能够正确的通信。将数据推送给订阅者使得数据发送的部分非常容易完成。而且发送方完全不会受订阅端处理细节的影响。</p>
+<p>不正确的服务或事务边界可能使消息传递实现复杂化。而且，这种模式提供的松耦合影响一致性为。它需要高度的规范化才能正确实现消息传递，而没有经验的团队可能会很挣扎。</p>
+<h3 id="两种类型的消息"><a href="#两种类型的消息" class="headerlink" title="两种类型的消息"></a>两种类型的消息</h3><p>典型的消息传递解决方案建立在传输属性的基础之上。在较高的层面上，这些传输可以分为两类：消息队列和消息流。</p>
+<p>排队解决方案涉及处理实时数据。一旦消息被成功消费，则这条消息会从队列中出队。只要处理能够跟上，队列就不会累积，也不会占用太多空间。但是，在扩展订户的情况下，无法保证消息的顺序性。</p>
+<p>在流式传输解决方案中，消息按顺序存储在流中。它发生在消息传输本身。订户在流上的位置保留在传输上。它可以根据需要在流上倒置。这对于故障和新的订阅方案非常有利。但是，这取决于流的长度。从存储角度来看，它需要更多配置，因此需要对流进行归档。</p>
+<p>这里的典型用例假设系统能够处理有些陈旧的数据。如果情况并非如此，我们需要更多地分析业务领域并理解原因。在我们的示例中，当事务更新发生时，信用分数更新不一定需要实时发生。消息在这个场景下非常适合。我们可以相应地设置用户的期望，并允许服务管理自己的负载。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>每一种微服务架构都不同，没有绝对完美的方案。当我们使用它们时，我们需要结合故障情景，驱动这些集成模式的组合。比如，Netflix使用消息传递来移动数据，如果消息不可用或数据仍在传输中，它们会回退同步API。在每种情况下，理想的是实现最灵活和可扩展的微服务架构，但是必须首先考虑实施细节和自己的能力。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E9%9B%86%E6%88%90%E6%96%B9%E5%BC%8F%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84/%E5%9B%BE%E7%89%875.png" class="" title="图片5">
+
+<p>这里的关键是在需要扩展和自治时使用异步模式。要实现这一目标，您需要可靠的服务边界和明确的数据所有权。否则，您最终会遇到复杂且不可持续的集成方案。对业务流程建模很重要。这将让您知道哪些用例和进程本质上是异步的并且适合于消息传递。</p>
+<blockquote>
+<p>原文链接: <a href="https://dzone.com/articles/how-integration-patterns-impact-your-microservices">https://dzone.com/articles/how-integration-patterns-impact-your-microservices</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/WeakHashMap/" rel="prev" title="猫头鹰的深夜翻译：WeakHashMap">
+                  <i class="fa fa-angle-left"></i> 猫头鹰的深夜翻译：WeakHashMap
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/JVM%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="next" title="猫头鹰的深夜翻译：JDK Vs. JRE Vs. JVM之间的区别">
+                  猫头鹰的深夜翻译：JDK Vs. JRE Vs. JVM之间的区别 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

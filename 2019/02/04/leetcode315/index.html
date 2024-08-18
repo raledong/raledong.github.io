@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="题目要求123456789101112You are given an integer array nums and you have to return a new counts array. The counts array has the property where counts[i] is the number of smaller elements to the right of nu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode315.Count of Smaller Numbers After Self">
+<meta property="og:url" content="http://yoursite.com/2019/02/04/leetcode315/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="题目要求123456789101112You are given an integer array nums and you have to return a new counts array. The counts array has the property where counts[i] is the number of smaller elements to the right of nu">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-03T17:40:41.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.411Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="leetcode">
+<meta property="article:tag" content="divide conquer">
+<meta property="article:tag" content="segment tree">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/04/leetcode315/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/04/leetcode315/","path":"2019/02/04/leetcode315/","title":"leetcode315.Count of Smaller Numbers After Self"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>leetcode315.Count of Smaller Numbers After Self | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E8%A6%81%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B4%E4%B8%80%E8%AF%B4Segment-Tree"><span class="nav-number">2.</span> <span class="nav-text">简单说一说Segment Tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E5%92%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">思路和代码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode315/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="leetcode315.Count of Smaller Numbers After Self | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode315.Count of Smaller Numbers After Self
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-04 01:40:41" itemprop="dateCreated datePublished" datetime="2019-02-04T01:40:41+08:00">2019-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">You are given an integer array nums and you have to return a new counts array. </span><br><span class="line">The counts array has the property where counts[i] is the number of smaller elements to the right of nums[i].</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">Given nums = [5, 2, 6, 1]</span><br><span class="line"></span><br><span class="line">To the right of 5 there are 2 smaller elements (2 and 1).</span><br><span class="line">To the right of 2 there is only 1 smaller element (1).</span><br><span class="line">To the right of 6 there is 1 smaller element (1).</span><br><span class="line">To the right of 1 there is 0 smaller element.</span><br><span class="line">Return the array [2, 1, 1, 0].</span><br></pre></td></tr></table></figure>
+<p>输入一个整数数组nums[i]，返回所有一个新的数组count，该数组第i位上的count[i]表示nums[i]右侧小于nums[i]的数字的个数。</p>
+<span id="more"></span>
+
+<h2 id="简单说一说Segment-Tree"><a href="#简单说一说Segment-Tree" class="headerlink" title="简单说一说Segment Tree"></a>简单说一说Segment Tree</h2><p>SegmentTree常常用于对于一个数组有多次范围型查询的场景。比如计算从L到R之间所有元素的和，或者找到L到R之间的最小元素。这里L和R是会移动的。</p>
+<p>SegmentTree本质上是一棵二叉树，该二叉树会存储一个区间的某种值，如最大值，最小值或是该区间所有元素的和。如果根节点代表这个数组A[1…N]，那么它的每一个叶节点代表一个元素A[i]，每一个非叶节点代表一个区间A[i…j]，其中0&lt;&#x3D;i&lt;j&lt;N</p>
+<p>当我们希望插入一个SegmentTreeNode时，我们要找到更新所在的区间，并且递归的将其下所有的区间作出相应的更改。</p>
+<p>当我们希望查询时，则从根节点开始寻找其所在的区间，如果位于左侧区间，则查询左子树啊，如果位于右侧区间，则查询右子树。如果横跨了分割点，则分别查询左子树的部分和右子树的部分。</p>
+<h2 id="思路和代码"><a href="#思路和代码" class="headerlink" title="思路和代码"></a>思路和代码</h2><p>这里我们将从右往左构建一棵二叉搜索树，这棵树的每个节点还将存储额外的信息，即遍历到nums[i]时，该节点的值重复的数量duplicateCount，以及从i到该节点共有几个数字小于该节点而大于其父节点的值smallerThan（相当于左子树元素的个数）。</p>
+<p>直接从例子入手吧：<br>假设现在有这样一个数组<code>[11,6,9,9,3,1,7]</code><br>则构造树的步骤如下：<br>注：括号中的值分别对用这smallerThan和duplicateCount</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">插入7</span><br><span class="line">7(0, 1)</span><br></pre></td></tr></table></figure>
+<p>此时右侧小于7的数字为0个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">插入1</span><br><span class="line">   7(1,1)</span><br><span class="line">  /</span><br><span class="line">1(0,1)</span><br></pre></td></tr></table></figure>
+<p>当向左插入节点时，父节点的smallerThan加一。此时我们看到右侧小于1的数字还是0个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">插入3</span><br><span class="line">   7(2,1)</span><br><span class="line">  /</span><br><span class="line">1(0,1)</span><br><span class="line">  \</span><br><span class="line">   3(0,1) </span><br></pre></td></tr></table></figure>
+<p>此时我们看到，3比1大，因此在1处将其作为右节点插入。此时比3小的数字也就是1和所有比1小的数字，即<code>0+1 = 1</code>这里<code>0</code>对应比1小的数字，<code>1</code>对应数字1的重复次数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   7(2,1)</span><br><span class="line">  /     \</span><br><span class="line">1(0,1)   9(0, 1)</span><br><span class="line">  \</span><br><span class="line">   3(0,1)  </span><br></pre></td></tr></table></figure>
+<p>此时我们在根节点7处向右插入节点9，每一次向右插入都意味着有数字比当前的值小，因此比9小的数字的个数为<code>2 + 1 + 0 = 3</code>这里<code>0</code>代表着比7大但是比9小的元素的个数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">插入9</span><br><span class="line">   7(2,1)</span><br><span class="line">  /     \</span><br><span class="line">1(0,1)   9(0, 2)</span><br><span class="line">  \</span><br><span class="line">   3(0,1) </span><br></pre></td></tr></table></figure>
+<p>重复插入9，因此将9的duplicateCount加一，比其小的元素的个数还是为<code>2+1+0=3</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">插入6</span><br><span class="line">   7(3,1)</span><br><span class="line">  /     \</span><br><span class="line">1(0,1)   9(0, 2)</span><br><span class="line">  \</span><br><span class="line">   3(0,1) </span><br><span class="line">     \</span><br><span class="line">      6(0,1)</span><br></pre></td></tr></table></figure>
+<p>首先看到根节点7的smallerThan加一，然后将所有右拐处的节点值相加，即<code>0+1 + 0+1 + 0 = 2</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">插入11</span><br><span class="line">   7(3,1)</span><br><span class="line">  /     \</span><br><span class="line">1(0,1)   9(0, 2)</span><br><span class="line">  \        \</span><br><span class="line">   3(0,1)   11(0,1)</span><br><span class="line">     \</span><br><span class="line">      6(0,1)</span><br></pre></td></tr></table></figure>
+<p>那么小于11的数字有几个呢？没错，就是<code>3+1+0+2+0 = 6</code></p>
+<p>代码实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">countSmaller</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">    LinkedList&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">if</span>(nums.length == <span class="number">0</span>) <span class="keyword">return</span> result;</span><br><span class="line">    <span class="type">SpecialTreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SpecialTreeNode</span>(nums[nums.length-<span class="number">1</span>]);</span><br><span class="line">    result.addFirst(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> nums.length-<span class="number">2</span> ; i&gt;=<span class="number">0</span> ; i--)&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> insert(root, nums[i]);</span><br><span class="line">        result.addFirst(count);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">insert</span><span class="params">(SpecialTreeNode root, <span class="type">int</span> val)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(val == root.val)&#123;</span><br><span class="line">        root.addDuplicate();</span><br><span class="line">        <span class="keyword">return</span> root.smallerThan;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(val &lt; root.val)&#123;</span><br><span class="line">        root.addSmallerThan();</span><br><span class="line">        <span class="keyword">if</span>(root.left==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="type">SpecialTreeNode</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SpecialTreeNode</span>(val);</span><br><span class="line">            root.left = s;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> insert(root.left, val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root.right == <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="type">SpecialTreeNode</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SpecialTreeNode</span>(val);</span><br><span class="line">            root.right = s;</span><br><span class="line">            <span class="keyword">return</span> root.smallerThan + root.duplicateCount;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> root.smallerThan + root.duplicateCount + insert(root.right, val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SpecialTreeNode</span>&#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> <span class="number">0</span>, smallerThan = <span class="number">0</span>, duplicateCount = <span class="number">1</span>;</span><br><span class="line">    SpecialTreeNode left;</span><br><span class="line">    SpecialTreeNode right;</span><br><span class="line">    </span><br><span class="line">    SpecialTreeNode(<span class="type">int</span> val)&#123;</span><br><span class="line">        <span class="built_in">this</span>.val = val;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addDuplicate</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.duplicateCount++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addSmallerThan</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.smallerThan++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##参考文章##</p>
+<blockquote>
+<p><a href="https://www.hackerearth.com/zh/practice/data-structures/advanced-data-structures/segment-trees/tutorial/">Segment Tree Tutorials</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"># 刷题</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+              <a href="/tags/divide-conquer/" rel="tag"># divide conquer</a>
+              <a href="/tags/segment-tree/" rel="tag"># segment tree</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/04/leetcode306/" rel="prev" title="leetcode306">
+                  <i class="fa fa-angle-left"></i> leetcode306
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/04/leetcode329/" rel="next" title="leetcode329.Longest Increasing Path in a Matrix">
+                  leetcode329.Longest Increasing Path in a Matrix <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

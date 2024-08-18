@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言一直以来存储树状结构都采用经典的结构&lt;id,pid&gt;的组合，即每一个节点持有其父节点的ID，并由此构成完整的树状结构。但是这样的结构在遇到大量的查询时会成为严重的性能瓶颈，因为它涉及了对数据库的递归查询。因此我查找了一下网上的各种层次结构的存储方式并决定对其分别实现。本文将通过MySQL+MyBatis+SpringBoot实现先序树存储。阅读本文之前需要了解：  Spring B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树状结构存储与读取之Modified Preorder Tree">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/Tree/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言一直以来存储树状结构都采用经典的结构&lt;id,pid&gt;的组合，即每一个节点持有其父节点的ID，并由此构成完整的树状结构。但是这样的结构在遇到大量的查询时会成为严重的性能瓶颈，因为它涉及了对数据库的递归查询。因此我查找了一下网上的各种层次结构的存储方式并决定对其分别实现。本文将通过MySQL+MyBatis+SpringBoot实现先序树存储。阅读本文之前需要了解：  Spring B">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/Tree/%E5%9B%BE%E7%89%871.png">
+<meta property="article:published_time" content="2019-02-05T13:11:43.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.370Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="tree">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/Tree/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/Tree/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/Tree/","path":"2019/02/05/Tree/","title":"树状结构存储与读取之Modified Preorder Tree"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>树状结构存储与读取之Modified Preorder Tree | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81%E4%BB%80%E4%B9%88%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">我们需要什么操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%A3%B5%E6%A0%91"><span class="nav-number">3.</span> <span class="nav-text">一棵树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%BD%93%E5%89%8D%E8%8A%82%E7%82%B9%E4%B8%BA%E6%A0%B9%E8%8A%82%E7%82%B9%E6%9E%84%E6%88%90%E7%9A%84%E6%A0%91"><span class="nav-number">3.1.</span> <span class="nav-text">获得当前节点为根节点构成的树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%88%86%E7%B1%BB"><span class="nav-number">3.2.</span> <span class="nav-text">添加一个分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E5%88%86%E7%B1%BB"><span class="nav-number">3.3.</span> <span class="nav-text">删除一个分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%A3%B5%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">多棵树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E6%89%80%E6%9C%89%E7%9A%84%E6%A0%B9%E8%8A%82%E7%82%B9"><span class="nav-number">4.1.</span> <span class="nav-text">获得所有的根节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E6%A3%B5%E6%96%B0%E7%9A%84%E6%A0%91"><span class="nav-number">4.2.</span> <span class="nav-text">添加一棵新的树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/Tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="树状结构存储与读取之Modified Preorder Tree | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          树状结构存储与读取之Modified Preorder Tree
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 21:11:43" itemprop="dateCreated datePublished" datetime="2019-02-05T21:11:43+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">原创</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直以来存储树状结构都采用经典的结构<code>&lt;id,pid&gt;</code>的组合，即每一个节点持有其父节点的ID，并由此构成完整的树状结构。但是这样的结构在遇到大量的查询时会成为严重的性能瓶颈，因为它涉及了对数据库的递归查询。因此我查找了一下网上的各种层次结构的存储方式并决定对其分别实现。本文将通过MySQL+MyBatis+SpringBoot实现先序树存储。<br>阅读本文之前需要了解：</p>
+<ul>
+<li>Spring Boot</li>
+<li>MyBatis</li>
+<li>MySQL CRUD &amp; Procedure</li>
+</ul>
+<p>本文的源码可以在<a href="https://github.com/raledong/HierarchyDataStorage">GitHUB</a>上查看。欢迎大家给出意见。</p>
+<span id="more"></span>
+
+<h2 id="我们需要什么操作"><a href="#我们需要什么操作" class="headerlink" title="我们需要什么操作"></a>我们需要什么操作</h2><p>在进入正文之前，我们需要从底层的具体实现抽离开来，从业务的角度来分析我们究竟需要对一棵树进行什么样的操作。这里我们将以<strong>分类管理</strong>作为具体场景。写过库存管理系统的盆友们都知道，我们需要用某种方式对各种商品的分类按照层次结构进行存储。比如我们有电子产品大类，底下还包括数码产品，家电等等各种小类，而在各个小类之下我们也还有多种更加具体的分类。这些分类在用户界面往往以直观的树状结构展示如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-电子产品</span><br><span class="line">  - 数码产品</span><br><span class="line">    - 手机类</span><br><span class="line">    - 相机类</span><br><span class="line">    - 电脑类</span><br><span class="line">  - 家电</span><br></pre></td></tr></table></figure>
+<p>因此在业务层的角度来说我们需要以下操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">TreeService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获得rootId节点下的所有子节点</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> rootId</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Category <span class="title function_">getTree</span><span class="params">(<span class="type">int</span> rootId)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获得所有根节点</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    List&lt;Category&gt; <span class="title function_">getRoots</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加一个分类</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> nodeName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> parentId</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">addCategory</span><span class="params">(String nodeName, <span class="type">int</span> parentId)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 删除一个分类</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">deleteCategory</span><span class="params">(<span class="type">int</span> id)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加一个分类列表作为一个全新的分类</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> category</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">addCategoryList</span><span class="params">(Category category)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而业务层所看到的每一个分类的节点如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Category</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Category&gt; subCategories;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Category</span><span class="params">(<span class="type">int</span> id, String name)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>(name);</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Category</span><span class="params">(String name)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        subCategories = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Category&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addSubCategory</span><span class="params">(Category subCategory)</span>&#123;</span><br><span class="line">        subCategories.add(subCategory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLeaf</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> subCategories==<span class="literal">null</span> || subCategories.size() == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##什么是Modified Preorder Tree##<br><a href="http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/">这篇文章</a>当时给了我非常大的帮助，在阅读本文之前强烈建议先阅读这篇文章，来了解一下Modified Preorder Tree究竟是什么样的一个数据结构。在有了一个基础的认识之后我们将进一步利用SQL和Spring的事务来完成各项操作，从而实现之前列出的各项操作。</p>
+<img src="/2019/02/05/Tree/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<p>接下来了解一下Modified Proorder Tree的数据结构。</p>
+<p>我们可以通过如下的建表语句在MySQL中新建一个Modified Preorder Tree的节点的表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#建表语句</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> nested_category (</span><br><span class="line">  category_id <span class="type">INT</span> AUTO_INCREMENT <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">  name <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  lft <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  rgt <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>并且先默认的插入一些数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> nested_category <span class="keyword">VALUES</span>(<span class="number">1</span>,<span class="string">&#x27;ELECTRONICS&#x27;</span>,<span class="number">1</span>,<span class="number">20</span>),(<span class="number">2</span>,<span class="string">&#x27;TELEVISIONS&#x27;</span>,<span class="number">2</span>,<span class="number">9</span>),(<span class="number">3</span>,<span class="string">&#x27;TUBE&#x27;</span>,<span class="number">3</span>,<span class="number">4</span>),</span><br><span class="line">  (<span class="number">4</span>,<span class="string">&#x27;LCD&#x27;</span>,<span class="number">5</span>,<span class="number">6</span>),(<span class="number">5</span>,<span class="string">&#x27;PLASMA&#x27;</span>,<span class="number">7</span>,<span class="number">8</span>),(<span class="number">6</span>,<span class="string">&#x27;PORTABLE ELECTRONICS&#x27;</span>,<span class="number">10</span>,<span class="number">19</span>),(<span class="number">7</span>,<span class="string">&#x27;MP3 PLAYERS&#x27;</span>,<span class="number">11</span>,<span class="number">14</span>),(<span class="number">8</span>,<span class="string">&#x27;FLASH&#x27;</span>,<span class="number">12</span>,<span class="number">13</span>),</span><br><span class="line">  (<span class="number">9</span>,<span class="string">&#x27;CD PLAYERS&#x27;</span>,<span class="number">15</span>,<span class="number">16</span>),(<span class="number">10</span>,<span class="string">&#x27;2 WAY RADIOS&#x27;</span>,<span class="number">17</span>,<span class="number">18</span>);</span><br></pre></td></tr></table></figure>
+<p>这里的数据就是之前那张图的层次结构。我们将在这个直观的层次结构的基础上进行存储和读取。<br>当然了，与之对应的JAVA中的类为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CategoryNode</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> lft;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> rgt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLeaf</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lft + <span class="number">1</span> == rgt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本项目中很多地方的采用了lombok开源插件来简化getters和setters的书写。可以稍微了解一下lombok，非常方便。</p>
+<h2 id="一棵树"><a href="#一棵树" class="headerlink" title="一棵树"></a>一棵树</h2><p>我们先从存取一棵树入手，来看看究竟如何实现节点的增删改查，以及插入一整棵树。下面我将分别列出相应操作的SQL语句以及对应的JAVA代码。</p>
+<h3 id="获得当前节点为根节点构成的树"><a href="#获得当前节点为根节点构成的树" class="headerlink" title="获得当前节点为根节点构成的树"></a>获得当前节点为根节点构成的树</h3><p>Service中的接口为<code>Category getTree(int rootId)</code><br>我们将用一条语句获取该节点所有的子节点（包括该节点本身），再在service层进行重组构成一棵树。相对于之前通过递归访问数据库，这样的方式明显效率更高。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c1.<span class="operator">*</span> <span class="keyword">FROM</span> nested_category c1, nested_category c2</span><br><span class="line">    <span class="keyword">WHERE</span> c1.lft <span class="operator">&gt;=</span> c2.lft</span><br><span class="line">          <span class="keyword">AND</span> c2.rgt <span class="operator">&gt;=</span> c1.rgt</span><br><span class="line">          <span class="keyword">AND</span> c2.category_id <span class="operator">=</span> #&#123;id&#125;</span><br><span class="line">    <span class="keyword">ORDER</span> <span class="keyword">BY</span> c1.lft <span class="keyword">ASC</span></span><br></pre></td></tr></table></figure>
+<p>在逻辑层重组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Category <span class="title function_">getTree</span><span class="params">(<span class="type">int</span> rootId)</span> &#123;</span><br><span class="line">    List&lt;CategoryNode&gt; categoryNodes = mapper.getSubCategoryNodesIncludingSelf(rootId);</span><br><span class="line">    <span class="keyword">if</span> (categoryNodes==<span class="literal">null</span> || categoryNodes.size() ==<span class="number">0</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">CategoryNode</span> <span class="variable">root</span> <span class="operator">=</span> categoryNodes.remove(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> getTree(root, categoryNodes);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Category <span class="title function_">getTree</span><span class="params">(CategoryNode parentCategory, List&lt;CategoryNode&gt; nodes)</span>&#123;</span><br><span class="line">    <span class="type">Category</span> <span class="variable">category</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Category</span>(parentCategory.getId(), parentCategory.getName());</span><br><span class="line">    <span class="keyword">if</span> (!parentCategory.isLeaf())&#123;</span><br><span class="line">        <span class="keyword">while</span> (nodes.size() &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="type">CategoryNode</span> <span class="variable">tmpNode</span> <span class="operator">=</span> nodes.get(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">if</span> (tmpNode.getLft() &gt; parentCategory.getRgt()) <span class="keyword">break</span>;</span><br><span class="line">            nodes.remove(<span class="number">0</span>);</span><br><span class="line">            category.addSubCategory(getTree(tmpNode, nodes));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> category;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加一个分类"><a href="#添加一个分类" class="headerlink" title="添加一个分类"></a>添加一个分类</h3><p>这里的添加操作是指在父节点之下添加一个新的分类。它并不影响原来的其他子节点。这里我们采用MySQL的过程存储加上Service层的事务管理来实现。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#插入节点<span class="operator">-</span>只能作为当前节点的一个新节点</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> addCategory(</span><br><span class="line">  <span class="keyword">IN</span> categoryName <span class="type">VARCHAR</span>(<span class="number">255</span>),</span><br><span class="line">  <span class="keyword">IN</span> parentId <span class="type">INT</span>,</span><br><span class="line">  <span class="keyword">OUT</span> categoryID <span class="type">INT</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SELECT</span> <span class="variable">@right</span> :<span class="operator">=</span> rgt <span class="keyword">FROM</span> nested_category c <span class="keyword">WHERE</span> c.category_id <span class="operator">=</span> parentId;</span><br><span class="line">  <span class="keyword">UPDATE</span> nested_category <span class="keyword">SET</span> rgt <span class="operator">=</span> rgt <span class="operator">+</span> <span class="number">2</span> <span class="keyword">WHERE</span> rgt <span class="operator">&gt;=</span> <span class="variable">@right</span>;</span><br><span class="line">  <span class="keyword">UPDATE</span> nested_category <span class="keyword">SET</span> lft <span class="operator">=</span> lft <span class="operator">+</span> <span class="number">2</span> <span class="keyword">WHERE</span> lft <span class="operator">&gt;=</span> <span class="variable">@right</span>;</span><br><span class="line">  <span class="keyword">INSERT</span> <span class="keyword">INTO</span> nested_category(name, lft, rgt) <span class="keyword">VALUES</span>(categoryName, <span class="variable">@right</span>, <span class="variable">@right</span><span class="operator">+</span><span class="number">1</span>);</span><br><span class="line">  <span class="keyword">SELECT</span> LAST_INSERT_ID() <span class="keyword">INTO</span> categoryID;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CALL</span> addCategory(<span class="string">&#x27;GAME&#x27;</span>,<span class="number">1</span>, <span class="variable">@categoryId</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@categoryId</span>;</span><br></pre></td></tr></table></figure>
+<p>这里可以使用MyBatis直接调用存储过程并获得返回结果，但是这里并不是本文的重点，所以不多赘述，可以直接前往Github查看。<br>Service层代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">addCategory</span><span class="params">(String nodeName, <span class="type">int</span> parentId)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> mapper.addCategoryTo(nodeName, parentId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="删除一个分类"><a href="#删除一个分类" class="headerlink" title="删除一个分类"></a>删除一个分类</h3><p>删除一个分类意味着我们需要所有在该分类lft和rgt值之内的节点全部删除，同时需要更新其所有的父节点。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#删除节点</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> delCategory(</span><br><span class="line">  <span class="keyword">IN</span> categoryID <span class="type">INT</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SELECT</span> <span class="variable">@myLeft</span> :<span class="operator">=</span> lft, <span class="variable">@myRight</span> :<span class="operator">=</span> rgt, <span class="variable">@myWidth</span> :<span class="operator">=</span> rgt <span class="operator">-</span> lft <span class="operator">+</span> <span class="number">1</span></span><br><span class="line">  <span class="keyword">FROM</span> nested_category</span><br><span class="line">  <span class="keyword">WHERE</span> category_id <span class="operator">=</span> categoryID;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">DELETE</span> <span class="keyword">FROM</span> nested_category <span class="keyword">WHERE</span> lft <span class="keyword">BETWEEN</span> <span class="variable">@myLeft</span> <span class="keyword">AND</span> <span class="variable">@myRight</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">UPDATE</span> nested_category <span class="keyword">SET</span> rgt <span class="operator">=</span> rgt <span class="operator">-</span> <span class="variable">@myWidth</span> <span class="keyword">WHERE</span> rgt <span class="operator">&gt;</span> <span class="variable">@myRight</span>;</span><br><span class="line">  <span class="keyword">UPDATE</span> nested_category <span class="keyword">SET</span> lft <span class="operator">=</span> lft <span class="operator">-</span> <span class="variable">@myWidth</span> <span class="keyword">WHERE</span> lft <span class="operator">&gt;</span> <span class="variable">@myRight</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CALL</span> delCategory(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>这里同样需要过程管理加上事务的支持：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deleteCategory</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">    mapper.deleteCategory(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="多棵树"><a href="#多棵树" class="headerlink" title="多棵树"></a>多棵树</h2><p>然而，我们的数据库往往并不会只有一个分类，分类之下往往会有多个独立的根节点，比如之前的电器类，还有家具类，书籍类。我们如何在Modified Preorder Tree结构下的分类管理中管理多棵树呢？<br>一般来说有两种思路：</p>
+<ol>
+<li>默认所有的树都有一个隐藏的根节点，在此根节点的基础上，每个我们所知道的真实根节点为其直接子节点。缺点在于一棵树结构的变动将必然会影响所有节点</li>
+<li>为每棵树冗余一定的空间，假设为1024，那么每棵树的根节点的lft值为1024的倍数。每次插入一棵新的树，我们将从下一个最小的1024的倍数作为lft值构建整棵树。缺点在于如果树的大小超过了1024，那么需要对整棵树进行重新转储。而且如果树的大小不均匀，那么将会产生很多的空余值没有被使用。</li>
+<li>每个节点冗余一个字段，引入根节点的ID，这样的话所有的lft都可以从0开始写起并且树与树之前不会相互干扰。缺点：冗余字段，插入树是需要先获取根节点的ID，再传递给所有的子节点</li>
+</ol>
+<p>这里我采用了第一种实现，后面会陆续更新第二和第三种。<br>可以看到，之前的实现在该场景下全部可以完美适用。</p>
+<h3 id="获得所有的根节点"><a href="#获得所有的根节点" class="headerlink" title="获得所有的根节点"></a>获得所有的根节点</h3><p>如果一个节点不是根节点，那么一定存在一个节点，其lft值小于该节点的lft值，rgt值大于该节点的rgt值。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> nested_category c1</span><br><span class="line">    <span class="keyword">WHERE</span> c1.category_id</span><br><span class="line">    <span class="keyword">NOT</span> <span class="keyword">IN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> c2.category_id</span><br><span class="line">    <span class="keyword">FROM</span> nested_category c2,</span><br><span class="line">    nested_category c3</span><br><span class="line">    <span class="keyword">WHERE</span> c2.lft <span class="operator">&gt;</span> c3.lft <span class="keyword">AND</span> c3.rgt <span class="operator">&gt;</span> c2.rgt)</span><br></pre></td></tr></table></figure>
+<p>当然了，service层要求传递完整结构的树节点，因此我们可以复用之前的构造一棵树的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> List&lt;Category&gt; <span class="title function_">getRoots</span><span class="params">()</span> &#123;</span><br><span class="line">    List&lt;CategoryNode&gt; roots = mapper.getRoots();</span><br><span class="line">    List&lt;Category&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Category&gt;();</span><br><span class="line">    <span class="keyword">for</span> (CategoryNode n : roots)&#123;</span><br><span class="line">        <span class="type">Category</span> <span class="variable">root</span> <span class="operator">=</span> <span class="built_in">this</span>.getTree(n.getId());</span><br><span class="line">        result.add(root);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加一棵新的树"><a href="#添加一棵新的树" class="headerlink" title="添加一棵新的树"></a>添加一棵新的树</h3><p>添加一棵新的树意味着需要获取当前lft的起始值，并按照中序遍历递归的为每个节点赋予lft和rgt值。然后将其一次性插入数据库中。这里直接饮用了mybatis代码。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span><span class="keyword">select</span> id<span class="operator">=</span>&quot;getMaxRightValue&quot; resultType<span class="operator">=</span>&quot;INT&quot;<span class="operator">&gt;</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="built_in">MAX</span>(rgt) <span class="keyword">FROM</span> nested_category;</span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span><span class="keyword">select</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&lt;</span><span class="keyword">insert</span> id<span class="operator">=</span>&quot;addCategories&quot; parameterType<span class="operator">=</span>&quot;List&quot; <span class="operator">&gt;</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> nested_category(name, lft, rgt) <span class="keyword">VALUES</span></span><br><span class="line">    <span class="operator">&lt;</span>foreach collection<span class="operator">=</span>&quot;list&quot; item<span class="operator">=</span>&quot;element&quot; index<span class="operator">=</span>&quot;index&quot; <span class="keyword">open</span><span class="operator">=</span>&quot;(&quot; separator<span class="operator">=</span>&quot;),(&quot;  <span class="keyword">close</span><span class="operator">=</span>&quot;)&quot; <span class="operator">&gt;</span></span><br><span class="line">        #&#123;element.name&#125;, #&#123;element.lft&#125;, #&#123;element.rgt&#125;</span><br><span class="line">    <span class="operator">&lt;</span><span class="operator">/</span>foreach<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span><span class="keyword">insert</span><span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 这里都不考虑异常情况</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> category</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">addCategoryList</span><span class="params">(Category category)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">lftValue</span> <span class="operator">=</span> mapper.getMaxRightValue() + <span class="number">1</span>;</span><br><span class="line">    List&lt;CategoryNode&gt; nodes = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;CategoryNode&gt;();</span><br><span class="line">    <span class="type">CategoryNode</span> <span class="variable">root</span> <span class="operator">=</span> labelCategory(category, lftValue, nodes);</span><br><span class="line">    mapper.addCategories(nodes);</span><br><span class="line">    <span class="keyword">return</span> root.getId();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 传入lftValue并设置各个node的左右值</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> category</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> lftValue</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> rgtValue</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> CategoryNode <span class="title function_">labelCategory</span><span class="params">(Category category, <span class="type">int</span> lftValue, List&lt;CategoryNode&gt; nodes)</span>&#123;</span><br><span class="line">    <span class="type">CategoryNode</span> <span class="variable">categoryNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CategoryNode</span>();</span><br><span class="line">    nodes.add(categoryNode);</span><br><span class="line">    categoryNode.setName(category.getName());</span><br><span class="line">    categoryNode.setLft(lftValue);</span><br><span class="line">    <span class="type">int</span> <span class="variable">rgtValue</span> <span class="operator">=</span> lftValue + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (category.isLeaf())&#123;</span><br><span class="line">        categoryNode.setRgt(rgtValue);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Category subCategory : category.getSubCategories())&#123;</span><br><span class="line">            rgtValue = labelCategory(subCategory, rgtValue, nodes).getRgt() + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        categoryNode.setRgt(rgtValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> categoryNode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>非<code>&lt;id, pid&gt;</code>结构的层次存储往往对读取友好而对更新不友好，所以我们往往需要根据具体的业务场景来决定如何来实现层次结构的存储和读取。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/">Managing Hierarchical Data in Mysql</a><br><a href="https://www.sitepoint.com/hierarchical-data-database-2/">Hierarchical data database</a><br><a href="https://segmentfault.com/q/1010000000126370">树状结构的数据表如何存储</a></p>
+<blockquote>
+<p>项目仓库地址: <a href="https://github.com/raledong/HierarchyDataStorage">https://github.com/raledong/HierarchyDataStorage</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
+              <a href="/tags/tree/" rel="tag"># tree</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/" rel="prev" title="深入理解依赖注入">
+                  <i class="fa fa-angle-left"></i> 深入理解依赖注入
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E5%9C%A8Centos%E4%B8%8A%E6%90%AD%E5%BB%BAMaven%E4%B8%AD%E5%A4%AE%E4%BB%93%E5%BA%93/" rel="next" title="在Centos上搭建Maven中央仓库">
+                  在Centos上搭建Maven中央仓库 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

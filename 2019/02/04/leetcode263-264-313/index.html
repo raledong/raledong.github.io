@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言这一篇博客把ugly numbers系列的题目做一个整理。这三道题正好是一个思路的循序渐进，所以放在一篇博客当中。 Ugly Number123456Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors onl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode263-264-313.ugly numbers">
+<meta property="og:url" content="http://yoursite.com/2019/02/04/leetcode263-264-313/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言这一篇博客把ugly numbers系列的题目做一个整理。这三道题正好是一个思路的循序渐进，所以放在一篇博客当中。 Ugly Number123456Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors onl">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-04T11:35:26.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.406Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="leetcode">
+<meta property="article:tag" content="dynamic programming">
+<meta property="article:tag" content="math">
+<meta property="article:tag" content="heap">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/04/leetcode263-264-313/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/04/leetcode263-264-313/","path":"2019/02/04/leetcode263-264-313/","title":"leetcode263-264-313.ugly numbers"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>leetcode263-264-313.ugly numbers | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ugly-Number"><span class="nav-number">2.</span> <span class="nav-text">Ugly Number</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#264-Ugly-Number-II"><span class="nav-number">3.</span> <span class="nav-text">264. Ugly Number II</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#313-Super-ugly-number"><span class="nav-number">4.</span> <span class="nav-text">313 Super ugly number</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode263-264-313/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="leetcode263-264-313.ugly numbers | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode263-264-313.ugly numbers
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-04 19:35:26" itemprop="dateCreated datePublished" datetime="2019-02-04T19:35:26+08:00">2019-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这一篇博客把<code>ugly numbers</code>系列的题目做一个整理。这三道题正好是一个思路的循序渐进，所以放在一篇博客当中。</p>
+<h2 id="Ugly-Number"><a href="#Ugly-Number" class="headerlink" title="Ugly Number"></a>Ugly Number</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Write a program to check whether a given number is an ugly number.</span><br><span class="line"></span><br><span class="line">Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. </span><br><span class="line">For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.</span><br><span class="line"></span><br><span class="line">Note that 1 is typically treated as an ugly number.</span><br></pre></td></tr></table></figure>
+<p>丑数是指只包含<code>2,3,5</code>质因数的数。因此<code>6</code>,<code>8</code>是丑数因为<code>6=2*3</code>,<code>8=2*2*2</code>，而<code>14</code>不是丑数因为14包含质因数7。现在写一个方法判断一个数字是否是丑数。</p>
+<p>这题只需要将所有的2，3，5质数消去之后，余下的质数是不是1来进行判断。代码如下：</p>
+<span id="more"></span>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isUgly</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(num &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">while</span>(num % <span class="number">2</span> == <span class="number">0</span>) num /= <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(num % <span class="number">5</span> == <span class="number">0</span>) num /= <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">while</span>(num % <span class="number">3</span> == <span class="number">0</span>) num /= <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> num == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="264-Ugly-Number-II"><a href="#264-Ugly-Number-II" class="headerlink" title="264. Ugly Number II"></a>264. Ugly Number II</h2><p>Write a program to find the n-th ugly number.</p>
+<p>Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.<br>For example, 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 is the sequence of the first 10 ugly numbers.</p>
+<p>Note that 1 is typically treated as an ugly number, and n does not exceed 1690.</p>
+<p>这道题目在上一题定义的基础上，要找到第n个丑数。</p>
+<p>这题可以使用暴力遍历法，从1开始，对每一个数都进行判断，直到找到第n个丑数为止。但是这样的方法效率很差。所以需要寻找一下这些数之间的规律，从而找到更好的解决方法。</p>
+<p>这里运用了<code>Dynamic Programming</code>的编程思想来解决。现在我们可以将丑数完整的归入以下三类：</p>
+<blockquote>
+<p>全部丑数：  <code>1</code>,<code>2</code>,<code>3</code>,<code>4</code>,<code>5</code>,<code>6</code>,<code>8</code>…<br>包含丑数2：<code>1*2</code>,<code>2*2</code>,<code>3*2</code>,<code>4*2</code>,<code>5*2</code>,<code>6*2</code>,<code>8*2</code>…<br>包含丑数3：<code>1*3</code>,<code>2*3</code>,<code>3*3</code>,<code>4*3</code>,<code>5*3</code>,<code>6*3</code>,<code>8*3</code>…<br>包含丑数5：<code>1*5</code>,<code>2*5</code>,<code>3*5</code>,<code>4*5</code>,<code>5*5</code>,<code>6*5</code>,<code>7*5</code>…</p>
+</blockquote>
+<p>可以看到，每一个丑数子列上，第<code>i</code>位上的值等于<code>全部丑数的第i个丑数*素数</code>。我们只需要像归并算法中的合并方法那样，将三个子列按照从小到大的情况合并成一个序列即可。</p>
+<p>我们从基础情况开始推理，那么每一步的结果如下；</p>
+<p><strong>第0步：</strong></p>
+<blockquote>
+<p>全部丑数：<code>1</code><br>包含丑数2：<code>2</code><br>包含丑数3：<code>3</code><br>包含丑数5：<code>5</code></p>
+</blockquote>
+<p>此时比较三个子序列，得出最小值为2，则更新全部丑数序列，并且更新包含丑数2的子序列，如下：</p>
+<p><strong>第1步</strong></p>
+<blockquote>
+<p>全部丑数：<code>1</code>,<code>2</code><br>包含丑数2：<code>2</code>,<code>4(2*2)</code><br>包含丑数3：<code>3</code>,<br>包含丑数5：<code>5</code>,</p>
+</blockquote>
+<p>再次比较三个子序列，得出最小值为3，更新方法同上，结果如下：<br><strong>第2步</strong></p>
+<blockquote>
+<p>全部丑数：<code>1</code>,<code>2</code>,<code>3</code><br>包含丑数2：<code>2</code>,<code>4</code><br>包含丑数3：<code>3</code>,<code>6(2*3)</code><br>包含丑数5：<code>5</code></p>
+</blockquote>
+<p>按照如上方法我们就可以得出第n个丑数的值。 代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nthUglyNumber</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">idx1</span> <span class="operator">=</span> <span class="number">0</span>, idx2 = <span class="number">0</span>, idx3 = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">    result[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span> ; i&lt;n ; i++)&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">num1</span> <span class="operator">=</span> result[idx1] * <span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">num2</span> <span class="operator">=</span> result[idx2] * <span class="number">3</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">num3</span> <span class="operator">=</span> result[idx3] * <span class="number">5</span>;</span><br><span class="line">        result[i] = Math.min(num1, Math.min(num2, num3));</span><br><span class="line">        <span class="keyword">if</span>(num1==result[i]) idx1++;</span><br><span class="line">        <span class="keyword">if</span>(num2==result[i]) idx2++;</span><br><span class="line">        <span class="keyword">if</span>(num3==result[i]) idx3++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result[n-<span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="313-Super-ugly-number"><a href="#313-Super-ugly-number" class="headerlink" title="313 Super ugly number"></a>313 Super ugly number</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Write a program to find the nth super ugly number.</span><br><span class="line"></span><br><span class="line">Super ugly numbers are positive numbers whose all prime factors are in the given prime list primes of size k. For example, [1, 2, 4, 7, 8, 13, 14, 16, 19, 26, 28, 32] is the sequence of the first 12 super ugly numbers given primes = [2, 7, 13, 19] of size 4.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">(1) 1 is a super ugly number for any given primes.</span><br><span class="line">(2) The given numbers in primes are in ascending order.</span><br><span class="line">(3) 0 &lt; k ≤ 100, 0 &lt; n ≤ 106, 0 &lt; primes[i] &lt; 1000.</span><br><span class="line">(4) The nth super ugly number is guaranteed to fit in a 32-bit signed integer.</span><br></pre></td></tr></table></figure>
+<p>这一题和上一题的变化相比，基本素数从<code>[2,3,5]</code>变成了任意数量的有序素数构成的数组。其实本质上思路还是一样的，我们只需要新建一个数组来存放当前子序列丑数对应的所有丑数的下标就可以了。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nthSuperUglyNumber</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span>[] primes)</span> &#123;</span><br><span class="line">    <span class="type">int</span>[] index = <span class="keyword">new</span> <span class="title class_">int</span>[primes.length];</span><br><span class="line">    <span class="type">int</span>[] uglyNumbers = <span class="keyword">new</span> <span class="title class_">int</span>[primes.length];</span><br><span class="line">    System.arraycopy(primes, <span class="number">0</span>, uglyNumbers, <span class="number">0</span>, primes.length);</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">    result[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span> ; i&lt;n ; i++)&#123;</span><br><span class="line">        result[i] = Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span> ; j&lt;uglyNumbers.length ; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(uglyNumbers[j] &lt; result[i]) result[i] = uglyNumbers[j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span> ; j &lt;uglyNumbers.length ; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(uglyNumbers[j]==result[i]) &#123;</span><br><span class="line">                index[j]++;</span><br><span class="line">                uglyNumbers[j] = primes[j] * result[index[j]];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result[n-<span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，这道题也可以利用特殊的数据结构来完成。优先队列可以很好的满足该情况。我们先将题目中提供的所有素数输入到优先队列中，相当于存入了所有的子丑数列的第一个元素。因此每个素数持有的信息包括当前对应的丑数的下标。之后我们可以将比较的任务交给优先队列的完成，我们只需从中提取最小的那个数，加到结果集中，同时别忘了更新各个子序列从而消去出现重复值的情况。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nthSuperUglyNumberHeap</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span>[] primes)</span> &#123;</span><br><span class="line">    <span class="type">int</span>[] ugly = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line"></span><br><span class="line">    PriorityQueue&lt;Num&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; primes.length; i++) pq.add(<span class="keyword">new</span> <span class="title class_">Num</span>(primes[i], <span class="number">1</span>, primes[i]));</span><br><span class="line">    ugly[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        ugly[i] = pq.peek().val;</span><br><span class="line">        <span class="keyword">while</span> (pq.peek().val == ugly[i]) &#123;</span><br><span class="line">            <span class="type">Num</span> <span class="variable">nxt</span> <span class="operator">=</span> pq.poll();</span><br><span class="line">            pq.add(<span class="keyword">new</span> <span class="title class_">Num</span>(nxt.p * ugly[nxt.idx], nxt.idx + <span class="number">1</span>, nxt.p));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ugly[n - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">Num</span> <span class="keyword">implements</span> <span class="title class_">Comparable</span>&lt;Num&gt; &#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    <span class="type">int</span> idx;</span><br><span class="line">    <span class="type">int</span> p;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Num</span><span class="params">(<span class="type">int</span> val, <span class="type">int</span> idx, <span class="type">int</span> p)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.val = val;</span><br><span class="line">        <span class="built_in">this</span>.idx = idx;</span><br><span class="line">        <span class="built_in">this</span>.p = p;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Num that)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.val - that.val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"># 刷题</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+              <a href="/tags/dynamic-programming/" rel="tag"># dynamic programming</a>
+              <a href="/tags/math/" rel="tag"># math</a>
+              <a href="/tags/heap/" rel="tag"># heap</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/04/leetcode240/" rel="prev" title="leetcode240.Search a 2D Matrix II">
+                  <i class="fa fa-angle-left"></i> leetcode240.Search a 2D Matrix II
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/04/leetcode233/" rel="next" title="leetcode233.Number of Digit One">
+                  leetcode233.Number of Digit One <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

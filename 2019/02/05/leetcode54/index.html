@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="题目要求1234567891011Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.For example,Given the following matrix:[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ]]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode54.Spiral Matrix">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/leetcode54/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="题目要求1234567891011Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.For example,Given the following matrix:[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ]]">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-04T17:06:19.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.444Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="leetcode">
+<meta property="article:tag" content="arraylist">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/leetcode54/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/leetcode54/","path":"2019/02/05/leetcode54/","title":"leetcode54.Spiral Matrix"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>leetcode54.Spiral Matrix | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E8%A6%81%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E4%B8%80%EF%BC%9A%E6%8C%89%E8%A1%8C%E9%81%8D%E5%8E%86%EF%BC%8Carray%E8%BD%AC%E5%8C%96%E4%B8%BAlist"><span class="nav-number">2.</span> <span class="nav-text">思路一：按行遍历，array转化为list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E4%BA%8C%EF%BC%9A%E5%88%A9%E7%94%A8List%E9%A1%BA%E5%BA%8F%E6%8F%92%E5%85%A5"><span class="nav-number">3.</span> <span class="nav-text">思路二：利用List顺序插入</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/leetcode54/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="leetcode54.Spiral Matrix | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode54.Spiral Matrix
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 01:06:19" itemprop="dateCreated datePublished" datetime="2019-02-05T01:06:19+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given the following matrix:</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line"> [ 1, 2, 3 ],</span><br><span class="line"> [ 4, 5, 6 ],</span><br><span class="line"> [ 7, 8, 9 ]</span><br><span class="line">]</span><br><span class="line">You should return [1,2,3,6,9,8,7,4,5].</span><br></pre></td></tr></table></figure>
+<p>按照顺时针方向旋转访问数组中的元素</p>
+<span id="more"></span>
+
+<h2 id="思路一：按行遍历，array转化为list"><a href="#思路一：按行遍历，array转化为list" class="headerlink" title="思路一：按行遍历，array转化为list"></a>思路一：按行遍历，array转化为list</h2><p>因为List不允许跳跃插入，也就是说如果插入的index大于list的size，就会报出IndexOutOfBoundException。所以这里我打算采取int[]数组先存储值，再用<code>Arrays.asList</code>转化成list。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">spiralOrder</span><span class="params">(<span class="type">int</span>[][] matrix)</span> &#123;</span><br><span class="line">     <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">     <span class="keyword">if</span>(row == <span class="number">0</span>)&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="type">int</span> <span class="variable">column</span> <span class="operator">=</span> matrix[<span class="number">0</span>].length;</span><br><span class="line">     Integer[] result = <span class="keyword">new</span> <span class="title class_">Integer</span>[row*column];</span><br><span class="line">     </span><br><span class="line">     <span class="type">int</span> <span class="variable">prev</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">     <span class="type">int</span> <span class="variable">tempRow</span> <span class="operator">=</span> row;</span><br><span class="line">     <span class="type">int</span> <span class="variable">tempColumn</span> <span class="operator">=</span> column;</span><br><span class="line">     <span class="comment">//按圈遍历</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span> ; tempRow&gt;<span class="number">1</span>&amp;&amp;tempColumn&gt;<span class="number">1</span> ; i++)&#123;</span><br><span class="line">         </span><br><span class="line">         <span class="comment">//遍历行</span></span><br><span class="line">         <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span> ; j&lt;tempColumn ; j++)&#123;</span><br><span class="line">             <span class="comment">//从左往右遍历</span></span><br><span class="line">             result[prev+j+<span class="number">1</span>] = matrix[i][j+i];</span><br><span class="line">             <span class="comment">//从右往左遍历</span></span><br><span class="line">             result[prev+tempRow+tempColumn-<span class="number">1</span>+tempColumn-j-<span class="number">1</span>] = matrix[i+tempRow-<span class="number">1</span>][j+i];</span><br><span class="line">         &#125;</span><br><span class="line">         </span><br><span class="line">         <span class="comment">//遍历列</span></span><br><span class="line">         <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span> ; j&lt;tempRow-<span class="number">1</span> ; j++)&#123;</span><br><span class="line">             <span class="comment">//从上往下遍历</span></span><br><span class="line">             result[prev+tempColumn+j] = matrix[j+i][column-i-<span class="number">1</span>];</span><br><span class="line">             <span class="comment">//从下往上遍历</span></span><br><span class="line">             result[prev+tempColumn+tempRow+tempColumn-<span class="number">2</span>+tempRow-j-<span class="number">1</span>] = matrix[j+i][i];</span><br><span class="line">         &#125;</span><br><span class="line">         prev += spiralCount(tempRow, tempColumn);</span><br><span class="line">         tempRow -=<span class="number">2</span>;</span><br><span class="line">         tempColumn -=<span class="number">2</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//如果剩余单行或者单列，则单独遍历，以免出现重复遍历同一个单行或者单列的情况</span></span><br><span class="line">     <span class="keyword">if</span>(tempRow == <span class="number">1</span>)&#123;</span><br><span class="line">         <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span> ; i&lt;tempColumn ; i++)&#123;</span><br><span class="line">             result[prev+i+<span class="number">1</span>] = matrix[row/<span class="number">2</span>][row/<span class="number">2</span>+i];</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span>(tempColumn == <span class="number">1</span>)&#123;</span><br><span class="line">         <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span> ; i&lt;tempRow ; i++)&#123;</span><br><span class="line">             result[prev+i+<span class="number">1</span>] = matrix[column/<span class="number">2</span>+i][column/<span class="number">2</span>];</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> Arrays.asList(result);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">spiralCount</span><span class="params">(<span class="type">int</span> row, <span class="type">int</span> column)</span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(row&lt;=<span class="number">1</span>)&#123;</span><br><span class="line">         <span class="keyword">return</span> column;</span><br><span class="line">     &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">         <span class="keyword">return</span> (row+column)*<span class="number">2</span> - <span class="number">4</span>;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>但是在这个方法中，先利用int[]在转化成List相当影响效率，虽说只需要遍历n&#x2F;2个数组。</p>
+<h2 id="思路二：利用List顺序插入"><a href="#思路二：利用List顺序插入" class="headerlink" title="思路二：利用List顺序插入"></a>思路二：利用List顺序插入</h2><p>为了避免类型转化带来的不必要的性能下降，最好直接利用List顺序插入，一次遍历int[][]数组。我们已知，除非特殊情况，每一圈必定都包含以下遍历，顺序的来说，就是<code>从左往右遍历，再从上往下遍历，再从右往左遍历，再从下往上遍历</code>。这时只需要从左往右遍历的下标和从上往下的下标依次记录了就行。<br>从左往右便利后，colBegin+1。从上往下遍历后，rowEnd-1。这时需要判断是否有往回遍历的需要。从右往左遍历后，colEnd-1。从下往上遍历后，rowBegin+1。<br>代码如下：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">spiralOrder2</span><span class="params">(<span class="type">int</span>[][] matrix)</span> &#123;</span><br><span class="line">     List&lt;Integer&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (matrix.length == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> <span class="variable">rowBegin</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">rowEnd</span> <span class="operator">=</span> matrix.length-<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">colBegin</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">colEnd</span> <span class="operator">=</span> matrix[<span class="number">0</span>].length - <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (rowBegin &lt;= rowEnd &amp;&amp; colBegin &lt;= colEnd) &#123;</span><br><span class="line">        <span class="comment">// Traverse Right</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> colBegin; j &lt;= colEnd; j ++) &#123;</span><br><span class="line">            res.add(matrix[rowBegin][j]);</span><br><span class="line">        &#125;</span><br><span class="line">        rowBegin++;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Traverse Down</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> rowBegin; j &lt;= rowEnd; j ++) &#123;</span><br><span class="line">            res.add(matrix[j][colEnd]);</span><br><span class="line">        &#125;</span><br><span class="line">        colEnd--;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (rowBegin &lt;= rowEnd) &#123;</span><br><span class="line">            <span class="comment">// Traverse Left</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> colEnd; j &gt;= colBegin; j --) &#123;</span><br><span class="line">                res.add(matrix[rowEnd][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        rowEnd--;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (colBegin &lt;= colEnd) &#123;</span><br><span class="line">            <span class="comment">// Traver Up</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> rowEnd; j &gt;= rowBegin; j --) &#123;</span><br><span class="line">                res.add(matrix[j][colBegin]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        colBegin ++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"># 刷题</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+              <a href="/tags/arraylist/" rel="tag"># arraylist</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/leetcode59/" rel="prev" title="leetcode59.Spiral Matrix II">
+                  <i class="fa fa-angle-left"></i> leetcode59.Spiral Matrix II
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/leetcode42/" rel="next" title="leetcode42.Trapping Rain Water">
+                  leetcode42.Trapping Rain Water <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

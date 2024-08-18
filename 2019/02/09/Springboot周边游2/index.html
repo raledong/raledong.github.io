@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="写在SpEL之前EL表达式是JSP中一个十分重要的概念。它允许我们从model中读取数据以及条件性的渲染JSP页面。Spring在3.0的版本中也引入了Spring Expression Language从而使得spring具有更好的可扩展性和跨平台性。虽然SpEL引擎作为Spring 组合里的表达式解析的基础 ，但它不直接依赖于Spring,可独立使用。这也是SpEL的最大优点。 这一章内容将包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Springboot周边游2-SpEL">
+<meta property="og:url" content="http://yoursite.com/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="写在SpEL之前EL表达式是JSP中一个十分重要的概念。它允许我们从model中读取数据以及条件性的渲染JSP页面。Spring在3.0的版本中也引入了Spring Expression Language从而使得spring具有更好的可扩展性和跨平台性。虽然SpEL引擎作为Spring 组合里的表达式解析的基础 ，但它不直接依赖于Spring,可独立使用。这也是SpEL的最大优点。 这一章内容将包">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/%E5%9B%BE%E7%89%872.png">
+<meta property="article:published_time" content="2019-02-09T06:19:17.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.359Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/","path":"2019/02/09/Springboot周边游2/","title":"Springboot周边游2-SpEL"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Springboot周边游2-SpEL | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8SpEL%E4%B9%8B%E5%89%8D"><span class="nav-number">1.</span> <span class="nav-text">写在SpEL之前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpEL-Operators"><span class="nav-number">2.</span> <span class="nav-text">SpEL Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.1.</span> <span class="nav-text">算数运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%92%8C%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.2.</span> <span class="nav-text">关联和逻辑运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.3.</span> <span class="nav-text">条件运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.4.</span> <span class="nav-text">正则表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96list%E5%92%8Cmap%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.5.</span> <span class="nav-text">获取list和map数据类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">XML配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpEL-in-Spring-%E7%9C%9F%E5%AE%9E%E5%9C%BA%E6%99%AF%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">SpEL in Spring 真实场景示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Springboot周边游2-SpEL | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Springboot周边游2-SpEL
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-09 14:19:17" itemprop="dateCreated datePublished" datetime="2019-02-09T14:19:17+08:00">2019-02-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">原创</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="写在SpEL之前"><a href="#写在SpEL之前" class="headerlink" title="写在SpEL之前"></a>写在SpEL之前</h2><p>EL表达式是JSP中一个十分重要的概念。它允许我们从model中读取数据以及条件性的渲染JSP页面。Spring在3.0的版本中也引入了Spring Expression Language从而使得spring具有更好的可扩展性和跨平台性。<br>虽然SpEL引擎作为Spring 组合里的表达式解析的基础 ，但它不直接依赖于Spring,可独立使用。这也是SpEL的最大优点。</p>
+<p>这一章内容将包括SpEL的使用，并且会举一个例子从配置文件中读取相应的属性。因为最终的项目是为了实现<code>thymeleaf+springboot+mysql</code>, 而很多地方都无形中使用了SpEL，比如Thymeleaf获取model数据，比如项目从config文件中获取常量配置。让我们赶紧来感受一下这个功能的强大吧。</p>
+<span id="more"></span>
+
+<h2 id="SpEL-Operators"><a href="#SpEL-Operators" class="headerlink" title="SpEL Operators"></a>SpEL Operators</h2><img src="/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<p>SpEL支持在表达式中使用多种类型的运算符，具体情况如上图所示。SpEL默认的格式为<code>#&#123;expression&#125;</code>。当然，它也支持嵌套一般的属性获取符<code>$&#123;properties&#125;</code>，如<code>#&#123;$&#123;someProperty&#125; + 2&#125;</code>。这些值可以使用@Value(“”)注释注入到相应的属性上。<br>下面我们将举一些例子来说明这些运算符的使用</p>
+<h3 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;#&#123;19 + 1&#125;&quot;)</span> <span class="comment">// add的值为20</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> add; </span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;&#x27;String1 &#x27; + &#x27;string2&#x27;&#125;&quot;)</span> <span class="comment">//addString的值为&quot;String1 string2&quot;</span></span><br><span class="line"><span class="keyword">private</span> String addString; </span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;20 - 1&#125;&quot;)</span> <span class="comment">// subtract值为19</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> subtract;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;10 * 2&#125;&quot;)</span> <span class="comment">// multiply值为20</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> multiply;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;36 / 2&#125;&quot;)</span> <span class="comment">// divide值为19</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> divide;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;36 div 2&#125;&quot;)</span> <span class="comment">// div操作等价与/</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> divideAlphabetic; </span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;37 % 10&#125;&quot;)</span> <span class="comment">// modulo值为7</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> modulo;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;37 mod 10&#125;&quot;)</span> <span class="comment">// mod操作等价于%</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> moduloAlphabetic; </span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;2 ^ 9&#125;&quot;)</span> <span class="comment">// powerOf的值为512</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> powerOf;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;(2 + 2) * 2 + 9&#125;&quot;)</span> <span class="comment">// brackets值为17</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">double</span> brackets;</span><br></pre></td></tr></table></figure>
+
+<p>这里之所以给<code>/</code>赋予等价符号div是为了让XML配置形式兼容，无需进行转义。</p>
+<h3 id="关联和逻辑运算符"><a href="#关联和逻辑运算符" class="headerlink" title="关联和逻辑运算符"></a>关联和逻辑运算符</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;#&#123;1 == 1&#125;&quot;)</span> <span class="comment">// equal值为true</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> equal;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 eq 1&#125;&quot;)</span> <span class="comment">// eq等价于==</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> equalAlphabetic;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 != 1&#125;&quot;)</span> <span class="comment">// notEqual值为false</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> notEqual;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 ne 1&#125;&quot;)</span> <span class="comment">// ne等价于!=</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> notEqualAlphabetic;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 &lt; 1&#125;&quot;)</span> <span class="comment">// lessThan的值为false</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> lessThan;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 lt 1&#125;&quot;)</span> <span class="comment">// lt等价于&lt;</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> lessThanAlphabetic;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 &lt;= 1&#125;&quot;)</span> <span class="comment">// lessThanOrEqual的值为true</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> lessThanOrEqual;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 le 1&#125;&quot;)</span> <span class="comment">// le等价于&lt;=</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> lessThanOrEqualAlphabetic;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 &gt; 1&#125;&quot;)</span> <span class="comment">// greaterThan的值为false</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> greaterThan;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 gt 1&#125;&quot;)</span> <span class="comment">// gt等价于&gt;</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> greaterThanAlphabetic;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 &gt;= 1&#125;&quot;)</span> <span class="comment">// greaterThanOrEqual的值为true</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> greaterThanOrEqual;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;1 ge 1&#125;&quot;)</span> <span class="comment">// ge等价于&gt;=</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> greaterThanOrEqualAlphabetic;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Value(&quot;#&#123;250 &gt; 200 &amp;&amp; 200 &lt; 4000&#125;&quot;)</span> <span class="comment">// and值为true</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> and; </span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;250 &gt; 200 and 200 &lt; 4000&#125;&quot;)</span> <span class="comment">// and等价于&amp;&amp;</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> andAlphabetic;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;400 &gt; 300 || 150 &lt; 100&#125;&quot;)</span> <span class="comment">// or的值为true</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> or;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;400 &gt; 300 or 150 &lt; 100&#125;&quot;)</span> <span class="comment">// or等价于||</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> orAlphabetic;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;!true&#125;&quot;)</span> <span class="comment">// not值为false</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> not;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;not true&#125;&quot;)</span> <span class="comment">// not等价于!</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> notAlphabetic;</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a>条件运算符</h3><p><code>condition ? a : b</code>是指condition成立时值为a，否则为b<br>这种条件运算符可以用于实现<code>if-else</code>语句，也可以用于判断属性是否为空，并且在属性为空时提供默认值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;#&#123;2 &gt; 1 ? &#x27;a&#x27; : &#x27;b&#x27;&#125;&quot;)</span> <span class="comment">// ternary的值为b</span></span><br><span class="line"><span class="keyword">private</span> String ternary;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Value(&quot;#&#123;someBean.someProperty != null ? someBean.someProperty : &#x27;default&#x27;&#125;&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String ternary;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Value(&quot;#&#123;someBean.someProperty ?: &#x27;default&#x27;&#125;&quot;)</span> <span class="comment">// 等价于上式的执行结果</span></span><br><span class="line"><span class="keyword">private</span> String elvis;</span><br></pre></td></tr></table></figure>
+
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>使用matches语句来判断当前的字符串是否满足特定的正则表达式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;#&#123;&#x27;100&#x27; matches &#x27;\\d+&#x27; &#125;&quot;)</span> <span class="comment">// Will inject true</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> validNumericStringResult;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;&#x27;100fghdjf&#x27; matches &#x27;\\d+&#x27; &#125;&quot;)</span> <span class="comment">// Will inject false</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> invalidNumericStringResult;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;&#x27;valid alphabetic string&#x27; matches &#x27;[a-zA-Z\\s]+&#x27; &#125;&quot;)</span> <span class="comment">// Will inject true</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> validAlphabeticStringResult;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;&#x27;invalid alphabetic string #$1&#x27; matches &#x27;[a-zA-Z\\s]+&#x27; &#125;&quot;)</span> <span class="comment">// Will inject false</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> invalidAlphabeticStringResult;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;someBean.someValue matches &#x27;\d+&#x27;&#125;&quot;)</span> <span class="comment">// Will inject true if someValue contains only digits</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> validNumericValue;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取list和map数据类型"><a href="#获取list和map数据类型" class="headerlink" title="获取list和map数据类型"></a>获取list和map数据类型</h3><p>假设现在有一个Bean名称为workersHolder，这个组件中有两个fields，一个是workers的链表，这里记录了所有的员工名称，还有一个是salaryByWorkers键值对map，里面存储了员工姓名和其对应的薪水。现在这个bean中初始化了四个员工信息，如何能将这四个员工的信息读取出来？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component(&quot;workersHolder&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WorkersHolder</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; workers = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Integer&gt; salaryByWorkers = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">WorkersHolder</span><span class="params">()</span> &#123;</span><br><span class="line">        workers.add(<span class="string">&quot;John&quot;</span>);</span><br><span class="line">        workers.add(<span class="string">&quot;Susie&quot;</span>);</span><br><span class="line">        workers.add(<span class="string">&quot;Alex&quot;</span>);</span><br><span class="line">        workers.add(<span class="string">&quot;George&quot;</span>);</span><br><span class="line"> </span><br><span class="line">        salaryByWorkers.put(<span class="string">&quot;John&quot;</span>, <span class="number">35000</span>);</span><br><span class="line">        salaryByWorkers.put(<span class="string">&quot;Susie&quot;</span>, <span class="number">47000</span>);</span><br><span class="line">        salaryByWorkers.put(<span class="string">&quot;Alex&quot;</span>, <span class="number">12000</span>);</span><br><span class="line">        salaryByWorkers.put(<span class="string">&quot;George&quot;</span>, <span class="number">14000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//Getters and setters</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>map采用<code>componentName.mapName[&#39;key&#39;]</code>读取key对应的value<br>list采用<code>componentName.listName[index]</code>读取对应index下标的元素<br>同样也支持对方法的调用，整体的语法其实和JAVA是相似的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;#&#123;workersHolder.salaryByWorkers[&#x27;John&#x27;]&#125;&quot;)</span> <span class="comment">// Will inject 35000</span></span><br><span class="line"><span class="keyword">private</span> Integer johnSalary;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;workersHolder.salaryByWorkers[&#x27;George&#x27;]&#125;&quot;)</span> <span class="comment">// Will inject 14000</span></span><br><span class="line"><span class="keyword">private</span> Integer georgeSalary;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;workersHolder.salaryByWorkers[&#x27;Susie&#x27;]&#125;&quot;)</span> <span class="comment">// Will inject 47000</span></span><br><span class="line"><span class="keyword">private</span> Integer susieSalary;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;workersHolder.workers[0]&#125;&quot;)</span> <span class="comment">// Will inject John</span></span><br><span class="line"><span class="keyword">private</span> String firstWorker;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;workersHolder.workers[3]&#125;&quot;)</span> <span class="comment">// Will inject George</span></span><br><span class="line"><span class="keyword">private</span> String lastWorker;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Value(&quot;#&#123;workersHolder.workers.size()&#125;&quot;)</span> <span class="comment">// Will inject 4</span></span><br><span class="line"><span class="keyword">private</span> Integer numberOfWorkers;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>从上面这些例子我们可以看出，SpEL不仅可以调用属性，还可以访问一些公开的方法，甚至进行正则表达式的匹配，可以说是非常轻量级而且全能了。</p>
+<p>至此我们已经了解了如何通过annotation来使用SpEL。其实SpEL还可以通过XML进行配置，甚至可以脱离Spring环境使用，下面可以简单介绍。</p>
+<h2 id="XML配置"><a href="#XML配置" class="headerlink" title="XML配置"></a>XML配置</h2><img src="/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B82/%E5%9B%BE%E7%89%872.png" class="" title="图片2">
+
+<p>这里直接从别的网站上找了一个实例，有兴趣的可以至底下的references中查看，这里就不详细叙述了。</p>
+<h2 id="SpEL-in-Spring-真实场景示例"><a href="#SpEL-in-Spring-真实场景示例" class="headerlink" title="SpEL in Spring 真实场景示例"></a>SpEL in Spring 真实场景示例</h2><p>现在我们的项目有一个需求，结合配置文件，从配置文件中读取我们想要知道的数据，并赋值给类中的变量。这里我们的配置文件采用yaml格式(不熟悉yaml请先参考我的<a href="https://segmentfault.com/a/1190000012631834">这篇博客</a>)。现在我们先看配置文件的内容。</p>
+<p>配置文件名称为<code>application.yml,application-test.yml和application-validate.yml</code>，位于<code>classpath:/resources/config</code>目录底下，其中<code>application.yml</code>是主配置文件，决定选择哪个配置文件作为当前配置。<code>application-test.yml</code>是测试环境的配置文件，<code>application-validate.yml</code>是校验信息的配置文件。内容分别如下所示。</p>
+<p><strong>application.yml</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#当前活跃的配置文件为application-test和application-validate</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">test,validate</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>application-test.yml</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#测试环境的配置内容，这里举的例子是映射到服务器端口号为8080</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>application-validate.yml</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#配置了校验信息</span></span><br><span class="line"><span class="attr">login:</span></span><br><span class="line">  <span class="attr">username:</span></span><br><span class="line">    <span class="attr">notempty:</span> <span class="string">用户名不可以为空</span></span><br></pre></td></tr></table></figure>
+
+<p>下面展示了在代码中使用annotation获得配置文件中的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;$&#123;server.port&#125;&quot;)</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> port;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Value(&quot;$&#123;login.username.notempty&#125;&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String notEmpty;</span><br></pre></td></tr></table></figure>
+
+<p>当然，为了方便起见，spring还允许我们将所有的配置文件映射到一个专门的JAVA Class中，封装成一bean。这样在需要注入的时候，只需使用@Autowired注释将其引用进来就可以使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;server&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppConfig</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> port;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意的是还需要在spring-boot的入口文件上加标签</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(&#123;AppConfig.class&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Application</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在调用的类中注入AppConfig</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AppConfig config;</span><br></pre></td></tr></table></figure>
+
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote>
+<p><a href="git@github.com:raledong/SimpleLogin.git">项目地址</a><br><a href="http://itmyhome.com/spring/expressions.html">SpEL官方文档中文版</a><br><a href="http://www.baeldung.com/spring-expression-language">快速教程</a><br><a href="http://tengj.top/2017/02/28/springboot2/">spring-boot自定义配置文件</a><br><a href="http://samchu.logdown.com/posts/290211-spring-boot-yaml-uses">spring-boot yaml使用方式</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B83/" rel="prev" title="spring-boot周边游3-Thymeleaf 一个简单的demo以及初识Standard Dialect">
+                  <i class="fa fa-angle-left"></i> spring-boot周边游3-Thymeleaf 一个简单的demo以及初识Standard Dialect
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/09/Springboot%E5%91%A8%E8%BE%B9%E6%B8%B81/" rel="next" title="Springboot周边游1-yaml">
+                  Springboot周边游1-yaml <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

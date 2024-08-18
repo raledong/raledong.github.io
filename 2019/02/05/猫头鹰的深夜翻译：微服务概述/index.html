@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言在过去几年中，出现了微服务架构的理念，它提倡将应用程序设计为可独立部署到额服务套件。虽然对于这种架构风格没有明确的定义，但是它在业务能力，自动部署，智能终端以及语言和数据的分散控制方面有共同的特征。 微服务是软件架构中的一个新名词。在过去几年中，可以看到很多项目都采用了这种风格的架构，以至于他已经成为了构建企业应用程序的默认样式。然而，并没有太多的信息可以描述微服务架构的风格以及如何实现这种风">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猫头鹰的深夜翻译：微服务概述">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="前言在过去几年中，出现了微服务架构的理念，它提倡将应用程序设计为可独立部署到额服务套件。虽然对于这种架构风格没有明确的定义，但是它在业务能力，自动部署，智能终端以及语言和数据的分散控制方面有共同的特征。 微服务是软件架构中的一个新名词。在过去几年中，可以看到很多项目都采用了这种风格的架构，以至于他已经成为了构建企业应用程序的默认样式。然而，并没有太多的信息可以描述微服务架构的风格以及如何实现这种风">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%872.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%873.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%874.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%875.png">
+<meta property="article:published_time" content="2019-02-04T18:56:32.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.475Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/","path":"2019/02/05/猫头鹰的深夜翻译：微服务概述/","title":"猫头鹰的深夜翻译：微服务概述"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>猫头鹰的深夜翻译：微服务概述 | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">微服务架构的特点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E6%9C%8D%E5%8A%A1%E7%BB%84%E4%BB%B6%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">通过服务组件化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%B4%E7%BB%95%E4%B8%9A%E5%8A%A1%E8%BF%9B%E8%A1%8C%E7%BB%84%E7%BB%87"><span class="nav-number">2.2.</span> <span class="nav-text">围绕业务进行组织</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A7%E5%93%81%E8%80%8C%E9%9D%9E%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.3.</span> <span class="nav-text">产品而非项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E7%AB%AF%E7%82%B9%E5%92%8C%E9%9D%9E%E6%99%BA%E8%83%BD%E7%AE%A1%E9%81%93"><span class="nav-number">2.4.</span> <span class="nav-text">智能端点和非智能管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96%E7%AE%A1%E7%90%86"><span class="nav-number">2.5.</span> <span class="nav-text">去中心化管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86"><span class="nav-number">2.6.</span> <span class="nav-text">去中心化的数据管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD"><span class="nav-number">2.7.</span> <span class="nav-text">自动化基础设施</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="猫头鹰的深夜翻译：微服务概述 | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          猫头鹰的深夜翻译：微服务概述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-05 02:56:32" itemprop="dateCreated datePublished" datetime="2019-02-05T02:56:32+08:00">2019-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">猫头鹰的深夜翻译</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在过去几年中，出现了<strong>微服务架构</strong>的理念，它提倡将应用程序设计为可独立部署到额服务套件。虽然对于这种架构风格没有明确的定义，但是它在业务能力，自动部署，智能终端以及语言和数据的分散控制方面有共同的特征。</p>
+<p>微服务是软件架构中的一个新名词。在过去几年中，可以看到很多项目都采用了这种风格的架构，以至于他已经成为了构建企业应用程序的默认样式。然而，并没有太多的信息可以描述微服务架构的风格以及如何实现这种风格。</p>
+<p>简而言之，微服务架构是将单应用开发成为一套分别运行在独立的线程并通过轻量级的机制如HTTP进行访问的方法。这些服务围绕业务功能构建，并且可以独立的全自动部署。这些服务无需集中管理，可以用不同的编程语言编写，并使用不同的数据存储技术。</p>
+<p>在开始介绍微服务风格之前，可以先将其和单机应用做一个对比：单机应用是指将一个应用作为一个单元进行开发。企业应用通常包含三个部分：客户端UI（包含在用户浏览器上的HTML页面和JS脚本），一个数据库（关系型数据库）和服务端应用。服务端应用会处理HTTP请求，执行业务逻辑，从数据库获取和更新数据，并选择和生成HTML页面返回给浏览器。系统的任何变更都需要重新构建和部署新版本的服务端应用。</p>
+<p>单机应用是构建系统的一种通用方法。处理请求的所有业务逻辑都运行在单线程中，你可以根据开发语言将应用份极为类，方法和命名域。你可以在笔记本上运行和测试应用，并使用部署流水线来确保变更已经进行过测试并部署到生产环境。你可以通过在负载均衡器后面运行许多实例来水平扩展单机应用。</p>
+<p>单机应用在初期相当成功，但渐渐的人们会感到挫败–尤其当应用被部署到云商之后。变更周期被绑定在一起：应用的一个小变更需要整个应用重新构建和部署。随着时间的推移，通常很难保持一个良好的模块化结构，使得更难以将对模块的变更维持在单个模块内。扩展需要扩展整个应用程序，而不是应用中需要更多资源的部分。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%871.png" class="" title="图片1">
+
+<p>这种挫败感引向了微服务架构风格：将应用构架为一组服务。每个服务不仅能够独立的部署和扩展，还能够提供一个稳定的模块边界，并且每个服务用不同的语言开发。他们还能交由不同的团队开发。</p>
+<p>我们并没有表示微服务风格是创新的发明，它可以追溯回Unix的设计理念。但是我们认为有人还没能认真的考虑微服务架构，如果使用这种架构，软件开发将会更方便。</p>
+<span id="more"></span>
+
+<h2 id="微服务架构的特点"><a href="#微服务架构的特点" class="headerlink" title="微服务架构的特点"></a>微服务架构的特点</h2><p>微服务架构虽然没有正式的定义，但是我们可以尝试描述这种架构的共同特点。就如别的试图描述共同特征的定义一样，不是所有的微服务架构都具有所有的共同特征，即便我们期望大多数的微服务架构能够拥有这种特征。因此我们不会规定一定要遵循的微服务定义。</p>
+<h3 id="通过服务组件化"><a href="#通过服务组件化" class="headerlink" title="通过服务组件化"></a>通过服务组件化</h3><p>从参与软件行业以来，我们就一直期望通过组装组件的方式构建系统，就像现实世界那样。在过去几十年中，我们已经看到了各种语言的共有库的大量发展。</p>
+<p>说到组件，我们遇到了何为组件的挑战。我们认为，组件是可独立替换和升级的软件单元。</p>
+<p>微服务架构也会使用共有库，但是组件化软件的主要方法是将其拆分为服务。我们将库定义为链接到程序并使用内函数调用的组件，而服务则是进程外的组件，他们通过Web服务或是远程调用之类的机制进行调用（这与OO程序中的服务的概念是不同的）</p>
+<p>将服务用作组件（而不是库）的一个主要原因是服务可以独立部署。如果单进程中有一个包含多个库的应用程序，任何一个库的变更都需要重新部署整个应用。但是如果应用被分解为多个服务，那么单个服务的变更只需要重新部署单个服务就可以了。这也不是绝对的，某些变更需要同时变更服务接口，从而导致多个服务的调整。但是一个好的微服务架构需要最小化这种变更，通过内聚服务边界和遵循规范的演化机制。</p>
+<p>将服务用作组件的另一个结果是更明确的组件接口。大多数的语言都没有用于显式定义接口的良好机制。通常就是文档化接口，防止客户端破坏了组件的封装，从而导致组件之间的过紧的耦合。通过服务之间的远程调用避免了这个问题。</p>
+<p>使用服务化也是有缺点的。远程调用比进程内方法调用代价更高，因此远程API使用起来更加笨拙。如果需要变更组件之间的职责分配，这种跨进程的变更将会更加麻烦。</p>
+<p>在第一次类比中，我们将服务与运行进程进行比较，但那只是一个粗略的对比。一个服务往往包含多个进程，这些进程会并行的开发和部署，比如该服务会包含应用进程和数据库进程。</p>
+<h3 id="围绕业务进行组织"><a href="#围绕业务进行组织" class="headerlink" title="围绕业务进行组织"></a>围绕业务进行组织</h3><p>当试图将大应用拆分成各个部分时，通常管理者会从技术层面出发，将其拆分为UI团队，服务端逻辑开发团队和数据库团队。当团队按照这些方式分开时，即使是简单的更改也可能导致跨团队项目需要时间和预算批准。</p>
+<blockquote>
+<p>设计系统的任何组织都将产生一种设计，其结构体现了组织内的沟通结构。<br>– Melvyn Conway, 1967</p>
+</blockquote>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%872.png" class="" title="图片2">
+
+<p>而微服务风格的拆分方法是不同的，它是围绕着业务能力进行拆分的。划分出的团队往往是扩领域的成员所组成的，即一个服务的开发团队包含了开发完整应用的所有能力。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%873.png" class="" title="图片3">
+
+<p>跨职能团队负责构建和运营每个产品，每个产品之间通过消息总线进行通信。</p>
+<p>大型单机应用程序也可以围绕业务功能进行模块化，尽管这种情况不是很常见。当然，我们会敦促一个开发庞大的单机应用程序的团队沿着业务线划分自己。我们在这里看到的主要问题是，它们往往围绕太多的背景进行组织。此外，我们看到模块化生产线需要大量的规则来维护。更明确的服务组件的分离使得更容易保持团队边界清晰。</p>
+<h3 id="产品而非项目"><a href="#产品而非项目" class="headerlink" title="产品而非项目"></a>产品而非项目</h3><p>我们看到的大多数应用程序开发工作都使用项目模型：其目的是提供一个将被完成的软件。完成后，软件将移交给维护组织，构建它的项目团队将被解散。</p>
+<p>微服务支持者倾向于避免使用这种模式，而更倾向于认为团队应该在产品的整个生命周期内拥有产品。对此的一个共同认知来源于亚马逊的“你构建，你维护”的里面，开发团队对生产中的软件负全部责任。这使开发人员能够看到他们的软件在生产中的行为，并增加与用户的联系，因为他们必须提供软件的支持工作。</p>
+<p>产品的内核与业务要求紧密的联系在一起。不再仅仅将软件视为一组要完成的功能，它还有一个持续的使命，即如何帮助其用户增强业务能力。</p>
+<p>并不是说单机应用程序无法使用这种思想，更是因为较小的服务粒度可以使得开发人员和用户之间更容易建立和维持联系。</p>
+<h3 id="智能端点和非智能管道"><a href="#智能端点和非智能管道" class="headerlink" title="智能端点和非智能管道"></a>智能端点和非智能管道</h3><p>在不同进程之间建立通信结构时，我们已经看到许多产品和方法都强调将智能放入沟通机制本身。一个很好的例子是企业服务总线（ESB），ESB产品通常包括用于消息路由，编排，转换和应用业务规则的复杂工具。</p>
+<p>微服务社区倾向于另一种方案：智能终端和非智能管道。从微服务构建的应用程序旨在尽可能低耦合和高内聚：拥有自己的领域逻辑，在经典的Unix意义上更像是管道中的过滤器，接收请求，在其之上执行领域逻辑，然后输出响应。</p>
+<p>使用最多的两个协议是HTTP请求响应协议和消息队列。HTTP协议是整个互联网架构的基础。通过HTTP协议，经常使用的资源可以通过缓存来减少程序员的工作。第二种方法是轻量级的消息总线之上的消息队列。选择的基础设施通常是非智能的（仅进行消息路由）。像RabbitMQ或ZeroMQ这样的简单实现仅仅提供可靠的异步结构。智能的部分交给服务终端来完成。</p>
+<p>在单机应用中，组件在同一个进程中执行，彼此间的通信是通过方法调用来实现。将单机应用变更为微服务结构最大的挑战之一就是决定组件之间的通信方式。从内存方法调用到RPC的简单转换会导致复杂的通信软件无法正常执行。相反，你需要用粗粒度的方法替换细粒度的通信。</p>
+<h3 id="去中心化管理"><a href="#去中心化管理" class="headerlink" title="去中心化管理"></a>去中心化管理</h3><p>集中治理的后果之一是在单一技术平台上实现标准化的趋势。经验表明，这种方法是有限的 - 并非所有问题和解决方案都是一一对应的。我们更喜欢使用正确的工具来完成工作，虽然单机应用程序可以在一定程度上利用不同的语言，但这并不常见。</p>
+<p>将单机应用拆分为服务后，我们可以在构建每个组件时拥有选择权。您想使用Node.js构建一个简单的报告页面吗？完全可以。C++来开发实时组件？没有问题。您想要换数据库，以更好地适应一个组件的读取行为？放手去尝试吧。</p>
+<p>当然了，有这种选择权并不意味着你必须这么做。但是用这种方式分割系统才使得我们拥有了这种选择权。</p>
+<p>构建微服务的团队也更喜欢采用不同的标准方法。相比于使用在文档上某处记录的一套规则，他们更倾向于构建有用的工具，使得开发者在面对问题时可以使用这种工具来解决。这些工具往往会在多个团队中广泛使用。现在git和github已成为主流的版本控制系统，开源实践在内部变得越来越普遍。</p>
+<p>Netflix是遵循这一理念的组织的一个很好的例子。以库的形式共享有用的，尤其是经过实战考验的代码，可以鼓励其他开发人员以类似的方式解决类似的问题，并且可以选择不同的方法。共享库往往侧重于解决数据存储，进程间通信的常见问题。</p>
+<h3 id="去中心化的数据管理"><a href="#去中心化的数据管理" class="headerlink" title="去中心化的数据管理"></a>去中心化的数据管理</h3><p>去中心化的数据管理表现为几种形式。在最抽象的层面上，它意味着概念模型在不同系统之间会有所不同。这是在大型企业中集成时的常见问题，客户的销售视图将与运维视图不同。销售视图中称为客户的某些内容可能根本不会出现在支持视图中。而二者共有的内容可能具有不同的属性或者（更糟糕）共同的但是语义不同的属性。</p>
+<p>此问题在应用程序之间很常见，但也可能在应用程序中发生，特别是当该应用程序分为单独的组件时。一个有用的思考方式是领域驱动设计。<strong>领域驱动设计</strong>将复杂域划分为多个有界上下文，并映射出它们之间的关系。这个过程对单体应用和微服务架构都很有用，但是微服务本身的关联和自身的服务边界就帮助明确了这种关联。</p>
+<p>除了分散概念模型决策之外，微服务还分散了数据存储决策。虽然单个应用程序更喜欢单个逻辑数据库来存储持久性数据，但企业通常更喜欢跨越一系列应用程序的单个数据库。微服务更喜欢让每个服务管理自己的数据库，可以是同一数据库技术的不同实例，也可以是完全不同的数据库系统。</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%874.png" class="" title="图片4">
+
+
+<p>跨微服务分散数据责任对更新操作有影响。处理更新的常用方法是在更新多个资源时使用事务来保证一致性。这种方法通常用于单机结构中。</p>
+<p>用这样的事务有助于保持一致性，但会产生显着的时间耦合，这在多个服务中是有问题的。众所周知，分布式事务很难实现，因此微服务架构强调服务之间的无事务协调。明确提出一致性可能只是最终的一致性，而问题则通过补偿操作来处理。</p>
+<p>选择以这种方式管理不一致是许多开发团队面临的新挑战，但是它往往符合大多数的业务要求。企业通常会接收一定程度的不一致，以便快速响应需求，同时采取某种反向流程来应对错误。要修复错误的成本低于在更大的一致性下丢失业务的成本，那么权衡是值得的。</p>
+<h3 id="自动化基础设施"><a href="#自动化基础设施" class="headerlink" title="自动化基础设施"></a>自动化基础设施</h3><p>在过去几年中，基础设施自动化技术发生了巨大变化：云的发展降低了构建，部署和运行微服务的操作复杂性。</p>
+<p>许多使用微服务构建的产品或系统都是由具有丰富的持续交付经验的团队构建的。以这种方式构建软件的团队广泛使用基础设施自动化技术。这在下面显示的构建管道中说明：</p>
+<img src="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A6%82%E8%BF%B0/%E5%9B%BE%E7%89%875.png" class="" title="图片5">
+
+
+
+<blockquote>
+<p>原文链接: <a href="https://martinfowler.com/articles/microservices.html">https://martinfowler.com/articles/microservices.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/05/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E7%9A%84%E6%B7%B1%E5%A4%9C%E7%BF%BB%E8%AF%91%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9FToolkit%E6%A8%A1%E5%BC%8F/" rel="prev" title="猫头鹰的深夜翻译：分布式系统Toolkit模式">
+                  <i class="fa fa-angle-left"></i> 猫头鹰的深夜翻译：分布式系统Toolkit模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/05/WeakHashMap/" rel="next" title="猫头鹰的深夜翻译：WeakHashMap">
+                  猫头鹰的深夜翻译：WeakHashMap <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="题目要求12345Write a program to solve a Sudoku puzzle by filling the empty cells.Empty cells are indicated by the character &#x27;.&#x27;.You may assume that there will be only one unique solution.     也就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode37.Sudoku Solver">
+<meta property="og:url" content="http://yoursite.com/2019/02/04/leetcode37/index.html">
+<meta property="og:site_name" content="眯眯眼猫头鹰的小树杈">
+<meta property="og:description" content="题目要求12345Write a program to solve a Sudoku puzzle by filling the empty cells.Empty cells are indicated by the character &#x27;.&#x27;.You may assume that there will be only one unique solution.     也就">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/04/leetcode37/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/04/leetcode37/%E5%9B%BE%E7%89%872.png">
+<meta property="article:published_time" content="2019-02-04T14:22:51.000Z">
+<meta property="article:modified_time" content="2024-08-18T07:04:37.422Z">
+<meta property="article:author" content="Rale Dong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="leetcode">
+<meta property="article:tag" content="backtracking">
+<meta property="article:tag" content="hashtable">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/04/leetcode37/%E5%9B%BE%E7%89%871.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/02/04/leetcode37/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2019/02/04/leetcode37/","path":"2019/02/04/leetcode37/","title":"leetcode37.Sudoku Solver"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>leetcode37.Sudoku Solver | 眯眯眼猫头鹰的小树杈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">眯眯眼猫头鹰的小树杈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Owned By Deer&Owl</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E8%A6%81%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E4%B8%80%EF%BC%9A%E4%B8%8D%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">思路一：不使用数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BB%B4%E5%B8%83%E5%B0%94%E6%95%B0%E7%BB%84%E5%88%86%E5%88%AB%E8%AE%B0%E5%BD%95%E8%A1%8C%E5%88%97%E5%92%8C%E6%96%B9%E5%9D%97%E7%9A%84%E6%89%80%E6%9C%89%E5%80%BC%E6%83%85%E5%86%B5"><span class="nav-number">3.</span> <span class="nav-text">思路二：使用二维布尔数组分别记录行列和方块的所有值情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E8%A7%A3%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">更多解法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rale Dong</p>
+  <div class="site-description" itemprop="description">总是打盹，时而清醒</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">289</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/leetcode37/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rale Dong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="总是打盹，时而清醒">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="leetcode37.Sudoku Solver | 眯眯眼猫头鹰的小树杈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode37.Sudoku Solver
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-04 22:22:51" itemprop="dateCreated datePublished" datetime="2019-02-04T22:22:51+08:00">2019-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-18 15:04:37" itemprop="dateModified" datetime="2024-08-18T15:04:37+08:00">2024-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Write a program to solve a Sudoku puzzle by filling the empty cells.</span><br><span class="line"></span><br><span class="line">Empty cells are indicated by the character &#x27;.&#x27;.</span><br><span class="line"></span><br><span class="line">You may assume that there will be only one unique solution.</span><br></pre></td></tr></table></figure>
+<img src="/2019/02/04/leetcode37/%E5%9B%BE%E7%89%871.png" class="" title="图片1.png">
+
+<img src="/2019/02/04/leetcode37/%E5%9B%BE%E7%89%872.png" class="" title="图片2.png">
+
+<p>也就是给出一个解决数独的方法，假设每个数独只有一个解决方案。</p>
+<span id="more"></span>
+
+<h2 id="思路一：不使用数据结构"><a href="#思路一：不使用数据结构" class="headerlink" title="思路一：不使用数据结构"></a>思路一：不使用数据结构</h2><p>不使用数据结构意味着我们自己在每一次遇到一个空格时，需要在board中对该空格所在的行，列以及方块进行遍历，判断填入什么数字是合适的。并将当前的假象结果带入下一轮的遍历之中。如果最终遍历失败，则逐级返回，恢复上一轮遍历的状态，并填入下一个合理的假想值后继续遍历。这里涉及的时间复杂度是很高的，毕竟只是遍历整个board就需要O(n^2)，如果遇到一个空格还需要O(n)来判断填入值是否合理。总共O(n^3)的时间复杂度。代码如下：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">solveSudoku</span><span class="params">(<span class="type">char</span>[][] board)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(board == <span class="literal">null</span> || board.length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        solve(board);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">solve</span><span class="params">(<span class="type">char</span>[][] board)</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; board.length; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; board[<span class="number">0</span>].length; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(board[i][j] == <span class="string">&#x27;.&#x27;</span>)&#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span>; c &lt;= <span class="string">&#x27;9&#x27;</span>; c++)&#123;<span class="comment">//trial. Try 1 through 9</span></span><br><span class="line">                        <span class="keyword">if</span>(isValid(board, i, j, c))&#123;</span><br><span class="line">                            board[i][j] = c; <span class="comment">//Put c for this cell</span></span><br><span class="line">                            </span><br><span class="line">                            <span class="keyword">if</span>(solve(board))</span><br><span class="line">                                <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">//If it&#x27;s the solution return true</span></span><br><span class="line">                            <span class="keyword">else</span></span><br><span class="line">                                board[i][j] = <span class="string">&#x27;.&#x27;</span>; <span class="comment">//Otherwise go back</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//横 竖 方块</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(<span class="type">char</span>[][] board, <span class="type">int</span> row, <span class="type">int</span> col, <span class="type">char</span> c)</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">9</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(board[i][col] != <span class="string">&#x27;.&#x27;</span> &amp;&amp; board[i][col] == c) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//check row</span></span><br><span class="line">            <span class="keyword">if</span>(board[row][i] != <span class="string">&#x27;.&#x27;</span> &amp;&amp; board[row][i] == c) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//check column</span></span><br><span class="line">            <span class="keyword">if</span>(board[<span class="number">3</span> * (row / <span class="number">3</span>) + i / <span class="number">3</span>][ <span class="number">3</span> * (col / <span class="number">3</span>) + i % <span class="number">3</span>] != <span class="string">&#x27;.&#x27;</span> &amp;&amp; </span><br><span class="line">board[<span class="number">3</span> * (row / <span class="number">3</span>) + i / <span class="number">3</span>][<span class="number">3</span> * (col / <span class="number">3</span>) + i % <span class="number">3</span>] == c) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//check 3*3 block</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="思路二：使用二维布尔数组分别记录行列和方块的所有值情况"><a href="#思路二：使用二维布尔数组分别记录行列和方块的所有值情况" class="headerlink" title="思路二：使用二维布尔数组分别记录行列和方块的所有值情况"></a>思路二：使用二维布尔数组分别记录行列和方块的所有值情况</h2><p>我们使用<code>boolean[][] rows, boolean[][] columns, boolean[][] squares</code>分别记录行列和方块的所有值情况。其中rows[i][j]记录i行是否有值j，columns[i][j]记录i列是否有值j，squares[i][j]记录第i个方块是否有值j。总体思路还是和上一个差不多，只是通过消费了存储空间的基础上提高了性能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">solveSudoku2</span><span class="params">(<span class="type">char</span>[][] board)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> board.length;</span><br><span class="line">    <span class="comment">//记录第i行是否出现j数字</span></span><br><span class="line">    <span class="type">boolean</span>[][] rows = <span class="keyword">new</span> <span class="title class_">boolean</span>[length][length+<span class="number">1</span>];</span><br><span class="line">    <span class="comment">//第i列是否出现j数字</span></span><br><span class="line">    <span class="type">boolean</span>[][] columns = <span class="keyword">new</span> <span class="title class_">boolean</span>[length][length+<span class="number">1</span>];</span><br><span class="line">    <span class="comment">//第i个小方格是否出现j数字。</span></span><br><span class="line">    <span class="type">boolean</span>[][] squares = <span class="keyword">new</span> <span class="title class_">boolean</span>[length][length+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span> ; i &lt; length ; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span> ; j&lt;length ; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(board[i][j] != <span class="string">&#x27;.&#x27;</span>)&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">value</span> <span class="operator">=</span> board[i][j] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">                rows[i][value] = <span class="literal">true</span>;</span><br><span class="line">                columns[j][value] = <span class="literal">true</span>;</span><br><span class="line">                squares[i / <span class="number">3</span> * <span class="number">3</span> + j / <span class="number">3</span>][value] = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    solveSudoku(board, <span class="number">0</span>, rows, columns, squares);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">solveSudoku</span><span class="params">(<span class="type">char</span>[][] board, <span class="type">int</span> index, <span class="type">boolean</span>[][] rows, <span class="type">boolean</span>[][] columns, <span class="type">boolean</span>[][] squares)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(index == <span class="number">81</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> index / <span class="number">9</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">column</span> <span class="operator">=</span> index % <span class="number">9</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">square</span> <span class="operator">=</span> row/<span class="number">3</span>*<span class="number">3</span> + column/<span class="number">3</span>;</span><br><span class="line">    <span class="keyword">if</span>(board[row][column]==<span class="string">&#x27;.&#x27;</span>)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> <span class="variable">i</span> <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span> ; i&lt;=<span class="string">&#x27;9&#x27;</span> ; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(rows[row][i-<span class="string">&#x27;0&#x27;</span>] || columns[i-<span class="string">&#x27;0&#x27;</span>][column] || squares[square][i-<span class="string">&#x27;0&#x27;</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            </span><br><span class="line">            board[row][column] = i;</span><br><span class="line">            rows[row][i-<span class="string">&#x27;0&#x27;</span>] = <span class="literal">true</span>;</span><br><span class="line">            columns[column][i-<span class="string">&#x27;0&#x27;</span>] = <span class="literal">true</span>;</span><br><span class="line">            squares[square][i-<span class="string">&#x27;0&#x27;</span>] = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(solveSudoku(board, index+<span class="number">1</span>, rows, columns, squares))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                board[row][column] = <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">                rows[row][i-<span class="string">&#x27;0&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line">                columns[column][i-<span class="string">&#x27;0&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line">                squares[square][i-<span class="string">&#x27;0&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> solveSudoku(board, index+<span class="number">1</span>, rows, columns, squares);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="更多解法"><a href="#更多解法" class="headerlink" title="更多解法"></a>更多解法</h2><p>看到一个解答 效率很高 但是不是很明白 希望看到的大神解答一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">solver</span><span class="params">(<span class="type">int</span> idx, <span class="type">char</span>[][] board, ArrayList&lt;Integer&gt; stack, <span class="type">int</span>[] store)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (idx == stack.size()) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> stack.get(idx);</span><br><span class="line">    <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> n / <span class="number">9</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> n - y * <span class="number">9</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> y;</span><br><span class="line">    <span class="type">int</span> <span class="variable">v</span> <span class="operator">=</span> <span class="number">9</span> + x;</span><br><span class="line">    <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">18</span> + (y / <span class="number">3</span> * <span class="number">3</span> + x / <span class="number">3</span>);</span><br><span class="line">    <span class="type">int</span> <span class="variable">available</span> <span class="operator">=</span> ~store[h] &amp; ~store[v] &amp; ~store[b] &amp; <span class="number">0b111111111</span>;</span><br><span class="line">    <span class="keyword">while</span> (available &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">bit</span> <span class="operator">=</span> available &amp; -available;</span><br><span class="line">        <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> Integer.numberOfTrailingZeros(bit);</span><br><span class="line">        store[h] ^= bit;</span><br><span class="line">        store[v] ^= bit;</span><br><span class="line">        store[b] ^= bit;</span><br><span class="line">        board[y][x] = (<span class="type">char</span>)(num + <span class="string">&#x27;1&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> (solver(idx + <span class="number">1</span>, board, stack, store)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        store[h] ^= bit;</span><br><span class="line">        store[v] ^= bit;</span><br><span class="line">        store[b] ^= bit;</span><br><span class="line">        <span class="comment">// board[y][x] = &#x27;.&#x27;;</span></span><br><span class="line">        available &amp;= available - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">solveSudoku3</span><span class="params">(<span class="type">char</span>[][] board)</span> &#123;</span><br><span class="line">    ArrayList&lt;Integer&gt; stack =  <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="comment">// int[] stack = new int[81];</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>[] store = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">27</span>]; <span class="comment">// 0-8 h, 9 - 17 v, 18 - 26 b</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">9</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">9</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (board[i][j] == <span class="string">&#x27;.&#x27;</span>) stack.add(i * <span class="number">9</span> + j);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> i;</span><br><span class="line">                <span class="type">int</span> <span class="variable">v</span> <span class="operator">=</span> <span class="number">9</span> + j;</span><br><span class="line">                <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">18</span> + (i / <span class="number">3</span> * <span class="number">3</span> + j / <span class="number">3</span>);</span><br><span class="line">                store[h] ^= <span class="number">1</span> &lt;&lt; board[i][j] - <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">                store[v] ^= <span class="number">1</span> &lt;&lt; board[i][j] - <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">                store[b] ^= <span class="number">1</span> &lt;&lt; board[i][j] - <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    solver(<span class="number">0</span>, board, stack, store);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"># 刷题</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+              <a href="/tags/backtracking/" rel="tag"># backtracking</a>
+              <a href="/tags/hashtable/" rel="tag"># hashtable</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/04/leetcode73/" rel="prev" title="leetcode73.Set Matrix Zeroes">
+                  <i class="fa fa-angle-left"></i> leetcode73.Set Matrix Zeroes
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/04/leetcode86/" rel="next" title="leetcode86.Partition List">
+                  leetcode86.Partition List <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rale Dong</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
